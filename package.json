@@ -14,6 +14,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "postinstall": "bower install && gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
