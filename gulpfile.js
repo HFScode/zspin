@@ -17,7 +17,7 @@ var vendors = {
     'bower_components/angular-route/angular-route.js',
   ],
   'styles': [
-//    'bower_components/font-awesome/css/font-awesome.css',
+    'bower_components/skeleton/css/*.css',
   ],
   'fonts': [
 //    'bower_components/bootstrap/dist/fonts/*', // * preserve dir structure
