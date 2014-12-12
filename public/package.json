@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "iniparser": "^1.0.5"
+    "iniparser": "^1.0.5",
+    "mkdirp": "^0.5.0"
   }
 }
