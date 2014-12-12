@@ -23,7 +23,7 @@ app.factory('settings', [
       parse: function(name) {
         var filename = name + '.ini';
         console.log('filename: %s', filename);
-        var filepath = $path.join(INI_ROOT, name);
+        var filepath = $path.join(INI_ROOT, filename);
         console.log('filepath: %s', filepath);
 
         var config = iniparser.parseSync(filepath);

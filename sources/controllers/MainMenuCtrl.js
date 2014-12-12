@@ -10,5 +10,10 @@ app.controller('MainMenuCtrl', ['$scope', '$location', 'settings',
     $scope.openRoot = function() {
       gui.Shell.showItemInFolder(settings.root);
     }
+    $scope.data = '';
+    $scope.parse = function() {
+      $scope.data = settings.parse('Main Menu');
+    };
+
   }
 ]);
