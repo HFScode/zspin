@@ -1,11 +1,10 @@
 'use strict'
 
-app.factory('settings', ['zspin',
-  function (zspin) {
-    var fs = require('fs');
+app.factory('settings', ['zspin', 'fs',
+  function (zspin, fs) {
+    var ini = require('ini');
     var path = require('path');
     var mkdirp = require('mkdirp');
-    var iniparser = require('iniparser');
 
     // init
     var dataPath = zspin.dataPath;
@@ -20,7 +19,9 @@ app.factory('settings', ['zspin',
       parse: function(name) {
         var filename = name + '.ini';
         var filepath = path.join(settingsPath, filename);
-        return iniparser.parseSync(filepath);
+        return fs.readFile(filepath, 'utf-8').then(function(data) {
+          return ini.parse(data);
+        });
       }
     };
   }
