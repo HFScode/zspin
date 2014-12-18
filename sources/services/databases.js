@@ -26,12 +26,7 @@ app.factory('databases', ['$q', 'zspin', 'fs',
         var filename = name + '.xml';
         var filepath = path.join(settingsPath, name, filename);
         fs.readFile(filepath, 'utf-8').then(function(data) {
-          parser.parseString(data, function(err, res) {
-            if (err)
-              d.reject(err);
-            else 
-              d.resolve(res);
-          });
+          wrapCallback(d, parser.parseString, parser, [data]);
         });
         return d.promise;
       }
