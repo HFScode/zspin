@@ -1,13 +1,13 @@
 'use strict';
 
 
-app.controller('MainMenuCtrl', ['$scope', '$location', 'settings', 'databases',
-  function($scope, $location, settings, databases) {
+app.controller('MainMenuCtrl', ['$scope', '$location', 'zspin', 'settings', 'databases',
+  function($scope, $location, zspin, settings, databases) {
     var gui = require('nw.gui');
 
-    $scope.root = databases.root;
+    $scope.root = zspin.dataPath;
     $scope.openRoot = function() {
-      gui.Shell.showItemInFolder(databases.root);
+      gui.Shell.showItemInFolder(zspin.dataPath);
     };
 
     settings.parse('Main Menu').then(function(data) {
