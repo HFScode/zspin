@@ -1,5 +1,20 @@
-<button>
-  {{bite+bite}}
-</button>
 
-{{bite}}
+<table width="100%">
+  <tr>
+    <td>
+      <button ng-click="openRoot()">
+        OPEN
+      </button>
+    </td>
+    <td>
+      {{root}}    
+    </td>
+  </tr>
+</table>
+
+<button ng-click="parse()">
+  JOUES
+</button>
+<pre>
+{{data}}
+</pre>
