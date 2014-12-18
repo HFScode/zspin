@@ -5,7 +5,7 @@ app.factory('fs', ['$q', 'zspin',
     var fs = require('fs');
     var mkdirp = require('mkdirp');
 
-    function wrapCallback(func, args) {
+    function wrapCallback(func, that, args) {
       var d = $q.defer();
       d.promise.$object = [];
       args.push(function (err, res) {
@@ -14,34 +14,17 @@ app.factory('fs', ['$q', 'zspin',
         else
           d.resolve(res);
       });
-      func.apply(fs, args);
+      func.apply(that, args);
       return d.promise;
     }
-
+    
     return {
       readFile: function() {
         var args = Array.prototype.slice.call(arguments);
-        var p = wrapCallback(fs.readFile, args);
+        var p = wrapCallback(fs.readFile, fs, args);
         return p;
       }
     };
 
-    // return function(path) {
-
-      // // Set root paths
-      // root: settingsPath,
-
-      // // Actual ini parsing
-      // parse: function(name) {
-      //   var filename = name + '.ini';
-      //   var filepath = path.join(settingsPath, filename);
-      //   console.log(filepath);
-      //   try {
-      //     var file = fs.readFileSync(filepath, 'utf-8');
-      //     return ini.parse(file);
-      //   } catch (e) {
-      //     return {};
-      //   }
-      // }
   }
 ]);

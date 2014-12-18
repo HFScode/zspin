@@ -1,20 +1,24 @@
+<div class="container">
+  <table  class="table" width="100%">
+    <tr>
+      <td>
+        <button ng-click="openRoot()">
+          OPEN
+        </button>
+      </td>
+      <td>
+        {{root}}    
+      </td>
+    </tr>
+  </table>
 
-<table width="100%">
-  <tr>
-    <td>
-      <button ng-click="openRoot()">
-        OPEN
-      </button>
-    </td>
-    <td>
-      {{root}}    
-    </td>
-  </tr>
-</table>
+  <div class="well">
+    <h1>Settings</h1>
+    <pre>{{settings}}</pre>
+  </div>
 
-<button ng-click="parse()">
-  JOUES
-</button>
-<pre>
-{{data}}
-</pre>
+  <div class="well">
+    <h1>Databases</h1>
+    <pre>{{databases}}</pre>
+  </div>
+</div>
