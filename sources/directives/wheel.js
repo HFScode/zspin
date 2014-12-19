@@ -1,27 +1,42 @@
 'use strict'
 
-app.directive('wheel', ['$document', '$timeout',
-  function($document, $timeout) {
+app.directive('wheel', [
+  function() {
 
     return {
       restrict: 'E',
       transclude: true,
       templateUrl: 'wheel.html',
       scope: {
-        options: '='
+        options: '=',
+        index: '='
       },
       link: function(scope, el, attr) {
+        var wheel = {};
         var options = scope.options;
-        $timeout(function() {
-          var wheel = $(el).CircularCarousel(options);
-          $document.bind('keydown', function(e) {
-            if (e.which == 37) //left
-              wheel.cycleActive('previous');
-            if (e.which == 39) //right
-              wheel.cycleActive('next');
+        scope.index = scope.index || 0;
+
+        function initWheel() {
+          wheel = $(el).CircularCarousel(options);
+          wheel.on('itemActive', function(e, item) {
+            scope.index = $(item).index();
           });
-        }, 1000);
-      },
+        }
+        function itemCount() {
+          return $('.item', el).length;
+        }
+        scope.$watch(itemCount, initWheel);
+        scope.$watch('index', function(newval, oldval) {
+          if (!wheel) return;
+          var count = itemCount();
+          if (newval < 0)
+            scope.index = count + newval;
+          else if (newval > count)
+            scope.index = newval % count;
+          else
+            wheel.cycleActiveTo(newval);
+        });
+      }
     };
   }
 ]);

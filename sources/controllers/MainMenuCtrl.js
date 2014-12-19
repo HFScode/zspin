@@ -1,8 +1,7 @@
 'use strict';
 
-
-app.controller('MainMenuCtrl', ['$scope', '$location', 'zspin', 'settings', 'databases',
-  function($scope, $location, zspin, settings, databases) {
+app.controller('MainMenuCtrl', ['$scope', '$document', 'zspin', 'settings', 'databases',
+  function($scope, $document, zspin, settings, databases) {
     var gui = require('nw.gui');
 
     $scope.wheeloptions =  {
@@ -16,7 +15,16 @@ app.controller('MainMenuCtrl', ['$scope', '$location', 'zspin', 'settings', 'dat
       className: 'item'
     }
 
+    $document.bind('keydown', function(e) {
+      if (e.which == 37) //left
+        $scope.$apply(function() {$scope.wheelindex-- });
+      if (e.which == 39) {//right
+        $scope.$apply(function() {$scope.wheelindex++ });
+      }
+      e.preventDefault();
+    });
 
+    $scope.index = 0;
     $scope.root = zspin.dataPath;
     $scope.openRoot = function() {
       gui.Shell.showItemInFolder(databases.root);
