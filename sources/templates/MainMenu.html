@@ -12,6 +12,10 @@
     </tr>
   </table>
 
+  <wheel options="wheeloptions">
+    <li ng-repeat="game in databases.menu.game" class="item">{{game.$.name}}</li>
+  </wheel>
+
   <div class="well">
     <h1>Settings</h1>
     <pre>{{settings}}</pre>
@@ -19,6 +23,6 @@
 
   <div class="well">
     <h1>Databases</h1>
-    <pre>{{databases}}</pre>
+    <pre>{{databases.menu}}</pre>
   </div>
 </div>

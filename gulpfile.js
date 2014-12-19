@@ -13,11 +13,14 @@ var vendors = {
   'scripts': [
     'bower_components/jquery/dist/jquery.js',
     'bower_components/lodash/dist/lodash.js',
+    'bower_components/jquery.circular-carousel/jquery.circular-carousel.js',
     'bower_components/angular/angular.js',
     'bower_components/angular-route/angular-route.js',
   ],
   'styles': [
-    'bower_components/skeleton/css/*.css',
+    'bower_components/skeleton/css/normalize.css',
+    'bower_components/skeleton/css/skeleton.css',
+    'bower_components/jquery.circular-carousel/jquery.circular-carousel.css',
   ],
   'fonts': [
 //    'bower_components/bootstrap/dist/fonts/*', // * preserve dir structure
