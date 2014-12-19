@@ -24,13 +24,13 @@ pre {
 }
 
 .carousel .item {
-  width: 350px;
-  height: 250px;
-  background: url('http://placehold.it/350x250') top left no-repeat;
+  width: 500px;
+  height: 270px;
+  // background: url('http://placehold.it/350x250') top left no-repeat;
   background-size: 100%;
   vertical-align: middle;
   line-height: 150px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  // box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
 .controls {

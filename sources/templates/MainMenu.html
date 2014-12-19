@@ -1,3 +1,8 @@
+  <wheel options="wheeloptions" index="wheelindex">
+    <li ng-repeat="game in databases.menu.game" class="item">
+      <img src="{{root+'/Media/Main Menu/Images/Wheel/'+game.$.name+'.png'}}">
+    </li>
+  </wheel>
 <div class="container">
   <table  class="table" width="100%">
     <tr>
@@ -11,11 +16,7 @@
       </td>
     </tr>
   </table>
-
-  <wheel options="wheeloptions" index="wheelindex">
-    <li ng-repeat="game in databases.menu.game" class="item">{{game.$.name}}</li>
-  </wheel>
-
+  <h1 style="position: fixed; bottom:0; left:0;" >{{databases.menu.game[wheelindex].$.name}}</h1>
   <div class="well">
     <h1>Settings</h1>
     <pre>{{settings}}</pre>
