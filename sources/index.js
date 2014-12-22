@@ -6,8 +6,9 @@ var app = angular.module('app', [
 ]);
 
 
+// Wraps a promise around a function call that
+// expects a function(error, result) callback.
 function wrapCallback(d, func, that, args) {
-  // var d = $q.defer();
   args.push(function (err, res) {
     if (err)
       d.reject(err);

@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('MainMenuCtrl', ['$scope', '$document', 'zspin', 'settings', 'databases',
-  function($scope, $document, zspin, settings, databases) {
+app.controller('MainMenuCtrl', ['$scope', '$document', 'zspin', 'ini', 'xml',
+  function($scope, $document, zspin, ini, xml) {
     var gui = require('nw.gui');
 
     $scope.wheeloptions =  {
@@ -27,13 +27,13 @@ app.controller('MainMenuCtrl', ['$scope', '$document', 'zspin', 'settings', 'dat
     $scope.index = 0;
     $scope.root = zspin.dataPath;
     $scope.openRoot = function() {
-      gui.Shell.showItemInFolder(databases.root);
+      gui.Shell.showItemInFolder(zspin.settingsPath);
     };
 
-    settings.parse('Main Menu').then(function(data) {
+    ini.parse('Settings/Main Menu.ini').then(function(data) {
       $scope.settings = JSON.stringify(data, null, 2);
     });
-    databases.parse('Main Menu').then(function(data) {
+    xml.parse('Databases/Main Menu/Main Menu.xml').then(function(data) {
       $scope.databases = data;
     });
   }

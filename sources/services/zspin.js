@@ -1,9 +1,19 @@
 'use strict'
 
-app.factory('zspin', [ 
-  function () {
+app.factory('zspin', ['fs',
+  function (fs) {
     var gui = require('nw.gui');
-    var path = require('path');
+
+    var zspin = {};
+
+    // Register global requires
+    zspin.gui = gui;
+
+    // Setup Paths
+    zspin.dataPath = fs.join(gui.App.dataPath, 'Zspin');
+    zspin.mediasPath = fs.join(zspin.dataPath, 'Medias');
+    zspin.settingsPath = fs.join(zspin.dataPath, 'Settings');
+    zspin.databasesPath = fs.join(zspin.dataPath, 'Databases');
 
     // Create a shortcut.
     var shortcut = new gui.Shortcut({key: 'Ctrl+4'});
@@ -13,9 +23,6 @@ app.factory('zspin', [
     });
     //gui.App.unregisterGlobalHotKey(shortcut);
 
-    return {
-      // Set root paths
-      dataPath: path.join(gui.App.dataPath, 'Zspin')
-    };
+    return zspin;
   }
 ]);
