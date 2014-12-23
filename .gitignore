@@ -4,3 +4,4 @@ public/
 !public/index.html
 !public/package.json
 node-webkit
+**/.DS_Store
