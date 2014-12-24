@@ -11,9 +11,14 @@ app.factory('zspin', ['fs',
 
     // Setup Paths
     zspin.dataPath = fs.join(gui.App.dataPath, 'Zspin');
-    zspin.mediasPath = fs.join(zspin.dataPath, 'Medias');
+    zspin.mediasPath = fs.join(zspin.dataPath, 'Media');
     zspin.settingsPath = fs.join(zspin.dataPath, 'Settings');
     zspin.databasesPath = fs.join(zspin.dataPath, 'Databases');
+
+    // Make Paths
+    fs.mkdir(zspin.mediasPath);
+    fs.mkdir(zspin.settingsPath);
+    fs.mkdir(zspin.databasesPath);
 
     // Create a shortcut.
     var shortcut = new gui.Shortcut({key: 'Ctrl+4'});

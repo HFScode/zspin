@@ -13,14 +13,20 @@ pre {
   text-align: center;
 }
 
+wheel {
+  display: block;
+  height: 400px;
+}
+
 .carousel {
+  height: 450px;
   left: 50%;
   position: absolute;
   width: 1000px;
   margin-left: -500px;
   overflow: hidden;
   height: 500px;
-  top: 50px;
+  // top: 50px;
 }
 
 .carousel .item {
@@ -33,22 +39,3 @@ pre {
   // box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
-.controls {
-  position: absolute;
-  top: 500px;
-  left: 50%;
-  width: 150px;
-  margin-left: -75px;
-}
-
-.controls a {
-  display: block;
-}
-
-.controls .previous {
-  float: left;
-}
-
-.controls .next {
-  float: right;
-}
