@@ -1,27 +1,26 @@
 'use strict';
 
-app.factory('zip', ['zspin', 'fs',
-  function (zspin, fs) {
+app.factory('zip', ['$q',
+  function ($q) {
     console.log('zip - init');
     var AdmZip = require('adm-zip');
 
     var service = function(filepath) {
-      // filepath = fs.join(zspin.dataPath, filepath);
-      var zip = AdmZip(filepath);
+      var zip = new AdmZip(filepath);
       return {
         getEntry: zip.getEntry.bind(zip),
+
         getEntries: zip.getEntries.bind(zip),
 
         readFile: function () {
-          // zip.readFile(function () {
-          //   console.log('ho !');
-          // });
+          var defer = $q.defer();
+          wrapCallback(defer, zip, zip.readFileAsync, arguments);
+          return defer.promise.then(function (args) {
+            return args[0];
+          });
         }
 
       };
-
-      // console.log('pat2h', filepath);
-      // return new AdmZip(filepath);
     };
     console.log('zip - ready');
     return service;

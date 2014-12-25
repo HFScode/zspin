@@ -14,29 +14,29 @@ app.factory('fs', ['$q',
       },
       readFile: function() {
         var defer = $q.defer();
-        wrapCallback(defer, fs, fs.readFile, arguments);
+        wrapErrCallback(defer, fs, fs.readFile, arguments);
         return defer.promise.then(function(args) {
           return args[0];
         });
       },
       writeFile: function() {
         var defer = $q.defer();
-        wrapCallback(defer, fs, fs.writeFile, arguments);
+        wrapErrCallback(defer, fs, fs.writeFile, arguments);
         return defer.promise;
       },
       mkdir: function() {
         var defer = $q.defer();
-        wrapCallback(defer, null, mkdirp, arguments);
+        wrapErrCallback(defer, null, mkdirp, arguments);
         return defer.promise;
       },
       stat: function() {
         var defer = $q.defer();
-        wrapCallback(defer, fs, fs.stat, arguments);
+        wrapErrCallback(defer, fs, fs.stat, arguments);
         return defer.promise;
       },
       mktmpfile: function() {
         var defer = $q.defer();
-        wrapCallback(defer, tmp, tmp.file, arguments);
+        wrapErrCallback(defer, tmp, tmp.file, arguments);
         return defer.promise.then(function(args) {
           return {path: args[0], fd: args[1], clean: args[2]};
         });

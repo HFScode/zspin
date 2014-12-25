@@ -8,9 +8,7 @@
   <table  class="table" width="100%">
     <tr>
       <td>
-        <button ng-click="openRoot()">
-          OPEN
-        </button>
+        <button ng-click="openRoot()">OPEN</button>
       </td>
       <td>
         {{root}}    
@@ -18,15 +16,13 @@
     </tr>
   </table>
 
-  caca
-  <embed  ng-show="ready" src="{{background}}" type="application/x-shockwave-flash">
-
-
+  <embed  ng-show="bg.url" src="{{bg.url}}" type="application/x-shockwave-flash">
 
   <h1>{{curItem}}</h1>
   <div class="well">
     <h1>Medias</h1>
-    <pre>{{background}}</pre>
+    <!-- <pre>{{background_data}}</pre> -->
+    <pre>{{bg.path}}</pre>
     <pre>{{medias.getEntries() | json}}</pre>
   </div>
   <div class="well">

@@ -35,27 +35,32 @@ app.controller('MenuCtrl', ['$scope', '$document', 'zspin', 'fs', 'ini', 'xml', 
       var index = $scope.wheelindex;
       $scope.curItem = $scope.games[index].name;
       // Reinit items on change
-      $scope.ready = false;
+      // $scope.ready = false;
       $scope.medias = undefined;
-      $scope.background = undefined;
+      $scope.bg = {};
 
       // Setup new vars
       var file = 'Media/Main Menu/Themes/'+$scope.curItem+'.zip';
       var path = zspin.dataPath(file);
 
       console.log('path', path);
-      fs.stat(path).then(function(res) {
-        $scope.medias = zip(path);
-        console.log('yepee');
+      fs.stat(path).then(function(stat) {
+        console.log('Media File Exists');
+        var medias = zip(path);
+        $scope.medias = medias;
+        return medias.readFile('Background.swf');
+      }).then(function(data) {
+        console.log('Got .swf file datas', data.length);
+        $scope.bg.data = data;
         return fs.mktmpfile({postfix: '.swf'});
       }).then(function(tmp) {
-        console.log('yepee2');
-        $scope.background = 'file://'+tmp.path;
-        var data = $scope.medias.readFile('Background.swf');
-        return fs.writeFile(tmp.path, data);
+        console.log('Got tmp File', tmp.path);
+        $scope.bg.path = tmp.path;
+        return fs.writeFile($scope.bg.path, $scope.bg.data);
       }).then(function() {
-        console.log('done !', $scope.background);
-        $scope.ready = true;
+        console.log('File should be written !');
+        $scope.bg.url = 'file://'+$scope.bg.path;
+        // $scope.ready = true;
       });
     };
 

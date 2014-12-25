@@ -16,10 +16,9 @@ app.factory('xml', ['$q', 'zspin', 'fs',
       parse: function(filepath) {
         var defer = $q.defer();
         fs.readFile(filepath, 'utf-8').then(function(data) {
-          wrapCallback(defer, parser, parser.parseString, [data]);
+          wrapErrCallback(defer, parser, parser.parseString, [data]);
         });
         return defer.promise.then(function(args) {
-          console.log('wtf', args)
           return args[0];
         });
       }
