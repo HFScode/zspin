@@ -35,30 +35,50 @@ app.controller('MenuCtrl', ['$scope', '$document', 'zspin', 'fs', 'ini', 'xml', 
     $scope.updateMedias = function() {
       var index = $scope.wheelindex;
       $scope.curItem = $scope.games[index].name;
-      var path = 'Media/Main Menu/Themes/'+$scope.curItem+'.zip';
+      // Reinit items on change
+      $scope.ready = false;
       $scope.medias = undefined;
       $scope.background = undefined;
-      $scope.ready = false;
+
+      // Setup new vars
+      var file = 'Media/Main Menu/Themes/'+$scope.curItem+'.zip';
+      var path = fs.join(zspin.dataPath, file);
+
       console.log('path', path);
-      $scope.medias = zip(path);
-      console.log('mkdir1');
-      var bg;
-      fs.mktmpfile({prefix: 'prefix-', postfix: '.swf'}).then(function(args) {
-        bg = 'file://'+args[0];
-        return fs.writeFile(args[0], $scope.medias.readFile('Background.swf'));
-        //   )
-        // var file = args[1];
-        // var fd = args[2];
-        // console.log('mkdir2', args);
-      }).then(function () {
-        $scope.background = bg;
-        setTimeout(function() {
-          $scope.$apply(function () {
-            $scope.ready = true;
-            console.log('done !', bg);
-          });
-        }, 500);
-      });
+fs.stat(path).then(function(res) {
+  $scope.medias = zip(path);
+  console.log('yepee');
+  return fs.mktmpfile({postfix: '.swf'})
+}).then(function(tmp) {
+  console.log('yepee2');
+  $scope.background = 'file://'+tmp.path;
+  var data = $scope.medias.readFile('Background.swf');
+  return fs.writeFile(tmp.path, data);
+}).then(function() {
+  console.log('done !', $scope.background);
+  $scope.ready = true;
+});
+
+
+      // $scope.medias = zip(path);
+      // console.log('mkdir1');
+      // var bg;
+      // fs.mktmpfile({prefix: 'prefix-', postfix: '.swf'}).then(function(args) {
+      //   bg = 'file://'+args[0];
+      //   return fs.writeFile(args[0], $scope.medias.readFile('Background.swf'));
+      //   //   )
+      //   // var file = args[1];
+      //   // var fd = args[2];
+      //   // console.log('mkdir2', args);
+      // }).then(function () {
+      //   $scope.background = bg;
+      //   setTimeout(function() {
+      //     $scope.$apply(function () {
+      //       $scope.ready = true;
+      //       console.log('done !', bg);
+      //     });
+      //   }, 500);
+      // });
       // var data = $scope.medias.readFile('Artwork4.swf').toString('base64');
       // $scope.background = 'data:application/x-shockwave-flash;base64,'+data;
 

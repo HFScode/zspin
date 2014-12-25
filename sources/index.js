@@ -8,16 +8,15 @@ var app = angular.module('app', [
 
 // Wraps a promise around a function call that
 // expects a function(error, result) callback.
-function wrapCallback(d, func) {
+function wrapCallback(d, self, func, args) {
+  var args = [self].concat([].slice.call(args, 0));
+  var func = func.bind.apply(func, args);
   func(function resolver(err) {
+    console.log('_', arguments)
     if (err) {
       d.reject(err);
     } else {
-      var res = [];
-      res = res.slice.call(arguments, 1);
-      res = (res.length > 1) ? res : res[0];
-      console.log('_', res);
-      d.resolve(res);
+      d.resolve([].slice.call(arguments, 1));
     }
   });
 }

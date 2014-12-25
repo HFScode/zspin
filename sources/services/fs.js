@@ -7,37 +7,40 @@ app.factory('fs', ['$q',
     var tmp = require('tmp');
     var mkdirp = require('mkdirp');
 
+
+
     return {
       join: function() {
         return path.join.apply(path, arguments);
       },
       readFile: function() {
         var defer = $q.defer();
-        var args = [fs].concat([].slice.call(arguments, 0));
-        var func = fs.readFile.bind.apply(fs.readFile, args);
-        wrapCallback(defer, func);
-        return defer.promise;
+        wrapCallback(defer, fs, fs.readFile, arguments);
+        return defer.promise.then(function(args) {
+          return args[0];
+        });
       },
       writeFile: function() {
         var defer = $q.defer();
-        var args = [fs].concat([].slice.call(arguments, 0));
-        var func = fs.writeFile.bind.apply(fs.writeFile, args);
-        wrapCallback(defer, func);
+        wrapCallback(defer, fs, fs.writeFile, arguments);
         return defer.promise;
       },
       mkdir: function() {
         var defer = $q.defer();
-        var args = [fs].concat([].slice.call(arguments, 0));
-        var func = mkdirp.bind.apply(mkdirp, args);
-        wrapCallback(defer, func);
+        wrapCallback(defer, null, mkdirp, arguments);
+        return defer.promise;
+      },
+      stat: function() {
+        var defer = $q.defer();
+        wrapCallback(defer, fs, fs.stat, arguments);
         return defer.promise;
       },
       mktmpfile: function() {
         var defer = $q.defer();
-        var args = [tmp].concat([].slice.call(arguments, 0));
-        var func = tmp.file.bind.apply(tmp.file, args);
-        wrapCallback(defer, func);
-        return defer.promise;
+        wrapCallback(defer, tmp, tmp.file, arguments);
+        return defer.promise.then(function(args) {
+          return {path: args[0], fd: args[1], clean: args[2]};
+        });
       }
 
 
