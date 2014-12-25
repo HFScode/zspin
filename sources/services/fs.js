@@ -2,14 +2,13 @@
 
 app.factory('fs', ['$q', 
   function ($q) {
+    console.log('fs - init');
     var fs = require('fs');
     var path = require('path');
     var tmp = require('tmp');
     var mkdirp = require('mkdirp');
 
-
-
-    return {
+    var service = {
       join: function() {
         return path.join.apply(path, arguments);
       },
@@ -42,9 +41,8 @@ app.factory('fs', ['$q',
           return {path: args[0], fd: args[1], clean: args[2]};
         });
       }
-
-
     };
-
+    console.log('fs - ready');
+    return service;
   }
 ]);

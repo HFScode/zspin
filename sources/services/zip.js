@@ -2,9 +2,10 @@
 
 app.factory('zip', ['zspin', 'fs',
   function (zspin, fs) {
+    console.log('zip - init');
     var AdmZip = require('adm-zip');
 
-    return function(filepath) {
+    var service = function(filepath) {
       // filepath = fs.join(zspin.dataPath, filepath);
       var zip = AdmZip(filepath);
       return {
@@ -12,7 +13,9 @@ app.factory('zip', ['zspin', 'fs',
         getEntries: zip.getEntries.bind(zip),
 
         readFile: function () {
-          
+          // zip.readFile(function () {
+          //   console.log('ho !');
+          // });
         }
 
       };
@@ -20,5 +23,7 @@ app.factory('zip', ['zspin', 'fs',
       // console.log('pat2h', filepath);
       // return new AdmZip(filepath);
     };
+    console.log('zip - ready');
+    return service;
   }
 ]);

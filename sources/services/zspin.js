@@ -2,23 +2,29 @@
 
 app.factory('zspin', ['fs',
   function (fs) {
+    console.log('zspin - init');
     var gui = require('nw.gui');
 
-    var zspin = {};
+    var service = {};
 
     // Register global requires
-    zspin.gui = gui;
+    service.gui = gui;
 
     // Setup Paths
-    zspin.dataPath = fs.join(gui.App.dataPath, 'Zspin');
-    zspin.mediasPath = fs.join(zspin.dataPath, 'Media');
-    zspin.settingsPath = fs.join(zspin.dataPath, 'Settings');
-    zspin.databasesPath = fs.join(zspin.dataPath, 'Databases');
+    var dataPath = fs.join(gui.App.dataPath, 'Zspin');
+    service.dataPath = function() {        
+      var args = [].slice.call(arguments, 0);
+      return fs.join.apply(fs, [dataPath].concat(args));
+    };
+
+    service.mediasPath = fs.join(dataPath, 'Media');
+    service.settingsPath = fs.join(dataPath, 'Settings');
+    service.databasesPath = fs.join(dataPath, 'Databases');
 
     // Make Paths
-    fs.mkdir(zspin.mediasPath);
-    fs.mkdir(zspin.settingsPath);
-    fs.mkdir(zspin.databasesPath);
+    // fs.mkdir(service.mediasPath);
+    // fs.mkdir(service.settingsPath);
+    // fs.mkdir(service.databasesPath);
 
     // Create a shortcut.
     var shortcut = new gui.Shortcut({key: 'Ctrl+4'});
@@ -27,7 +33,7 @@ app.factory('zspin', ['fs',
       gui.Window.get().show();
     });
     //gui.App.unregisterGlobalHotKey(shortcut);
-
-    return zspin;
+    console.log('service - ready');
+    return service;
   }
 ]);

@@ -2,6 +2,7 @@
 
 app.factory('xml', ['$q', 'zspin', 'fs',
   function ($q, zspin, fs) {
+    console.log('xml - init');
     var xml2js = require('xml2js');
 
     var parser = new xml2js.Parser({
@@ -9,20 +10,21 @@ app.factory('xml', ['$q', 'zspin', 'fs',
       explicitCharkey: true,
       explicitArray: false
     });
-
-    return {
+    var service = {
 
       // Actual ini parsing
       parse: function(filepath) {
         var defer = $q.defer();
-        filepath = fs.join(zspin.dataPath, filepath);
         fs.readFile(filepath, 'utf-8').then(function(data) {
-          // var args = [fs].concat([].slice.call(arguments, 0));
-          var func = parser.parseString.bind(parser.parseString, data);
-          wrapCallback(defer, func);
+          wrapCallback(defer, parser, parser.parseString, [data]);
         });
-        return defer.promise;
+        return defer.promise.then(function(args) {
+          console.log('wtf', args)
+          return args[0];
+        });
       }
     };
+    console.log('xml - ready');
+    return service;
   }
 ]);
