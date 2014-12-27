@@ -6,36 +6,47 @@ app.directive('wheel', [
     return {
       restrict: 'E',
       transclude: true,
-      templateUrl: 'wheel.html',
+      // templateUrl: 'wheel.html',
       scope: {
+        items: '=',
+        points: '=',
         options: '=',
-        index: '='
+        control: '=',
       },
       link: function(scope, el, attr) {
-        var wheel = {};
-        var options = scope.options;
-        scope.index = scope.index || 0;
+        scope.wheel = undefined;
 
         function initWheel() {
-          wheel = $(el).CircularCarousel(options);
-          wheel.on('itemActive', function(e, item) {
-            scope.index = $(item).index();
+          if (!scope.items.length || scope.points.length < 2)
+            return;
+
+          // generate random id
+          var uid = 'wheel-'+(''+Math.random()).split('.')[1];
+          var items = angular.copy(scope.items||[]);
+          var points = angular.copy(scope.points||[]);
+          var options = angular.extend({}, scope.options, {
+            container: '#'+uid
           });
+
+          // Reset DOM/Wheel
+          $(el).html('<div id="'+uid+'">');
+          scope.wheel = $.wheelspinner(items, points, options);
+          for (var i = 0; i < options.selectPosition; i++)
+            scope.wheel.move('prev');
+          scope.control = scope.wheel;
         }
-        function itemCount() {
-          return $('.item', el).length;
-        }
-        scope.$watch(itemCount, initWheel);
+
+        // Either matter
+        scope.$watch('items', initWheel);
+        scope.$watch('points', initWheel);
+
         scope.$watch('index', function(newval, oldval) {
-          if (!wheel) return;
-          var count = itemCount();
-          if (newval < 0)
-            scope.index = count + newval;
-          else if (newval > count)
-            scope.index = newval % count;
-          else
-            wheel.cycleActiveTo(newval);
+          if (scope.wheel && newval !== oldval)  {
+            var dir = (newval < oldval) ? 'prev' : 'next';
+            scope.wheel.move(dir);
+          }
         });
+
       }
     };
   }

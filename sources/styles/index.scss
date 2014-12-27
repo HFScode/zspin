@@ -15,7 +15,7 @@ pre {
 
 wheel {
   display: block;
-  height: 400px;
+  height: 250px;
 }
 
 .carousel {
@@ -39,3 +39,8 @@ wheel {
   // box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
+
+.ws-elem {
+  position: absolute;
+  max-width: 150px;
+}

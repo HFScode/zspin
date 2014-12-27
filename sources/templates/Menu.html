@@ -1,7 +1,5 @@
-<wheel options="wheeloptions" index="wheelindex">
-  <li ng-repeat="game in games" class="item">
-    <img src="{{root+'/Media/Main Menu/Images/Wheel/'+game.name+'.png'}}">
-  </li>
+
+<wheel control="wheelControl" options="wheelOptions" points="wheelPoints" items="wheelItems">
 </wheel>
 
 <div class="container">
@@ -18,7 +16,7 @@
 
   <embed  ng-show="bg.url" src="{{bg.url}}" type="application/x-shockwave-flash">
 
-  <h1>{{curItem}}</h1>
+  <h1>{{curItem.name}}</h1>
   <div class="well">
     <h1>Medias</h1>
     <!-- <pre>{{background_data}}</pre> -->
