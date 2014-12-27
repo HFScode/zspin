@@ -27,7 +27,7 @@ app.controller('MenuCtrl', ['$scope', '$document', 'zspin', 'fs', 'ini', 'xml', 
         $scope.wheelControl.prev();
       if (e.which == 39) //right
         $scope.wheelControl.next();
-      $scope.updateMedias();
+      $scope.$apply($scope.updateMedias);
       e.preventDefault();
     });   
 
@@ -41,28 +41,28 @@ app.controller('MenuCtrl', ['$scope', '$document', 'zspin', 'fs', 'ini', 'xml', 
 
       if (!$scope.wheelControl) { return; }
       $scope.curItem =  $scope.wheelControl.select();
+      // if (!$scope.curItem) { return; }
+      // var path = $scope.curItem.media;
 
-      if (!$scope.curItem) { return; }
-      var path = $scope.curItem.media;
-
-      fs.stat(path).then(function(stat) {
-        console.log('Media File Exists');
-        var medias = zip(path);
-        $scope.medias = medias;
-        return medias.readFile('Background.swf');
-      }).then(function(data) {
-        console.log('Got .swf file datas', (data || {length: 'shit'}).length);
-        $scope.bg.data = data;
-        return fs.mktmpfile({ postfix: '.swf'});
-      }).then(function(tmp) {
-        console.log('Got tmp File', tmp.path);
-        $scope.bg.path = tmp.path;
-        return fs.writeFile($scope.bg.path, $scope.bg.data);
-      }).then(function() {
-        console.log('File should be written !');
-        $scope.bg.url = 'file://'+$scope.bg.path;
-      });
+      // fs.stat(path).then(function(stat) {
+      //   console.log('Media File Exists');
+      //   var medias = zip(path);
+      //   $scope.medias = medias;
+      //   return medias.readFile('Background.swf');
+      // }).then(function(data) {
+      //   console.log('Got .swf file datas', (data || {length: 'shit'}).length);
+      //   $scope.bg.data = data;
+      //   return fs.mktmpfile({ postfix: '.swf'});
+      // }).then(function(tmp) {
+      //   console.log('Got tmp File', tmp.path);
+      //   $scope.bg.path = tmp.path;
+      //   return fs.writeFile($scope.bg.path, $scope.bg.data);
+      // }).then(function() {
+      //   console.log('File should be written !');
+      //   $scope.bg.url = 'file://'+$scope.bg.path;
+      // });
     };
+      // $scope.$apply($scope.updateMedias);
 
     $scope.root = zspin.dataPath();
     $scope.openRoot = function() {
@@ -78,9 +78,8 @@ app.controller('MenuCtrl', ['$scope', '$document', 'zspin', 'fs', 'ini', 'xml', 
       $scope.wheelItems = data.menu.game.map(function(item) {
         var zipPath = zspin.dataPath('Media/Main Menu/Themes/'+item.name+'.zip');
         var imgPath = zspin.dataPath('Media/Main Menu/Images/Wheel/'+item.name+'.png');
-        return {name: item.name, file: imgPath, media: zipPath};
+        return {name: item.name, file: imgPath, theme: zipPath};
       });
-      $scope.updateMedias();
     });
   }
 ]);

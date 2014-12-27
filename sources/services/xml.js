@@ -14,10 +14,13 @@ app.factory('xml', ['$q', 'zspin', 'fs',
 
       // Actual ini parsing
       parse: function(filepath) {
-        var defer = $q.defer();
-        fs.readFile(filepath, 'utf-8').then(function(data) {
-          wrapErrCallback(defer, parser, parser.parseString, [data]);
+        return fs.readFile(filepath, 'utf-8').then(function(data) {
+          return service.parseString(data);
         });
+      },
+      parseString: function(filepath) {
+        var defer = $q.defer();
+        wrapErrCallback(defer, parser, parser.parseString, arguments);
         return defer.promise.then(function(args) {
           return args[0];
         });
