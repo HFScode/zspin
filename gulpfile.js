@@ -12,10 +12,11 @@ var gu_lr     = require('gulp-livereload');
 var vendors = {
   'scripts': [
     'bower_components/jquery/dist/jquery.js',
-    'bower_components/lodash/dist/lodash.js',
-    'bower_components/jquery.circular-carousel/jquery.circular-carousel.js',
     'bower_components/angular/angular.js',
     'bower_components/angular-route/angular-route.js',
+    'bower_components/gsap/src/uncompressed/TweenLite.js',
+    'bower_components/gsap/src/uncompressed/plugins/CSSPlugin.js',
+    'bower_components/gsap/src/uncompressed/jquery.gsap.js',
   ],
   'styles': [
     'bower_components/skeleton/css/normalize.css',
@@ -53,7 +54,8 @@ gulp.task('vendors', ['vendors:scripts', 'vendors:styles' ,'vendors:fonts']);
 var app = {
   'scripts': [
     'sources/**/*.js',
-    'sources/index.js'
+    'sources/index.js',
+    'draft/wheelspinner.js',
   ],
   'styles': [
     'sources/styles/*.scss',
