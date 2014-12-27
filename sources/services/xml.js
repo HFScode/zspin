@@ -7,8 +7,9 @@ app.factory('xml', ['$q', 'zspin', 'fs',
 
     var parser = new xml2js.Parser({
       mergeAttrs: true,
-      explicitCharkey: true,
-      explicitArray: false
+      // explicitCharkey: true,
+      // explicitChildren: true,
+      explicitArray: true
     });
     var service = {
 

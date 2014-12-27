@@ -29,6 +29,7 @@ app.directive('theme', ['fs', 'zip', 'xml',
             });
             return scope.zip.readFile('Theme.xml');
           }).then(function(data) {
+            console.log('theme -  xml loaded');
             return xml.parseString(data);
           }).then(function(data) {
             scope.params = data;
