@@ -9,6 +9,9 @@ var app = angular.module('app', [
 // Wraps a promise around a function call that
 // expects a function(error, result) callback.
 function wrapErrCallback(d, self, func, args) {
+  // var err = new Error();
+  // var callee = err.stack.split(' at ')[2];
+  // console.log('wrap', callee, [].slice.call(args, 0));
   args = [self].concat([].slice.call(args, 0));
   func = func.bind.apply(func, args);
   func(function resolver(err) {

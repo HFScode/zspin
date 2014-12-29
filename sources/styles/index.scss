@@ -16,31 +16,12 @@ pre {
 wheel {
   display: block;
   height: 250px;
-}
 
-.carousel {
-  height: 450px;
-  left: 50%;
-  position: absolute;
-  width: 1000px;
-  margin-left: -500px;
-  overflow: hidden;
-  height: 500px;
-  // top: 50px;
-}
+  .ws-elem {
+    position: absolute;
+    max-width: 150px;
+  }
 
-.carousel .item {
-  width: 500px;
-  height: 270px;
-  // background: url('http://placehold.it/350x250') top left no-repeat;
-  background-size: 100%;
-  vertical-align: middle;
-  line-height: 150px;
-  // box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
 
-.ws-elem {
-  position: absolute;
-  max-width: 150px;
-}

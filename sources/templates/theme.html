@@ -1,5 +1,24 @@
 <div class="theme">
-  <h1>WUT</h1>
+
+  <pre>{{tmp}}</pre>
+
+  <entry ng-repeat="entry in entries">
+<!--     <pre>{{entry}} | {{ext(entry)}} | {{name(entry)}} </pre>
+    <pre>{{config[name(entry)]}}</pre>
+ --> 
+    <div ng-if="config[name(entry)]">
+      <div class="well" style="width: 100px; height: 100px; overflow: hidden; border: 1px solid black;">
+        <img ng-if="ext(entry)=='png'" ng-src="{{path(entry)}}" />
+        <img ng-if="ext(entry)=='jpg'" ng-src="{{path(entry)}}" />
+        <object ng-if="ext(entry)=='swf'" data="{{path(entry)}}" 
+          type="application/x-shockwave-flash" >
+        </object>
+      </div>
+    </div>
+  </entry> 
+ 
+
+  <pre>{{tmp.path}}</pre>
   <pre>{{entries|json}}</pre>
-  <pre>{{params|json}}</pre>
+  <pre>{{config|json}}</pre>
 </div>

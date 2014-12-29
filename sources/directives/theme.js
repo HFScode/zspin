@@ -11,32 +11,37 @@ app.directive('theme', ['fs', 'zip', 'xml',
         theme: '=',
       },
       link: function(scope, el, attr) {
-    
+        scope.path = function(file) {
+          return fs.join((scope.tmp || ''), file);
+        };
+        scope.ext = function(str) {
+          return str.replace(/^.*\./, '').toLowerCase();
+        };
+        scope.name = function(str) {
+          return str.replace(/\..*?$/, '').toLowerCase();
+        };
+
 
         scope.$watch('theme', function(theme) {
-          scope.zip = null;
-          scope.path = null;
-          scope.entries = null;
-          scope.params = null;
+          scope.entries = [];
+          scope.config = {};
+
           if (!theme) return;
-
-          scope.path = theme;
-          fs.stat(scope.path).then(function(stat) {
-            console.log('theme - zip file exists');
-            scope.zip = zip(scope.path);
-            scope.entries = scope.zip.getEntries().map(function(i) {
-              return i.entryName;
-            });
-            return scope.zip.readFile('Theme.xml');
-          }).then(function(data) {
-            console.log('theme -  xml loaded');
-            return xml.parseString(data);
-          }).then(function(data) {
-            scope.params = data;
+          fs.stat(scope.theme).then(function(stat) {
+            return fs.mktmpdir();
+          }).then(function (tmp) {
+            scope.tmp = tmp.path;
+            return zip.extract(scope.theme, scope.tmp);
+          }).then(function () {
+            return fs.readdir(scope.tmp);
+          }).then(function (data) {
+            scope.entries = data;
+            return xml.parse(scope.path('Theme.xml'));
+          }).then(function (data) {
+            scope.config = data.Theme || {};
+            scope.ready = true;
           });
-
         });
-
       }
     };
   }

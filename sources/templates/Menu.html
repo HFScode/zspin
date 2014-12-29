@@ -1,7 +1,9 @@
 
 <wheel control="wheelControl" options="wheelOptions" points="wheelPoints" items="wheelItems">
 </wheel>
-<theme theme="curItem.theme"></theme>
+<theme theme="themePath"></theme>
+
+
 <div class="container">
   <table  class="table" width="100%">
     <tr>
@@ -14,15 +16,7 @@
     </tr>
   </table>
 
-  <embed  ng-show="bg.url" src="{{bg.url}}" type="application/x-shockwave-flash">
-
   <h1>{{curItem.name}}</h1>
-  <div class="well">
-    <h1>Medias</h1>
-    <!-- <pre>{{background_data}}</pre> -->
-    <pre>{{bg.path}}</pre>
-    <pre>{{medias.getEntries() | json}}</pre>
-  </div>
   <div class="well">
     <h1>Settings</h1>
     <pre>{{settings | json}}</pre>

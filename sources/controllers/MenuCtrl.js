@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$document', 'zspin', 'fs', 'ini', 'xml', 'zip',
-  function($scope, $document, zspin, fs, ini, xml, zip) {
+app.controller('MenuCtrl', ['$scope', '$document', '$timeout', 'zspin', 'ini', 'xml',
+  function($scope, $document, $timeout, zspin, ini, xml) {
     /************* This... is crack. ************/
 
     $scope.wheelItems = [];
@@ -21,27 +21,27 @@ app.controller('MenuCtrl', ['$scope', '$document', 'zspin', 'fs', 'ini', 'xml', 
       selectPosition: 3, // index of item which serves as cursor
     };
     
+    var updatePromise;
     $document.bind('keydown', function(e) {
       if (!$scope.wheelControl) return;
       if (e.which == 37) //left
         $scope.wheelControl.prev();
       if (e.which == 39) //right
         $scope.wheelControl.next();
-      $scope.$apply($scope.updateMedias);
+
+      $timeout.cancel(updatePromise);
+      updatePromise = $timeout(function() {
+        var name = $scope.curItem.name;
+        var root = 'Media/Main Menu/Themes/';
+        var path = zspin.dataPath(root, name+'.zip');
+        $scope.themePath = path;
+      }, 200);       
+      $scope.curItem = $scope.wheelControl.select();
       e.preventDefault();
     });   
 
     /********************************************/
 
-    $scope.updateMedias = function() {
-      // Setup new vars
-      $scope.bg = {};
-      $scope.medias = undefined;
-      $scope.curItem = undefined;
-
-      if (!$scope.wheelControl) { return; }
-      $scope.curItem =  $scope.wheelControl.select();
-    };
 
     $scope.root = zspin.dataPath();
     $scope.openRoot = function() {
@@ -55,10 +55,10 @@ app.controller('MenuCtrl', ['$scope', '$document', 'zspin', 'fs', 'ini', 'xml', 
     xml.parse(databaseFile).then(function(data) {
       $scope.databases = data;
       $scope.wheelItems = data.menu.game.map(function(item) {
-        var name = item.name[0];
-        var zipPath = zspin.dataPath('Media/Main Menu/Themes/'+name+'.zip');
-        var imgPath = zspin.dataPath('Media/Main Menu/Images/Wheel/'+name+'.png');
-        return {name: name, file: imgPath, theme: zipPath};
+        var name = item.name;
+        var root = 'Media/Main Menu/Images/Wheel';
+        var path = zspin.dataPath(root, name+'.png');
+        return {name: name, file: path};
       });
     });
   }
