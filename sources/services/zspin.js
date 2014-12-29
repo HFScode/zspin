@@ -11,6 +11,11 @@ app.factory('zspin', ['fs',
     service.gui = gui;
 
     // Setup Paths
+    var rootPath = gui.App.dataPath;
+    service.rootPath = function() {
+      var args = [].slice.call(arguments, 0);
+      return fs.join.apply(fs, [rootPath].concat(args));
+    };
     var dataPath = fs.join(gui.App.dataPath, 'Zspin');
     service.dataPath = function() {        
       var args = [].slice.call(arguments, 0);
