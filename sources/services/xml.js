@@ -1,5 +1,6 @@
 'use strict'
 
+
 app.factory('xml', ['$q', 'zspin', 'fs',
   function ($q, zspin, fs) {
     console.log('xml - init');
@@ -9,7 +10,7 @@ app.factory('xml', ['$q', 'zspin', 'fs',
       mergeAttrs: true,
       // explicitCharkey: true,
       // explicitChildren: true,
-      explicitArray: true
+      explicitArray: false
     });
     var service = {
 
