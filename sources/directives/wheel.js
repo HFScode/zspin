@@ -31,8 +31,6 @@ app.directive('wheel', [
           // Reset DOM/Wheel
           $(el).html('<div id="'+uid+'">');
           scope.wheel = $.wheelspinner(items, points, options);
-          for (var i = 0; i < options.selectPosition; i++)
-            scope.wheel.move('prev');
           scope.control = scope.wheel;
         }
 
