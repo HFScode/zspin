@@ -3,24 +3,45 @@
 app.factory('zip', ['$q',
   function ($q) {
     console.log('zip - init');
-    var AdmZip = require('adm-zip');
+    var fs = require('fs');
+    var unzip = require('unzip');
 
-    var service = function(filepath) {
-      var zip = new AdmZip(filepath);
-      return {
-        getEntry: zip.getEntry.bind(zip),
-
-        getEntries: zip.getEntries.bind(zip),
-
-        readFile: function () {
-          var defer = $q.defer();
-          wrapCallback(defer, zip, zip.readFileAsync, arguments);
-          return defer.promise.then(function (args) {
-            return args[0];
-          });
-        }
-
-      };
+    var service = {
+      parse: function (src) {
+        var defer = $q.defer();
+        var istream = fs.createReadStream(src);
+        var ostream = unzip.Parse();
+        istream.on('error', function(err) {
+          defer.reject(err);
+         });
+        ostream.on('error', function(err) {
+          defer.reject(err);
+        });
+        ostream.on('entry', function(entry) {
+          defer.notify(entry);
+        });
+        ostream.on('end', function() {
+          defer.resolve();
+        });
+        istream.pipe(ostream);
+        return defer.promise;
+      },
+      extract: function(src, dst) {
+        var defer = $q.defer();
+        var istream = fs.createReadStream(src);
+        var ostream = unzip.Extract({path: dst});
+        istream.on('error', function(err) {
+          defer.reject(err);
+        });
+        ostream.on('error', function(err) {
+          defer.reject(err);
+        });
+        ostream.on('close', function() {
+          defer.resolve();
+        });
+        istream.pipe(ostream);
+        return defer.promise;
+      }
     };
     console.log('zip - ready');
     return service;
