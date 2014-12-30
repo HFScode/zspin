@@ -1,24 +1,22 @@
 <div class="theme">
 
-  <pre>{{tmp}}</pre>
+  <entry ng-repeat="entry in entries" ng-if="config[name(entry)] || name(entry) === 'background'">
 
-  <entry ng-repeat="entry in entries">
-<!--     <pre>{{entry}} | {{ext(entry)}} | {{name(entry)}} </pre>
-    <pre>{{config[name(entry)]}}</pre>
- --> 
-    <div ng-if="config[name(entry)]">
-      <div class="well" style="width: 100px; height: 100px; overflow: hidden; border: 1px solid black;">
-        <img ng-if="ext(entry)=='png'" ng-src="{{path(entry)}}" />
-        <img ng-if="ext(entry)=='jpg'" ng-src="{{path(entry)}}" />
-        <object ng-if="ext(entry)=='swf'" data="{{path(entry)}}" 
-          type="application/x-shockwave-flash" >
-        </object>
-      </div>
+    <div class="theme-entry theme-entry-image" ng-if="ext(entry)=='png'" >
+      <img id="{{name(entry)}}" ng-src="{{path(entry)}}" ng-style="css(name(entry))"/>
+    </div>
+
+    <div  class="theme-entry theme-entry-flash" ng-if="ext(entry)=='swf'">
+      <object id="{{name(entry)}}" data="{{path(entry)}}" type="application/x-shockwave-flash" ng-style="css(name(entry))">
+        <param width="100%">
+        <param height="100%">
+      </object>
     </div>
   </entry> 
- 
 
-  <pre>{{tmp.path}}</pre>
-  <pre>{{entries|json}}</pre>
+  <pre>{{tmp}}</pre>
+  <!-- <background ng-if="config['']"> -->
+<!--   <pre>{{entries|json}}</pre>
   <pre>{{config|json}}</pre>
+  -->
 </div>

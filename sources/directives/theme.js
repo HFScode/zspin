@@ -10,36 +10,51 @@ app.directive('theme', ['fs', 'zip', 'xml',
       scope: {
         theme: '=',
       },
-      link: function(scope, el, attr) {
-        scope.path = function(file) {
-          return fs.join((scope.tmp || ''), file);
+      controller: function($scope) {
+        $scope.path = function(file) {
+          return fs.join(($scope.tmp || ''), file);
         };
-        scope.ext = function(str) {
+        $scope.ext = function(str) {
           return str.replace(/^.*\./, '').toLowerCase();
         };
-        scope.name = function(str) {
+        $scope.name = function(str) {
           return str.replace(/\..*?$/, '').toLowerCase();
         };
+        $scope.css = function(name) {
+          console.log('ah', name);
+          var key, val;
+          var conf = $scope.config[name] || {};
+          var css = {};
+          console.log('ag', conf);
+          if (conf.w)
+            css.width = conf.w+'px';
+          if (conf.h)
+            css.height = conf.h+'px';
+          if (conf.x)
+            css.top = conf.x+'px';
+          if (conf.y)
+            css.left = conf.y+'px';
+          return css;
+        };
 
-
-        scope.$watch('theme', function(theme) {
-          scope.entries = [];
-          scope.config = {};
+        $scope.$watch('theme', function(theme) {
+          $scope.entries = [];
+          $scope.config = {};
 
           if (!theme) return;
-          fs.stat(scope.theme).then(function(stat) {
+          fs.stat($scope.theme).then(function(stat) {
             return fs.mktmpdir();
           }).then(function (tmp) {
-            scope.tmp = tmp.path;
-            return zip.extract(scope.theme, scope.tmp);
+            $scope.tmp = tmp.path;
+            return zip.extract($scope.theme, $scope.tmp);
           }).then(function () {
-            return fs.readdir(scope.tmp);
-          }).then(function (data) {
-            scope.entries = data;
-            return xml.parse(scope.path('Theme.xml'));
-          }).then(function (data) {
-            scope.config = data.Theme || {};
-            scope.ready = true;
+            return fs.readdir($scope.tmp);
+          }).then(function (entries) {
+            $scope.entries = entries;
+            return xml.parse($scope.path('Theme.xml'));
+          }).then(function (config) {
+            $scope.config = config.Theme || {};
+            $scope.ready = true;
           });
         });
       }
