@@ -6,24 +6,24 @@ app.directive('wheel', [
     return {
       restrict: 'E',
       transclude: true,
-      // templateUrl: 'wheel.html',
       scope: {
         items: '=',
-        points: '=',
         options: '=',
         control: '=',
       },
       link: function(scope, el, attr) {
         scope.wheel = undefined;
 
-        function initWheel() {
-          if (!scope.items.length || scope.points.length < 2)
+        function updateWheel() {
+          if (!scope.items || !scope.items.length || !scope.options)
             return;
 
-          // generate random id
+          // Generate random id
           var uid = 'wheel-'+(''+Math.random()).split('.')[1];
+
+          // Copy items
           var items = angular.copy(scope.items||[]);
-          var points = angular.copy(scope.points||[]);
+          var points = angular.copy(scope.options.points||[]);
           var options = angular.extend({}, scope.options, {
             container: '#'+uid
           });
@@ -35,16 +35,8 @@ app.directive('wheel', [
         }
 
         // Either matter
-        scope.$watch('items', initWheel);
-        scope.$watch('points', initWheel);
-
-        scope.$watch('index', function(newval, oldval) {
-          if (scope.wheel && newval !== oldval)  {
-            var dir = (newval < oldval) ? 'prev' : 'next';
-            scope.wheel.move(dir);
-          }
-        });
-
+        scope.$watch('items', updateWheel);
+        scope.$watch('points', updateWheel);
       }
     };
   }

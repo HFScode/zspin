@@ -63,7 +63,7 @@ app.factory('fs', ['$q',
           return {path: args[0], clean: args[2]};
         });
       },
-      rmdir: function(path) {
+      rmrf: function(path) {
         var defer = $q.defer();
         wrapErrCallback(defer, null, rimraf, arguments);
         return defer.promise;

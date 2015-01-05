@@ -1,22 +1,9 @@
 <div class="theme">
 
-  <entry ng-repeat="entry in entries" ng-if="config[name(entry)] || name(entry) === 'background'">
-
-    <div class="theme-entry theme-entry-image" ng-if="ext(entry)=='png'" >
-      <img id="{{name(entry)}}" ng-src="{{path(entry)}}" ng-style="css(name(entry))"/>
-    </div>
-
-    <div  class="theme-entry theme-entry-flash" ng-if="ext(entry)=='swf'">
-      <object id="{{name(entry)}}" data="{{path(entry)}}" type="application/x-shockwave-flash" ng-style="css(name(entry))">
-        <param width="100%">
-        <param height="100%">
-      </object>
-    </div>
-  </entry> 
+  <themeArtwork ng-if="background" name="background" config="background" file="files['background']" />
+  <themeArtwork ng-repeat="aw in artworks" name="aw.name" config="aw.config" file="files[aw.name]" />
+  <themeVideo ng-if="video" config="video" file="files['video']" />
 
   <pre>{{tmp}}</pre>
-  <!-- <background ng-if="config['']"> -->
-<!--   <pre>{{entries|json}}</pre>
-  <pre>{{config|json}}</pre>
-  -->
+  <pre>{{files|json}}</pre>
 </div>

@@ -1,10 +1,10 @@
 'use strict';
 
 var app = angular.module('app', [
+  'ngLoad',
   'ngRoute',
   'templates',
 ]);
-
 
 // Wraps a promise around a function call that
 // expects a function(error, result) callback.
@@ -36,11 +36,11 @@ app.config( ['$sceDelegateProvider', function($sceDelegateProvider){
 
 app.config(['$routeProvider', 
   function($routeProvider) {
-    $routeProvider.when('/', {
+    $routeProvider.when('/menus/:menu', {
       controller: 'MenuCtrl',
       templateUrl: 'Menu.html',
     }).otherwise({ 
-      redirectTo: '/',
+      redirectTo: '/menus/Main Menu',
     });
   }
 ]);

@@ -1,0 +1,7 @@
+<img ng-if="file.type=='png'" id="{{name}}" class="theme-entry theme-entry-image" ng-src="{{file.path}}" ng-style="style" ng-load="onload()" />
+
+<div ng-if="file.type=='swf'" id="{{name}}" class="theme-entry theme-entry-flash" ng-style="style" ng-init="onload()">
+  <object data="{{file.path}}" type="application/x-shockwave-flash" width="100%" height="100%" >
+    <param name="autoplay" value="true">
+  </object>
+</div>

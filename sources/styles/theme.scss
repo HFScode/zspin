@@ -12,21 +12,23 @@ theme .background {
   width: 100%; height: 100%;
 }
 
-theme entry object,
-theme entry img {
+theme .theme-entry {
   position: fixed;
   display: block;
-  overflow: hidden;
-  border: 1px solid black;
   z-index: 1;
+
+  &#background {
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: 1024px;
+    height: 768px
+
+  }
 }
 
-theme entry #background{
-  position: fixed;
-  display: block;
-  top: 0; bottom: 0;
-  left: 0; right: 0;
-  width: 1024px;
-  height: 768px;
-  z-index: 0;
-}
+
+// theme entry .theme-entry {
+//   margin-left: -50%;
+//   margin-top: -50%;
+// }
