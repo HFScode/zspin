@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.html",
   "window": {
-    "title": "Zspin"
+    "title": "Zspin",
+    "width": 1024,
+    "height": 768
   },
   "webkit": {
     "plugin": true
