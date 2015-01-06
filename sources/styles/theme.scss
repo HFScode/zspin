@@ -18,14 +18,22 @@ theme .theme-entry {
   z-index: 1;
 
   &#background {
-    z-index: 0;
     top: 0;
     left: 0;
-    width: 1024px;
-    height: 768px
-
+    width: 100%;
+    height: 100%;
   }
+
+  // This makes no sense
+  &#artwork4 { z-index: 5; }
+  &#artwork3 { z-index: 4; }
+  &#artwork2 { z-index: 3; }
+  &#video { z-index: 3; }
+  &#artwork1 { z-index: 1; }
+  &#background { z-index: 0; }
 }
+
+
 
 
 // theme entry .theme-entry {
