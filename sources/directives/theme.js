@@ -112,7 +112,11 @@ app.directive('themeartwork', [
           }
           css.left = (conf.x-(css.width/2)) || 0;
           css.top = (conf.y-(css.height/2)) || 0;
-          console.log('done', scope.name, css);
+
+          css.left = css.left * window.innerWidth / 1024;
+          css.top = css.top * window.innerHeight / 768;
+
+          // console.log('done', scope.name, css);
           scope.style = css;
         };
 
