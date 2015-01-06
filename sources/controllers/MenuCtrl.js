@@ -8,17 +8,28 @@ app.controller('MenuCtrl', ['$scope', '$document', '$timeout', 'fs', 'zspin', 'i
 
     $scope.wheelItems = [];
     $scope.wheelOptions = {
-      transitionTime: 100, // in ms
-      selectPosition: 3,   // index of item which serves as cursor
+      transitionTime: 70, // in ms
+      selectPosition: 9,   // index of item which serves as cursor
       points: [            
         // X, Y, Angle, Scale, z-index
-        [100, 100,  50,   1,   1],
-        [150, 100,  20,   1,   2],
-        [200, 100,  10,   1,   3],
-        [350, 100,   0, 1.7,  10],
-        [500, 100, -10,   1,   3],
-        [550, 100, -20,   1,   2],
-        [600, 100, -50,   1,   1]
+        [1500, 344, 0, 1, 1], // offscreen but required
+        [930, -76, 23, 1, 2],
+        [890, -26, 21, 1, 3],
+        [860, 24, 18, 1, 4],
+        [830, 74, 15, 1, 5],
+        [810, 124, 12, 1, 6],
+        [795, 174, 9, 1, 7],
+        [780, 224, 6, 1, 8],
+        [773, 274, 3, 1, 9],
+        [770, 344, 0, 2, 10],
+        [773, 414, -3, 1, 9],
+        [780, 464, -6, 1, 8],
+        [795, 514, -9, 1, 7],
+        [810, 564, -12, 1, 6],
+        [830, 614, -15, 1, 5],
+        [860, 664, -18, 1, 4],
+        [890, 714, -21, 1, 3],
+        [930, 764, -23, 1, 2],
       ]
     };
     

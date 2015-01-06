@@ -93,12 +93,8 @@ app.directive('themeartwork', [
           console.log('onload', scope.name, scope.file);
           var css = {};
           // Copy conf
-          if (!scope.config) { 
-            return {
-              width: '1024px',
-              height: '768px',
-            };
-          }
+          if (!scope.config)
+            return;
           var conf = scope.config;
           // Try to get item natural dimesions
           var $el = $('.theme-entry#'+scope.name, el);
