@@ -13,6 +13,7 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
       },
       link: function(scope, el, attrs) {
 
+        // TODO: better desc
         // Dancing tmp dirs
         scope.tmp = null;
 
@@ -22,21 +23,33 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
 
           scope.files = {};
           scope.config = {};
+
           if (!scope.theme || !scope.menu)
             return;
+
           var path = fs.join('Media', scope.menu, 'Themes', scope.theme+'.zip');
+
           scope.path = zspin.dataPath(path);
           console.log('path', scope.path);
+
+          // stating file
           fs.stat(scope.path).then(function(stat) {
             console.log('exists', scope.path);
             return fs.mktmpdir();
+
+          // unzipping
           }).then(function (tmp) {
             scope.tmp = tmp;
             return zip.extract(scope.path, scope.tmp.path);
+
+          // reading extracted directory
           }).then(function () {
             return fs.readdir(scope.tmp.path);
+
+          // sanitizing files names
           }).then(function(files) {
             var items = {};
+
             files.forEach(function(file) {
               var _bsd = file.toLowerCase();
               var name = _bsd.replace(/\..*?$/, '');
@@ -46,10 +59,13 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
                 path: fs.join(scope.tmp.path, file),
               };
             });
+
             scope.files = items;
             console.log('files', scope.files);
             var themeXml = fs.join(scope.tmp.path, 'Theme.xml');
             return xml.parse(themeXml);
+
+          // adding files as available items
           }).then(function (config) {
             scope.config = config.Theme || {};
             var regxp = new RegExp('([a-z]*)([0-9]*)');
@@ -58,16 +74,20 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
             items.forEach(function(item) {
               var match = item.match(regxp);
               console.log('+', match[1]);
+
               if (match && match[1] === 'artwork')
                 scope.artworks.push({name: item, config: scope.config[item]});
+
               if (match && match[1] === 'video')
                 scope.video = scope.config.video;
             });
+
             console.log('theme config', scope.config);
             console.log('theme artworks', scope.artworks);
             console.log('theme video', scope.video);
           });
         });
+        // end of lambda theme watch function
 
       }
     };
