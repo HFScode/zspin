@@ -17,7 +17,7 @@ app.factory('zspin', ['fs',
       return fs.join.apply(fs, [rootPath].concat(args));
     };
     var dataPath = fs.join(gui.App.dataPath, 'Zspin');
-    service.dataPath = function() {        
+    service.dataPath = function() {
       var args = [].slice.call(arguments, 0);
       return fs.join.apply(fs, [dataPath].concat(args));
     };

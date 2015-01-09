@@ -32,16 +32,16 @@ function wrapCallback(d, self, func, args) {
   });
 }
 
-app.config( ['$sceDelegateProvider', function($sceDelegateProvider){   
+app.config( ['$sceDelegateProvider', function($sceDelegateProvider){
   $sceDelegateProvider.resourceUrlWhitelist(['self', new RegExp('^.*$')]);
 }]);
 
-app.config(['$routeProvider', 
+app.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.when('/menus/:menu', {
       controller: 'MenuCtrl',
       templateUrl: 'Menu.html',
-    }).otherwise({ 
+    }).otherwise({
       redirectTo: '/menus/Main Menu',
     });
   }

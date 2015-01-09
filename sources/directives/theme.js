@@ -22,7 +22,7 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
 
           scope.files = {};
           scope.config = {};
-          if (!scope.theme || !scope.menu) 
+          if (!scope.theme || !scope.menu)
             return;
           var path = fs.join('Media', scope.menu, 'Themes', scope.theme+'.zip');
           scope.path = zspin.dataPath(path);
@@ -42,7 +42,7 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
               var name = _bsd.replace(/\..*?$/, '');
               items[name] = {
                 name: name, file: file,
-                type: _bsd.replace(/^.*\./, ''), 
+                type: _bsd.replace(/^.*\./, ''),
                 path: fs.join(scope.tmp.path, file),
               };
             });

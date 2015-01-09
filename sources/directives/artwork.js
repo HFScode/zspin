@@ -17,7 +17,7 @@ app.directive('artwork', ['fs',
 
         scope.$watch('file', function(file) {
 
-          if (file && file.type === 'swf') { 
+          if (file && file.type === 'swf') {
             SWFReader.read(file.path, function(err, swf) {
               console.log('swf loaded', err);
               scope.$apply(function() {

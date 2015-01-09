@@ -1,6 +1,6 @@
 'use strict'
 
-app.factory('fs', ['$q', 
+app.factory('fs', ['$q',
   function ($q) {
     console.log('fs - init');
     var fs = require('fs');

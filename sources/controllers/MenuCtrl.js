@@ -10,7 +10,7 @@ app.controller('MenuCtrl', ['$scope', '$document', '$timeout', 'fs', 'zspin', 'i
     $scope.wheelOptions = {
       transitionTime: 70, // in ms
       selectPosition: 9,   // index of item which serves as cursor
-      points: [            
+      points: [
         // X, Y, Angle, Scale, z-index
         [1500, 344, 0, 1, 1], // offscreen but required
         [930, -76, 23, 1, 2],
@@ -32,7 +32,7 @@ app.controller('MenuCtrl', ['$scope', '$document', '$timeout', 'fs', 'zspin', 'i
         [930, 764, -23, 1, 2],
       ]
     };
-    
+
     var updatePromise;
     $document.bind('keydown', function(e) {
       if (!$scope.wheelControl) return;
@@ -45,10 +45,10 @@ app.controller('MenuCtrl', ['$scope', '$document', '$timeout', 'fs', 'zspin', 'i
       updatePromise = $timeout(function() {
         var name = $scope.curItem.name;
         $scope.theme = name;
-      }, 200);       
+      }, 200);
       $scope.curItem = $scope.wheelControl.select();
       e.preventDefault();
-    });   
+    });
 
     /********************************************/
 
