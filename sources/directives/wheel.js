@@ -36,7 +36,7 @@ app.directive('wheel', ['resize',
 
           // Reset DOM/Wheel
           $(el).html('<div id="'+uid+'">');
-          scope.wheel = $.wheelspinner(items, points, options);
+          scope.wheel = $.jswheel(items, points, options);
           scope.control = scope.wheel;
         }
 

@@ -12,6 +12,7 @@ var gu_lr     = require('gulp-livereload');
 var vendors = {
   'scripts': [
     'bower_components/jquery/dist/jquery.js',
+    'bower_components/jswheel/jswheel.js',
     'bower_components/angular/angular.js',
     'bower_components/ng-load/ng-load.js',
     'bower_components/ng-resize/ngresize.js',
@@ -57,7 +58,6 @@ var app = {
   'scripts': [
     'sources/**/*.js',
     'sources/index.js',
-    'draft/wheelspinner.js',
   ],
   'styles': [
     'sources/styles/*.scss',
