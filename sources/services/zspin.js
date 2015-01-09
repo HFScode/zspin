@@ -38,7 +38,7 @@ app.factory('zspin', ['fs',
       gui.Window.get().show();
     });
     //gui.App.unregisterGlobalHotKey(shortcut);
-    console.log('service - ready');
+    console.log('zspin - ready');
     return service;
   }
 ]);

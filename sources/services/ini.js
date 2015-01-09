@@ -13,7 +13,7 @@ app.factory('ini', ['zspin', 'fs',
         });
       }
     };
-    console.log('ini - init');
+    console.log('ini - ready');
     return service;
   }
 ]);
