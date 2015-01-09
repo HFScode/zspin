@@ -1,6 +1,5 @@
 'use strict'
 
-
 app.factory('xml', ['$q', 'zspin', 'fs',
   function ($q, zspin, fs) {
     console.log('xml - init');
@@ -12,14 +11,16 @@ app.factory('xml', ['$q', 'zspin', 'fs',
       // explicitChildren: true,
       explicitArray: false
     });
+
+    //  -  Services for xml-file parsing  -
     var service = {
 
-      // Actual ini parsing
       parse: function(filepath) {
         return fs.readFile(filepath, 'utf-8').then(function(data) {
           return service.parseString(data);
         });
       },
+
       parseString: function(filepath) {
         var defer = $q.defer();
         wrapErrCallback(defer, parser, parser.parseString, arguments);
@@ -27,6 +28,7 @@ app.factory('xml', ['$q', 'zspin', 'fs',
           return args[0];
         });
       }
+
     };
     console.log('xml - ready');
     return service;

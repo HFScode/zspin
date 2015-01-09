@@ -6,7 +6,9 @@ app.factory('zip', ['$q',
     var fs = require('fs');
     var unzip = require('unzip');
 
+    //  -  Services for zip file  -
     var service = {
+
       parse: function (src) {
         var defer = $q.defer();
         var istream = fs.createReadStream(src);
@@ -26,6 +28,7 @@ app.factory('zip', ['$q',
         istream.pipe(ostream);
         return defer.promise;
       },
+
       extract: function(src, dst) {
         var defer = $q.defer();
         var istream = fs.createReadStream(src);
@@ -42,6 +45,7 @@ app.factory('zip', ['$q',
         istream.pipe(ostream);
         return defer.promise;
       }
+
     };
     console.log('zip - ready');
     return service;

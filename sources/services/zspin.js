@@ -16,12 +16,14 @@ app.factory('zspin', ['fs',
       var args = [].slice.call(arguments, 0);
       return fs.join.apply(fs, [rootPath].concat(args));
     };
+
     var dataPath = fs.join(gui.App.dataPath, 'Zspin');
     service.dataPath = function() {
       var args = [].slice.call(arguments, 0);
       return fs.join.apply(fs, [dataPath].concat(args));
     };
 
+    // Setting services's paths
     service.mediasPath = fs.join(dataPath, 'Media');
     service.settingsPath = fs.join(dataPath, 'Settings');
     service.databasesPath = fs.join(dataPath, 'Databases');
@@ -37,6 +39,7 @@ app.factory('zspin', ['fs',
     shortcut.on('active', function() {
       gui.Window.get().show();
     });
+
     //gui.App.unregisterGlobalHotKey(shortcut);
     console.log('zspin - ready');
     return service;

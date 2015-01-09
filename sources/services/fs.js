@@ -9,8 +9,9 @@ app.factory('fs', ['$q',
     var mkdirp = require('mkdirp');
     var rimraf = require('rimraf');
 
-    //  -  defining services  -
+    //  -  Services for file system  -
     var service = {
+
       join: function() {
         return path.join.apply(path, arguments);
       },
