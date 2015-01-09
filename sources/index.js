@@ -3,6 +3,7 @@
 var app = angular.module('app', [
   'ngLoad',
   'ngRoute',
+  'ngResize',
   'templates',
 ]);
 
@@ -34,6 +35,11 @@ function wrapCallback(d, self, func, args) {
     d.resolve([].slice.call(arguments, 0));
   });
 }
+
+app.config(['resizeProvider', function(resizeProvider){
+  resizeProvider.throttle = 10;
+  resizeProvider.initBind = true;
+}]);
 
 app.config( ['$sceDelegateProvider', function($sceDelegateProvider){
   $sceDelegateProvider.resourceUrlWhitelist(['self', new RegExp('^.*$')]);

@@ -1,7 +1,7 @@
 'use strict'
 
-app.directive('wheel', [
-  function() {
+app.directive('wheel', ['resize',
+  function(resize) {
 
     return {
       restrict: 'E',
@@ -13,6 +13,13 @@ app.directive('wheel', [
       },
       link: function(scope, el, attr) {
         scope.wheel = undefined;
+
+        scope.$on('resize', function($event) {
+          console.log('yeepee', $event);
+          if (!scope.wheel)
+            return;
+          scope.wheel.update();
+        });
 
         function updateWheel() {
           if (!scope.items || !scope.items.length || !scope.options)

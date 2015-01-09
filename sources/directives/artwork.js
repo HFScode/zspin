@@ -42,8 +42,10 @@ app.directive('artwork', ['fs',
 
         });
 
+        scope.$on('resize', updateStyle);
+        scope.$watch('size', updateStyle);
         //  -  Set element's css rules
-        scope.$watch('size', function() {
+        function updateStyle() {
           console.log('onload', scope.name, scope.file);
 
           var css = {};
@@ -70,7 +72,7 @@ app.directive('artwork', ['fs',
 
           console.log('done', scope.name, css);
           scope.style = css;
-        });
+        };
 
       }
     };

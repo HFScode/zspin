@@ -14,6 +14,7 @@ var vendors = {
     'bower_components/jquery/dist/jquery.js',
     'bower_components/angular/angular.js',
     'bower_components/ng-load/ng-load.js',
+    'bower_components/ng-resize/ngresize.js',
     'bower_components/angular-route/angular-route.js',
     'bower_components/gsap/src/uncompressed/TweenLite.js',
     'bower_components/gsap/src/uncompressed/plugins/CSSPlugin.js',
