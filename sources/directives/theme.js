@@ -13,81 +13,111 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
       },
       link: function(scope, el, attrs) {
 
-        // TODO: better desc
-        // Dancing tmp dirs
-        scope.tmp = null;
+        // From a filenames list, create an hashmap of usefull objects
+        // ie: "Artwork2.swf" 
+        // {name: 'artwork2', type: 'swf', file: 'Artwork2.swf', path: "/path/to/Artwork2.swf"}
+        function parseFileEntries(path, files) {
+          var items = {};
 
-        scope.$watch('theme', function(theme) {
-          scope.overlay = {};
-          scope.artworks = [];
+          for (var idx in files) {
+            var file = files[idx];
+            var base = file.toLowerCase();
+            var item = {
+              file: file,
+              path: fs.join(path, file),
+              type: base.replace(/^.*\./, ''),
+              name: base.replace(/\..*?$/, ''),
+            };
+            items[item.name] = item;
+          }
+          return items;
+        }
 
-          scope.files = {};
-          scope.config = {};
+        // From a config object, group entries by categories
+        // ie : {
+        //   'video': /* video config */
+        //   'artworks': {
+        //      'artwork2': /* artwork2 config */
+        //    }
+        // }
+        function parseConfigEntries(config) {
+          var items = {
+            video: null,
+            arworks: {},
+            background: null,
+          };
 
+          // Entry name is category(index) eg: "artwork2", "video"
+          var regxp = new RegExp('([a-z]*)([0-9]*)');
+
+          // Parse entries from name and put them in their respective catgories
+          var names = Object.keys(config);            
+          names.forEach(function(name) {
+            var match = name.match(regxp);
+            if (match && match[1] === 'artwork')
+              scope.artworks[name] = config[name];
+            if (match && match[1] === 'video')
+              scope.video = config.video;
+          });
+
+          return items;
+        }
+
+
+        function updateEntries(theme) {
+          // If we don't have theme or menu do nothing
           if (!scope.theme || !scope.menu)
             return;
 
-          var path = fs.join('Media', scope.menu, 'Themes', scope.theme+'.zip');
+          // Set path to current menu & theme path
+          var zipPath = zspin.dataPath('Media', scope.menu, 'Themes', scope.theme+'.zip');
+          if (scope.zipPath === zipPath)
+            return;
 
-          scope.path = zspin.dataPath(path);
-          console.log('path', scope.path);
+          // Check if zipPath exists
+          fs.stat(zipPath).then(function (stat) {
+            // Reset to empty values
+            scope.files = {};
+            scope.config = {};
+            scope.artworks = {};
+            // Set current zipPath
+            scope.zipPath = zipPath;
 
-          // stating file
-          fs.stat(scope.path).then(function(stat) {
-            console.log('exists', scope.path);
+            // Create a temporary path for the zip contents
             return fs.mktmpdir();
 
-          // unzipping
           }).then(function (tmp) {
             scope.tmp = tmp;
-            return zip.extract(scope.path, scope.tmp.path);
+            // Extract Zip file into temporary folder
+            return zip.extract(zipPath, scope.tmp.path);
 
-          // reading extracted directory
           }).then(function () {
+            // List the extracted entries
             return fs.readdir(scope.tmp.path);
 
-          // sanitizing files names
-          }).then(function(files) {
-            var items = {};
+          }).then(function (files) {
+            // Parse files entries into usefull objects
+            scope.files = parseFileEntries(scope.tmp.path, files);
+            console.log(scope.theme, 'files=', scope.files);
 
-            files.forEach(function(file) {
-              var _bsd = file.toLowerCase();
-              var name = _bsd.replace(/\..*?$/, '');
-              items[name] = {
-                name: name, file: file,
-                type: _bsd.replace(/^.*\./, ''),
-                path: fs.join(scope.tmp.path, file),
-              };
-            });
-
-            scope.files = items;
-            console.log('files', scope.files);
+            // Load Theme.xml for theme config
             var themeXml = fs.join(scope.tmp.path, 'Theme.xml');
             return xml.parse(themeXml);
-
-          // adding files as available items
+            
           }).then(function (config) {
+            // Save config in scope
             scope.config = config.Theme || {};
-            var regxp = new RegExp('([a-z]*)([0-9]*)');
-            var items = Object.keys(scope.config);
+            console.log(scope.theme, 'config=', scope.config);
 
-            items.forEach(function(item) {
-              var match = item.match(regxp);
-              console.log('+', match[1]);
-
-              if (match && match[1] === 'artwork')
-                scope.artworks.push({name: item, config: scope.config[item]});
-
-              if (match && match[1] === 'video')
-                scope.video = scope.config.video;
-            });
-
-            console.log('theme config', scope.config);
-            console.log('theme artworks', scope.artworks);
-            console.log('theme video', scope.video);
+            // Parse config entries into usefull objects
+            angular.extend(scope, parseConfigEntries(scope.config));
+            console.log(scope.theme, 'artworks=', scope.artworks);
+            console.log(scope.theme, 'video=', scope.video);
           });
-        });
-        // end of lambda theme watch function
+        }
+
+        // Update entries when theme change
+        scope.$watch('theme', updateEntries);
 
       }
     };

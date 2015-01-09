@@ -7,8 +7,6 @@ var app = angular.module('app', [
   'templates',
 ]);
 
-var SWFReader = require('swf-reader');
-
 // Wraps a promise around a function call that
 // expects a function(error, result) callback.
 function wrapErrCallback(d, self, func, args) {

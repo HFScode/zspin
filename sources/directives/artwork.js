@@ -1,5 +1,6 @@
-app.directive('artwork', ['fs',
-  function(fs) {
+app.directive('artwork', ['$q', 'fs',
+  function($q, fs) {
+    var SWFReader = require('swf-reader');
 
     return {
       restrict: 'E',
@@ -11,68 +12,89 @@ app.directive('artwork', ['fs',
         file: '=',
       },
       link: function(scope, el, attrs) {
-        // TODO: what do we do here ?
+
+        // Get the size of a .swf (w,h) by parsing the file
+        function getFlashSize() {
+          var d = $q.defer();
+          SWFReader.read(scope.file.path, function(err, swf) {
+            if (err) {
+              d.reject(err);
+            } else {
+              d.resolve(swf.frameSize);
+            }
+          });
+          return d.promise;
+        }
+
+        // Get the size of an <img> by asking the browser
+        function getImageSize() {
+          var d = $q.defer();
+          var $el = $('.theme-entry-item', el);
+          $el.on('load', function() {
+            d.resolve({
+              width  : $el[0].naturalWidth,
+              height : $el[0].naturalHeight,              
+            });
+          });
+          return d.promise;
+        }
+
+        /*------------------------- Get Artwork Size ------------------------*/
+
+        // Size is unknown at this point
         scope.size = {width: 0, height: 0};
 
+        //  -  Set element's size
+        function updateSize(size) {
+          scope.size = size;
+        }
+
         scope.$watch('file', function(file) {
-
           // if file is a flash file
-          if (file && file.type === 'swf') {
-            SWFReader.read(file.path, function(err, swf) {
-              console.log('swf loaded', err);
-              scope.$apply(function() {
-                scope.size = swf.frameSize;
-              });
-            });
-          }
+          if (file && file.type === 'swf')
+            getFlashSize().then(updateSize);
+          // if file is a plain image file
+          else if (file && file.type !== 'swf')
+            getImageSize().then(updateSize);
+         });
 
-          // else
-          if (file && file.type !== 'swf') {
-            var $el = $('.theme-entry-item', el);
-            $el.on('load', function() {
-              scope.$apply(function() {
-                scope.size = {
-                  width  : $el[0].naturalWidth,
-                  height : $el[0].naturalHeight,
-                };
-                console.log('img loaded');
-              });
-            });
-          }
+        /*------------------------ Set Artwork Style ------------------------*/
 
-        });
+        scope.style = {};
 
-        scope.$on('resize', updateStyle);
-        scope.$watch('size', updateStyle);
         //  -  Set element's css rules
         function updateStyle() {
-          console.log('onload', scope.name, scope.file);
+          scope.style = {};
 
-          var css = {};
-
-          // Copy conf
-          if (!scope.config)
+          // If we don't have size or config do nothing
+          if (!scope.config || !scope.size)
             return;
 
+          var css = {};
           var conf = scope.config;
 
-          // Try to get item natural dimensions
           // Config simili-parsing
           css.width = (conf.w || scope.size.width || 0);
           css.height = (conf.h || scope.size.height || 0);
           css.left = (conf.x - (css.width / 2)) || 0;
           css.top = (conf.y - (css.height / 2)) || 0;
 
-          // TODO: set 1024/768 constants somewhere
-          css.width = css.width * window.innerWidth / 1024;
-          css.height = css.height * window.innerHeight / 768;
+          // Scale from the original 1024 * 768 to windows size
+          var W_RATIO = window.innerWidth / 1024;
+          var H_RATIO = window.innerHeight / 768;
 
-          css.left = css.left * window.innerWidth / 1024;
-          css.top = css.top * window.innerHeight / 768;
-
-          console.log('done', scope.name, css);
+          css.width = css.width * W_RATIO;
+          css.height = css.height * H_RATIO;
+          css.top = css.top * H_RATIO;
+          css.left = css.left * W_RATIO;
+ 
           scope.style = css;
-        };
+          console.log(scope.name, 'style=', css);
+        }
+
+        // Update styles when needed
+        scope.$on('resize', updateStyle);
+        scope.$watch('size', updateStyle);
 
       }
     };

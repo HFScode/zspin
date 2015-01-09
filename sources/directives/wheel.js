@@ -15,7 +15,6 @@ app.directive('wheel', ['resize',
         scope.wheel = undefined;
 
         scope.$on('resize', function($event) {
-          console.log('yeepee', $event);
           if (!scope.wheel)
             return;
           scope.wheel.update();

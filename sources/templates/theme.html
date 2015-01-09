@@ -1,8 +1,9 @@
 <div class="theme">
 
   <artwork ng-if="files.background" name="'background'" file="files.background" />
-  <artwork ng-repeat="aw in artworks" name="aw.name" config="aw.config" file="files[aw.name]" />
+  <artwork ng-repeat="(name, config) in artworks" name="name" config="config" file="files[name]" />
   <artwork ng-if="video" name="'video'" config="video" file="" overlay="files['video']" />
+  <artwork name="'test'" config="test" file="files['test']" />
 
   <pre>{{tmp}}</pre>
   <pre>{{files|json}}</pre>
