@@ -1,42 +1,25 @@
 
 theme {
   position: fixed;
-  top: 0; bottom: 0;
-  left: 0; right: 0;
-}
 
-theme .background {
-  position: absolute;
-  top: 0; bottom: 0;
-  left: 0; right: 0;
-  width: 100%; height: 100%;
-}
+  .theme-entry {
+    position: fixed;
+    display: block;
+    z-index: 1;
 
-theme .theme-entry {
-  position: fixed;
-  display: block;
-  z-index: 1;
+    &#background {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
 
-  &#background {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    // This makes no sense
+    &#artwork4 { z-index: 5; }
+    &#artwork3 { z-index: 4; }
+    &#artwork2 { z-index: 3; }
+    &#video { z-index: 2; }
+    &#artwork1 { z-index: 1; }
+    &#background { z-index: 0; }
   }
-
-  // This makes no sense
-  &#artwork4 { z-index: 5; }
-  &#artwork3 { z-index: 4; }
-  &#artwork2 { z-index: 3; }
-  &#video { z-index: 3; }
-  &#artwork1 { z-index: 1; }
-  &#background { z-index: 0; }
 }
-
-
-
-
-// theme entry .theme-entry {
-//   margin-left: -50%;
-//   margin-top: -50%;
-// }
