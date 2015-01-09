@@ -14,7 +14,7 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
       link: function(scope, el, attrs) {
 
         // From a filenames list, create an hashmap of usefull objects
-        // ie: "Artwork2.swf" 
+        // ie: "Artwork2.swf"
         // {name: 'artwork2', type: 'swf', file: 'Artwork2.swf', path: "/path/to/Artwork2.swf"}
         function parseFileEntries(path, files) {
           var items = {};
@@ -51,7 +51,7 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
           var regxp = new RegExp('([a-z]*)([0-9]*)');
 
           // Parse entries from name and put them in their respective catgories
-          var names = Object.keys(config);            
+          var names = Object.keys(config);
           names.forEach(function(name) {
             var match = name.match(regxp);
             if (match && match[1] === 'artwork')
@@ -103,7 +103,7 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
             // Load Theme.xml for theme config
             var themeXml = fs.join(scope.tmp.path, 'Theme.xml');
             return xml.parse(themeXml);
-            
+
           }).then(function (config) {
             // Save config in scope
             scope.config = config.Theme || {};
