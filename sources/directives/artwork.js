@@ -1,5 +1,5 @@
-app.directive('artwork', ['$q', 'fs',
-  function($q, fs) {
+app.directive('artwork', ['$q', '$timeout', 'fs',
+  function($q, $timeout, fs) {
     var SWFReader = require('swf-reader');
 
     return {
@@ -10,6 +10,7 @@ app.directive('artwork', ['$q', 'fs',
         name: '=',
         config: '=',
         file: '=',
+        overlay: '=',
       },
       link: function(scope, el, attrs) {
 
@@ -33,7 +34,7 @@ app.directive('artwork', ['$q', 'fs',
           $el.on('load', function() {
             d.resolve({
               width  : $el[0].naturalWidth,
-              height : $el[0].naturalHeight,              
+              height : $el[0].naturalHeight,
             });
           });
           return d.promise;
@@ -42,7 +43,7 @@ app.directive('artwork', ['$q', 'fs',
         /*------------------------- Get Artwork Size ------------------------*/
 
         // Size is unknown at this point
-        scope.size = {width: 0, height: 0};
+        // scope.size = {width: 0, height: 0};
 
         //  -  Set element's size
         function updateSize(size) {
@@ -54,8 +55,13 @@ app.directive('artwork', ['$q', 'fs',
           if (file && file.type === 'swf')
             getFlashSize().then(updateSize);
           // if file is a plain image file
-          else if (file && file.type !== 'swf')
+          else if (file && file.type === 'png')
             getImageSize().then(updateSize);
+          else if (file && file.type === 'flv') {
+            $timeout(function() {
+              updateSize({width: 0, hieght: 0});
+            }, 100);
+          }
          });
 
         /*------------------------ Set Artwork Style ------------------------*/
@@ -65,7 +71,7 @@ app.directive('artwork', ['$q', 'fs',
         //  -  Set element's css rules
         function updateStyle() {
           scope.style = {};
-
+          // console.log('config', scope.name, scope.config);
           // If we don't have size or config do nothing
           if (!scope.config || !scope.size)
             return;
@@ -87,14 +93,15 @@ app.directive('artwork', ['$q', 'fs',
           css.height = css.height * H_RATIO;
           css.top = css.top * H_RATIO;
           css.left = css.left * W_RATIO;
- 
+
           scope.style = css;
-          console.log(scope.name, 'style=', css);
+          // console.log(scope.name, 'style=', css);
         }
 
         // Update styles when needed
         scope.$on('resize', updateStyle);
         scope.$watch('size', updateStyle);
+        scope.$watch('config', updateStyle);
 
       }
     };

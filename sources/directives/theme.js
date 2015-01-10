@@ -14,7 +14,7 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
       link: function(scope, el, attrs) {
 
         // From a filenames list, create an hashmap of usefull objects
-        // ie: "Artwork2.swf" 
+        // ie: "Artwork2.swf"
         // {name: 'artwork2', type: 'swf', file: 'Artwork2.swf', path: "/path/to/Artwork2.swf"}
         function parseFileEntries(path, files) {
           var items = {};
@@ -43,7 +43,7 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
         function parseConfigEntries(config) {
           var items = {
             video: null,
-            arworks: {},
+            artworks: {},
             background: null,
           };
 
@@ -51,13 +51,16 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
           var regxp = new RegExp('([a-z]*)([0-9]*)');
 
           // Parse entries from name and put them in their respective catgories
-          var names = Object.keys(config);            
+          var names = Object.keys(config);
           names.forEach(function(name) {
             var match = name.match(regxp);
             if (match && match[1] === 'artwork')
-              scope.artworks[name] = config[name];
+              items.artworks[name] = config[name];
             if (match && match[1] === 'video')
-              scope.video = config.video;
+              items.video = config.video;
+            // if (match)
+              // console.log('match', match[1]);
+
           });
 
           return items;
@@ -70,7 +73,8 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
             return;
 
           // Set path to current menu & theme path
-          var zipPath = zspin.dataPath('Media', scope.menu, 'Themes', scope.theme+'.zip');
+          var themePath = zspin.dataPath('Media', scope.menu, 'Themes');
+          var zipPath = fs.join(themePath, scope.theme+'.zip');
           if (scope.zipPath === zipPath)
             return;
 
@@ -80,6 +84,7 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
             scope.files = {};
             scope.config = {};
             scope.artworks = {};
+            scope.video = null;
             // Set current zipPath
             scope.zipPath = zipPath;
 
@@ -98,21 +103,34 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
           }).then(function (files) {
             // Parse files entries into usefull objects
             scope.files = parseFileEntries(scope.tmp.path, files);
-            console.log(scope.theme, 'files=', scope.files);
+            // console.log(scope.theme, 'files=', scope.files);
 
             // Load Theme.xml for theme config
             var themeXml = fs.join(scope.tmp.path, 'Theme.xml');
             return xml.parse(themeXml);
-            
+
           }).then(function (config) {
             // Save config in scope
             scope.config = config.Theme || {};
-            console.log(scope.theme, 'config=', scope.config);
+            // console.log(scope.theme, 'config=', scope.config);
 
             // Parse config entries into usefull objects
             angular.extend(scope, parseConfigEntries(scope.config));
-            console.log(scope.theme, 'artworks=', scope.artworks);
-            console.log(scope.theme, 'video=', scope.video);
+            // console.log(scope.theme, 'artworks=', scope.artworks);
+            // console.log(scope.theme, 'video=', scope.video);
+
+            if (!scope.video)
+              return;
+            // Check if the video file exists
+            var videoPath = zspin.dataPath('Media', scope.menu, 'Video');
+            scope.demo = fs.join(videoPath, scope.theme+'.flv');
+            scope.demo = fs.join(videoPath, 'OpenBOR.flv');
+            // console.log(scope.theme, 'videoFile=', scope.video.file);
+            return fs.stat(videoPath);
+          }).then(function () {
+            scope.files.demo = {name: 'demo', type: 'flv', path: encodeURI(scope.demo)};
+            // scope.videoFile = {name: 'video', type: 'flv', file: scope.theme+'.flv', path: 'file://'+videoFile};
+            // console.log('gettodaze');
           });
         }
 

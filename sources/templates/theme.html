@@ -2,9 +2,9 @@
 
   <artwork ng-if="files.background" name="'background'" file="files.background" />
   <artwork ng-repeat="(name, config) in artworks" name="name" config="config" file="files[name]" />
-  <artwork ng-if="video" name="'video'" config="video" file="" overlay="files['video']" />
-  <artwork name="'test'" config="test" file="files['test']" />
+  <artwork ng-if="files.demo" name="'video'" config="video" file="files.demo" overlay="file.video" />
 
-  <pre>{{tmp}}</pre>
+<!--   <pre>{{tmp}}</pre>
   <pre>{{files|json}}</pre>
-</div>
+ -->
+ </div>
