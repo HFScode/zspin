@@ -10,7 +10,7 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
         name: '=',
         config: '=',
         file: '=',
-        overlay: '=',
+        overlay: '=', 
       },
       link: function(scope, el, attrs) {
 
@@ -79,12 +79,21 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
           var css = {};
           var conf = scope.config;
 
+          if (scope.name == 'video')
+            console.log(conf);
+
           // Config simili-parsing
           css.width = (conf.w || scope.size.width || 0);
           css.height = (conf.h || scope.size.height || 0);
           css.left = (conf.x - (css.width / 2)) || 0;
           css.top = (conf.y - (css.height / 2)) || 0;
+          if (!!scope.overlay) {
+            css.left += (css.width - scope.size.width) / 2;
+            css.top  += (css.height - scope.size.height) / 2;
+            css.width = (scope.size.width || 0);
+            css.height = (scope.size.height || 0);
 
+          }
           // Scale from the original 1024 * 768 to windows size
           var W_RATIO = window.innerWidth / 1024;
           var H_RATIO = window.innerHeight / 768;
