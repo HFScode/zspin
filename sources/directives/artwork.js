@@ -79,20 +79,16 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
           var css = {};
           var conf = scope.config;
 
-          if (scope.name == 'video')
-            console.log(conf);
-
           // Config simili-parsing
           css.width = (conf.w || scope.size.width || 0);
           css.height = (conf.h || scope.size.height || 0);
           css.left = (conf.x - (css.width / 2)) || 0;
           css.top = (conf.y - (css.height / 2)) || 0;
           if (!!scope.overlay) {
-            css.left += (css.width - scope.size.width) / 2;
-            css.top  += (css.height - scope.size.height) / 2;
+            css.left += ((css.width - scope.size.width) / 2) + parseFloat(conf.overlayoffsetx);
+            css.top  += ((css.height - scope.size.height) / 2) + parseFloat(conf.overlayoffsety);
             css.width = (scope.size.width || 0);
             css.height = (scope.size.height || 0);
-
           }
           // Scale from the original 1024 * 768 to windows size
           var W_RATIO = window.innerWidth / 1024;
@@ -104,6 +100,12 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
           css.left = css.left * W_RATIO;
 
           scope.style = css;
+          if (scope.name == 'video') {
+            console.log(conf);
+            console.log(css);
+          }
+
+
           // console.log(scope.name, 'style=', css);
         }
 
