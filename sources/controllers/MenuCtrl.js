@@ -1,12 +1,12 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$rootScope', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml',
-  function($scope, $rootScope, $document, $timeout, fs, zspin, ini, xml) {
+app.controller('MenuCtrl', ['$scope', '$rootScope', '$document', '$timeout', '$window', 'fs', 'zspin', 'ini', 'xml',
+  function($scope, $rootScope, $document, $timeout, $window, fs, zspin, ini, xml) {
 
     /************* This... is crack. ************/
 
     //  -  Defining path/current menu
-    if (!$rootScope.menuPath)
+    if ($rootScope.menuPath == null)
       $rootScope.menuPath = window.location.href.split('#')[1];
     $scope.menu = decodeURIComponent($rootScope.menuPath.split('/').pop());
 
@@ -54,20 +54,31 @@ app.controller('MenuCtrl', ['$scope', '$rootScope', '$document', '$timeout', 'fs
         $scope.wheelControl.prev();
 
       // right/down keys
-      if (e.which == 39 || e.which == 40)
+      if (e.which == 39 || e.which == 40) {
         $scope.wheelControl.next();
+        console.log('========5', $rootScope.menuPath)
+      }
 
       // enter key
       if (e.which == 13) {
-        $rootScope.menuPath += '/' + $scope.wheelControl.select()['name'];
+        console.log('========1', $rootScope.menuPath)
+        $rootScope.menuPath += '/' + encodeURIComponent($scope.wheelControl.select()['name']);
+        console.log('========2', $rootScope.menuPath)
         window.location = '#' + $rootScope.menuPath;
       }
 
       // escape key
-      if (e.which == 27) {
-        var cut = $scope.menu.lastIndexOf('/');
-        $rootScope.menuPath = $rootScope.menuPath.substr(0, cut);
-        window.location = '#' + $rootScope.menuPath;
+      if (e.which == 27) { // WHY THIS SHIT GETS CALLED 2 TIMES IN SUBWHEEL
+        // if we are not in main menu
+        if ($rootScope.menuPath != '/menus/Main%20Menu') {
+          var cut = $rootScope.menuPath.lastIndexOf('/');
+          console.log('========3', $rootScope.menuPath)
+          $rootScope.menuPath = $rootScope.menuPath.substr(0, cut);
+          console.log('========4', $rootScope.menuPath)
+          window.location = '#' + $rootScope.menuPath;
+        } else {
+          console.log('QUIT');
+        }
       }
 
       $timeout.cancel(updatePromise);
