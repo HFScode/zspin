@@ -90,6 +90,7 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
             css.width = (scope.size.width || 0);
             css.height = (scope.size.height || 0);
           }
+
           // Scale from the original 1024 * 768 to windows size
           var W_RATIO = window.innerWidth / 1024;
           var H_RATIO = window.innerHeight / 768;

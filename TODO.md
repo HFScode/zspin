@@ -1,14 +1,15 @@
 TODO
 ====
 
+- finish videos
+- subwheel infinie (subfolders)
 - menu tilde
-- videos
 - inputs gamepads
 - icons bas de theme
     les special sont là : Media\Main Menu\Images\special
     apres c'est dans chaque system media\images\special
-- subwheel infinie (subfolders)
 - run hyperlaunch
+- border around videos
 
 FIX
 ===

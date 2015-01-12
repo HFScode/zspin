@@ -1,11 +1,14 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml',
-  function($scope, $document, $timeout, fs, zspin, ini, xml) {
-
-    $scope.menu = 'Main Menu';
+app.controller('MenuCtrl', ['$scope', '$rootScope', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml',
+  function($scope, $rootScope, $document, $timeout, fs, zspin, ini, xml) {
 
     /************* This... is crack. ************/
+
+    //  -  Defining path/current menu
+    if (!$rootScope.menuPath)
+      $rootScope.menuPath = window.location.href.split('#')[1];
+    $scope.menu = decodeURIComponent($rootScope.menuPath.split('/').pop());
 
     //  -  Defining wheel parameters  -
     $scope.wheelItems = [];
@@ -17,25 +20,25 @@ app.controller('MenuCtrl', ['$scope', '$document', '$timeout', 'fs', 'zspin', 'i
       points: [
         // X, Y, Angle, Scale, z-index
         // first item offscreen but required for animation
-        [-500, 344, 0,   1, 1],
-        [-56,   -76, -23, 1, 2],
-        [-24,   -26, -21, 1, 3],
-        [14,   24,  -18, 1, 4],
-        [44,   74,  -15, 1, 5],
-        [64,  124, -12, 1, 6],
-        [79,  174, -9,  1, 7],
-        [94,  224, -6,  1, 8],
-        [101,  274, -3,  1, 9],
+        [1500, 344, 0, 1, 1],
+        [930, -76, 23, 1, 2],
+        [890, -26, 21, 1, 3],
+        [860, 24, 18, 1, 4],
+        [830, 74, 15, 1, 5],
+        [810, 124, 12, 1, 6],
+        [795, 174, 9, 1, 7],
+        [780, 224, 6, 1, 8],
+        [773, 274, 3, 1, 9],
         // next item is the selection cursor
-        [104,  344, 0,   2, 10],
-        [101,  414, 3,   1, 9],
-        [94,  464, 6,   1, 8],
-        [79,  514, 9,   1, 7],
-        [64,  564, 12,  1, 6],
-        [44,   614, 15,  1, 5],
-        [14,   664, 18,  1, 4],
-        [-24,   714, 21,  1, 3],
-        [-56,   764, 23,  1, 2],
+        [770, 344, 0, 2, 10],
+        [773, 414, -3, 1, 9],
+        [780, 464, -6, 1, 8],
+        [795, 514, -9, 1, 7],
+        [810, 564, -12, 1, 6],
+        [830, 614, -15, 1, 5],
+        [860, 664, -18, 1, 4],
+        [890, 714, -21, 1, 3],
+        [930, 764, -23, 1, 2],
       ]
     };
 
@@ -53,6 +56,19 @@ app.controller('MenuCtrl', ['$scope', '$document', '$timeout', 'fs', 'zspin', 'i
       // right/down keys
       if (e.which == 39 || e.which == 40)
         $scope.wheelControl.next();
+
+      // enter key
+      if (e.which == 13) {
+        $rootScope.menuPath += '/' + $scope.wheelControl.select()['name'];
+        window.location = '#' + $rootScope.menuPath;
+      }
+
+      // escape key
+      if (e.which == 27) {
+        var cut = $scope.menu.lastIndexOf('/');
+        $rootScope.menuPath = $rootScope.menuPath.substr(0, cut);
+        window.location = '#' + $rootScope.menuPath;
+      }
 
       $timeout.cancel(updatePromise);
 
