@@ -1,14 +1,15 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$rootScope', '$document', '$timeout', '$window', 'fs', 'zspin', 'ini', 'xml',
-  function($scope, $rootScope, $document, $timeout, $window, fs, zspin, ini, xml) {
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml',
+  function($scope, $routeParams, $location, $document, $timeout, fs, zspin, ini, xml) {
 
     /************* This... is crack. ************/
 
     //  -  Defining path/current menu
-    if ($rootScope.menuPath == null)
-      $rootScope.menuPath = window.location.href.split('#')[1];
-    $scope.menu = decodeURIComponent($rootScope.menuPath.split('/').pop());
+    $scope.path = $routeParams.path;
+    $scope.menus = $scope.path.split('/');
+    $scope.menu = $scope.menus[$scope.menus.length-1];
+    console.log('local', $scope.path, $scope.menu);
 
     //  -  Defining wheel parameters  -
     $scope.wheelItems = [];
@@ -56,34 +57,26 @@ app.controller('MenuCtrl', ['$scope', '$rootScope', '$document', '$timeout', '$w
       // right/down keys
       if (e.which == 39 || e.which == 40) {
         $scope.wheelControl.next();
-        console.log('========5', $rootScope.menuPath)
       }
 
       // enter key
       if (e.which == 13) {
-        console.log('========1', $rootScope.menuPath)
-        $rootScope.menuPath += '/' + encodeURIComponent($scope.wheelControl.select()['name']);
-        console.log('========2', $rootScope.menuPath)
-        window.location = '#' + $rootScope.menuPath;
+        var newMenu = $scope.wheelControl.select();
+        var newPath = '/menus/' + $scope.path + '/' + newMenu.name;
+        $location.path(newPath);
       }
 
       // escape key
       if (e.which == 27) { // WHY THIS SHIT GETS CALLED 2 TIMES IN SUBWHEEL
-        // if we are not in main menu
-        if ($rootScope.menuPath != '/menus/Main%20Menu') {
-          var cut = $rootScope.menuPath.lastIndexOf('/');
-          console.log('========3', $rootScope.menuPath)
-          $rootScope.menuPath = $rootScope.menuPath.substr(0, cut);
-          console.log('========4', $rootScope.menuPath)
-          window.location = '#' + $rootScope.menuPath;
-        } else {
-          console.log('QUIT');
-        }
+        if ($scope.menus.length <= 1) return;
+        var newMenus = $scope.menus.slice(0, $scope.menus.length-1);
+        var newPath = '/menus/' + newMenus.join('/');
+        $location.path(newPath);
       }
 
+      // Wait before considering an entry menu as selected
+      // Cancel any previous running timer
       $timeout.cancel(updatePromise);
-
-      // wait a little before loading new theme, to avoid cpu intensive loading
       updatePromise = $timeout(function() {
         var name = $scope.curItem.name;
         $scope.theme = name;
