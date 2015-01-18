@@ -1,6 +1,6 @@
 <div class="theme">
 
-  <artwork ng-if="files.background" name="'background'" file="files.background" />
+  <artwork ng-if="files.background" name="'background'" config="{w: 1024, h: 768}" file="files.background" />
   <artwork ng-repeat="(name, config) in artworks" name="name" config="config" file="files[name]" />
   <artwork ng-if="files.demo" name="'demo'" config="video" file="files.demo" />
   <artwork ng-if="files.video" name="'video'" config="video" file="files.video" overlay="true" />

@@ -1,7 +1,7 @@
 'use strict'
 
-app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
-  function(zspin, fs, zip, xml) {
+app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
+  function($q, zspin, fs, zip, xml) {
 
     return {
       restrict: 'E',
@@ -35,10 +35,8 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
 
         // From a config object, group entries by categories
         // ie : {
-        //   'video': /* video config */
-        //   'artworks': {
-        //      'artwork2': /* artwork2 config */
-        //    }
+        //   'video': /* video config */,
+        //   'artworks': {'artwork2': /* artwork2 config */}
         // }
         function parseConfigEntries(config) {
           var items = {
@@ -58,9 +56,6 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
               items.artworks[name] = config[name];
             if (match && match[1] === 'video')
               items.video = config.video;
-            // if (match)
-              // console.log('match', match[1]);
-
           });
 
           return items;
@@ -71,7 +66,9 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
           // If we don't have theme or menu do nothing
           if (!scope.theme || !scope.menu)
             return;
-
+          console.log('start');
+          console.time('time');
+          console.time('timeExists');
           // Set path to current menu & theme path
           var themePath = zspin.dataPath('Media', scope.menu, 'Themes');
           var zipPath = fs.join(themePath, scope.theme+'.zip');
@@ -79,12 +76,16 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
             return;
 
           // Check if zipPath exists
-          fs.stat(zipPath).then(function (stat) {
+          fs.exists(zipPath).then(function (exists) {
+            // If the file does not exist, abort
+            if (!exists) { return $q.reject(); }
+
             // Reset to empty values
             scope.files = {};
             scope.config = {};
             scope.artworks = {};
             scope.video = null;
+
             // Set current zipPath
             scope.zipPath = zipPath;
 
@@ -103,7 +104,6 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
           }).then(function (files) {
             // Parse files entries into usefull objects
             scope.files = parseFileEntries(scope.tmp.path, files);
-            // console.log(scope.theme, 'files=', scope.files);
 
             // Load Theme.xml for theme config
             var themeXml = fs.join(scope.tmp.path, 'Theme.xml');
@@ -112,12 +112,9 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
           }).then(function (config) {
             // Save config in scope
             scope.config = config.Theme || {};
-            // console.log(scope.theme, 'config=', scope.config);
 
             // Parse config entries into usefull objects
             angular.extend(scope, parseConfigEntries(scope.config));
-            // console.log(scope.theme, 'artworks=', scope.artworks);
-            // console.log(scope.theme, 'video=', scope.video);
 
             if (!scope.video)
               return;
@@ -125,12 +122,15 @@ app.directive('theme', ['zspin', 'fs', 'zip', 'xml',
             var videoPath = zspin.dataPath('Media', scope.menu, 'Video');
             scope.demo = fs.join(videoPath, scope.theme+'.flv');
             scope.demo = fs.join(videoPath, 'OpenBOR.flv');
-            // console.log(scope.theme, 'videoFile=', scope.video.file);
-            return fs.stat(videoPath);
-          }).then(function () {
-            scope.files.demo = {name: 'demo', type: 'flv', path: encodeURI(scope.demo)};
-            // scope.videoFile = {name: 'video', type: 'flv', file: scope.theme+'.flv', path: 'file://'+videoFile};
-            // console.log('gettodaze');
+
+            return fs.exists(videoPath);
+          }).then(function (exists) {
+            // If the video doesn't exists, abort
+            if (!exists) { return $q.reject(); }
+
+            // Add the video to the file records
+            var path = encodeURI(scope.demo);
+            scope.files.demo = {name: 'demo', type: 'flv', path: path};
           });
         }
 
