@@ -1,6 +1,7 @@
 bower_components/
 node_modules/
-public/
+build/
+releases/
 !public/index.html
 !public/package.json
 node-webkit

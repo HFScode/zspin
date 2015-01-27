@@ -18,3 +18,8 @@ wheel {
   }
 
 }
+
+// This is for the support of the angular ng-cloack method
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
