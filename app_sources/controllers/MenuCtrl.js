@@ -1,11 +1,15 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml',
-  function($scope, $document, $timeout, fs, zspin, ini, xml) {
-
-    $scope.menu = 'Main Menu';
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml',
+  function($scope, $routeParams, $location, $document, $timeout, fs, zspin, ini, xml) {
 
     /************* This... is crack. ************/
+
+    //  -  Defining path/current menu
+    $scope.path = $routeParams.path;
+    $scope.menus = $scope.path.split('/');
+    $scope.menu = $scope.menus[$scope.menus.length-1];
+    console.log('local', $scope.path, $scope.menu);
 
     //  -  Defining wheel parameters  -
     $scope.wheelItems = [];
@@ -51,12 +55,28 @@ app.controller('MenuCtrl', ['$scope', '$document', '$timeout', 'fs', 'zspin', 'i
         $scope.wheelControl.prev();
 
       // right/down keys
-      if (e.which == 39 || e.which == 40)
+      if (e.which == 39 || e.which == 40) {
         $scope.wheelControl.next();
+      }
 
+      // enter key
+      if (e.which == 13) {
+        var newMenu = $scope.wheelControl.select();
+        var newPath = '/menus/' + $scope.path + '/' + newMenu.name;
+        $location.path(newPath);
+      }
+
+      // escape key
+      if (e.which == 27) { // WHY THIS SHIT GETS CALLED 2 TIMES IN SUBWHEEL
+        if ($scope.menus.length <= 1) return;
+        var newMenus = $scope.menus.slice(0, $scope.menus.length-1);
+        var newPath = '/menus/' + newMenus.join('/');
+        $location.path(newPath);
+      }
+
+      // Wait before considering an entry menu as selected
+      // Cancel any previous running timer
       $timeout.cancel(updatePromise);
-
-      // wait a little before loading new theme, to avoid cpu intensive loading
       updatePromise = $timeout(function() {
         var name = $scope.curItem.name;
         $scope.theme = name;

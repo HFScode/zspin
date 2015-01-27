@@ -19,7 +19,6 @@ function wrapErrCallback(d, self, func, args) {
   func(function resolver(err) {
     if (err) {
       d.reject(err);
-
     } else {
       d.resolve([].slice.call(arguments, 1));
     }
@@ -46,10 +45,9 @@ app.config( ['$sceDelegateProvider', function($sceDelegateProvider){
 app.config(['$routeProvider',
   function($routeProvider) {
 
-    $routeProvider.when('/menus/:menu', {
+    $routeProvider.when('/menus/:path*', {
       controller: 'MenuCtrl',
       templateUrl: 'Menu.html',
-
     }).otherwise({
       redirectTo: '/menus/Main Menu',
     });
