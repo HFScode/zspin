@@ -4,6 +4,8 @@ var app = angular.module('app', [
   'ngLoad',
   'ngRoute',
   'ngResize',
+  // 'ngGamepad',
+  'cfp.hotkeys',
   'templates',
 ]);
 
@@ -38,7 +40,7 @@ app.config(['resizeProvider', function(resizeProvider){
   resizeProvider.initBind = true;
 }]);
 
-app.config( ['$sceDelegateProvider', function($sceDelegateProvider){
+app.config(['$sceDelegateProvider', function($sceDelegateProvider){
   $sceDelegateProvider.resourceUrlWhitelist(['self', new RegExp('^.*$')]);
 }]);
 
@@ -53,4 +55,9 @@ app.config(['$routeProvider',
     });
   }
 ]);
+
+
+app.run(['gamepads', function(inputs){
+}]);
+
 
