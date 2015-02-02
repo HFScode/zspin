@@ -14,8 +14,8 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
     //  -  Defining wheel parameters  -
     $scope.wheelItems = [];
     $scope.wheelOptions = {
-      // animation time in ms
-      transitionTime: 70,
+      // animation time in s
+      transitionTime: 0.07,
       // index of item which serves as cursor
       selectPosition: 9,
       points: [

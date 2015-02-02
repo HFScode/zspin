@@ -31,12 +31,12 @@ app.directive('wheel', ['resize',
           var items = angular.copy(scope.items||[]);
           var points = angular.copy(scope.options.points||[]);
           var options = angular.extend({}, scope.options, {
-            container: '#'+uid
+            containerId: uid,
           });
 
           // Reset DOM/Wheel
           $(el).html('<div id="'+uid+'">');
-          scope.wheel = $.jswheel(items, points, options);
+          scope.wheel = new jswheel(items, points, options);
           scope.control = scope.wheel;
         }
 
