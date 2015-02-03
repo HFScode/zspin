@@ -35,51 +35,56 @@ app.factory('gamepads', ['$window', '$document', '$rootScope',
       console.log('gamepad %s> connected', idx, _gpds[idx]);
     };
 
-    function _processCallbacks(combo, value) {
-      for (var $id in combos[combo]) {
-        var time = +(new Date());
-        var list = binds[$id][combo];
-        for (var idx in list) {
-          var bind = list[idx];
-          var thrld = bind.threshold || 0.5;
-          var abslt = (value < 0) ? (0 - value) : value;
-          var stale = time - (bind.repeat || 20);
-          bind._flag = bind._flag || 0;
-          if (bind._flag === 0)
-            stale -= bind.penalty || 300;
-          // console.log(combo,  abslt);
-          // console.log({
-          //   action: bind.action,
-          //   status: bind.status, 
-          //   combo: combo, 
-          //   abslt: abslt, 
-          //   gt: abslt > thrld, 
-          //   lt: abslt < thrld,
-          // });
-          var callback = bind.callback.bind(combo, abslt);
-          if (bind.action === 'keymove') {
-            if (bind._timestamp < stale) {
-              scopes[$id].$apply(callback);
-              bind._timestamp = time;
-            }
-          } else if (abslt > thrld && bind.action === 'keydown') {
-            // console.log('down', bind._timestamp <= stale)
-            if (!bind._timestamp || bind._timestamp <= stale) {
-              scopes[$id].$apply(callback);
-              bind._flag += 1;
-              bind._timestamp = time;
-            }
-          } else if (abslt <= thrld && bind.action === 'keyup') {
-            if (!bind._timestamp || bind._timestamp <= stale) {
-              scopes[$id].$apply(callback);
-              bind._flag += -1;
-              bind._timestamp = time;
-            }
-          } else {
-            bind._flag = -1;
-          }
+    function _processCallback($id, combo, value, bind, time) {
+      var thrld = bind.threshold || 0.5;
+      var stale = time - (bind.repeat || 20);
+
+      bind._flag = bind._flag || 0;
+      if (bind._flag === 0)
+        stale -= bind.penalty || 300;
+
+      if (bind.action === 'keymove') {
+        if (bind._timestamp < stale) {
+          var callback = bind.callback.bind(null, combo, value);
+          scopes[$id].$apply(callback);
+          bind._timestamp = time;
         }
+      } else if (value > thrld && bind.action === 'keydown') {
+        if (!bind._timestamp || bind._timestamp <= stale) {
+          var callback = bind.callback.bind(null, combo, value);
+          scopes[$id].$apply(callback);
+          bind._flag += 1;
+          bind._timestamp = time;
+        }
+      } else if (value <= thrld && bind.action === 'keyup') {
+        if (!bind._timestamp || bind._timestamp <= stale) {
+          var callback = bind.callback.bind(combo, value);
+          scopes[$id].$apply(callback);
+          bind._flag += -1;
+          bind._timestamp = time;
+        }
+      } else {
+        bind._flag = -1;
       }
+    }
+
+
+    function _processCallbacks(combo, value) {
+      var time = +(new Date());
+      // var matches = []
+      // var $ids = combos[combo] ? combos[combo].keys() : [];
+      // $ids = $ids.concat(combo['*']);
+      for (var $id in combos[combo]) {
+        var list = binds[$id][combo];
+        for (var idx in list)
+          _processCallback($id, combo, value, list[idx], time);
+      }
+      for (var $id in combos['*']) {
+        var list = binds[$id]['*'];
+        for (var idx in list)
+          _processCallback($id, combo, value, list[idx], time);
+      }
+
     }
 
 
@@ -161,9 +166,9 @@ app.factory('gamepads', ['$window', '$document', '$rootScope',
 
     function service ($scope) {
       // console.log($scope);
-      var $id = $scope.id;
+      var $id = $scope.$id;
       scopes[$id] = $scope;
-
+      console.log('boite', $scope.$id, $id)
       $scope.$on('$destroy', function() {
         for (var combo in binds[$id])
           delete combos[combo][$id];
@@ -182,6 +187,7 @@ app.factory('gamepads', ['$window', '$document', '$rootScope',
           // Register combo in lookup table
           combos[combo] = combos[combo] || {};
           combos[combo][$id] = true;
+          console.log(combos);
         },
         del: function (combo) {
           if (binds[$id] && combos[combo]) {

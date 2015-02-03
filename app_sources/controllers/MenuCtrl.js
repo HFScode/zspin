@@ -7,12 +7,13 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
 
     var binds = gamepads($scope);
     binds.add({
-      combo: 'button1',
+      combo: '*',
       threshold: 0.5,
       action: 'keydown',
-      callback: function() {
-        console.log('button1Down');
-        $scope.wheelControl.prev();
+      penalty: 1000,
+      repeat: 100,
+      callback: function(combo, val) {
+        console.log('y fait poupou sur le %s (%s)', combo, val);
       }
     })
     binds.add({
