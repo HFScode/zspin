@@ -44,6 +44,9 @@ app.factory('gamepads', ['$window', '$document', '$rootScope',
           var thrld = bind.threshold || 0.5;
           var abslt = (value < 0) ? (0 - value) : value;
           var stale = time - (bind.repeat || 20);
+          bind._flag = bind._flag || 0;
+          if (bind._flag === 0)
+            stale -= bind.penalty || 300;
           // console.log(combo,  abslt);
           // console.log({
           //   action: bind.action,
@@ -55,21 +58,25 @@ app.factory('gamepads', ['$window', '$document', '$rootScope',
           // });
           var callback = bind.callback.bind(combo, abslt);
           if (bind.action === 'keymove') {
-            if (bind.timestamp < stale) {
+            if (bind._timestamp < stale) {
               scopes[$id].$apply(callback);
-              bind.timestamp = time;
+              bind._timestamp = time;
             }
           } else if (abslt > thrld && bind.action === 'keydown') {
-            // console.log('down', bind.timestamp <= stale)
-            if (!bind.timestamp || bind.timestamp <= stale) {
+            // console.log('down', bind._timestamp <= stale)
+            if (!bind._timestamp || bind._timestamp <= stale) {
               scopes[$id].$apply(callback);
-              bind.timestamp = time;
+              bind._flag += 1;
+              bind._timestamp = time;
             }
           } else if (abslt <= thrld && bind.action === 'keyup') {
-            if (!bind.timestamp || bind.timestamp <= stale) {
+            if (!bind._timestamp || bind._timestamp <= stale) {
               scopes[$id].$apply(callback);
-              bind.timestamp = time;
+              bind._flag += -1;
+              bind._timestamp = time;
             }
+          } else {
+            bind._flag = -1;
           }
         }
       }
