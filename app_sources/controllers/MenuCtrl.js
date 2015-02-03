@@ -7,35 +7,50 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
 
     var binds = gamepads($scope);
     binds.add({
+      gamepad: '*',
       combo: '*',
       threshold: 0.5,
       action: 'keydown',
-      penalty: 1000,
-      repeat: 100,
-      callback: function(combo, val) {
-        console.log('y fait poupou sur le %s (%s)', combo, val);
+      // penalty: 1000,
+      repeat: 1000,
+      callback: function(input) {
+        console.log('pad#%s %s:%s', input.gamepad, input.combo, input.value);
       }
-    })
+    });
     binds.add({
-      combo: 'axis0+',
-      threshold: 0.5,
+      combo: 'axis1+',
+      threshold: 0.75,
       action: 'keydown',
-      repeat: 100,
+      penalty: 600,
+      repeat: 80,
       callback: function() {
-        console.log('Axis0+');
-        $scope.wheelControl.prev();
-      }
-    })
-    binds.add({
-      combo: 'axis0-',
-      threshold: 0.5,
-      action: 'keydown',
-      repeat: 20,
-      callback: function() {
-        console.log('Axis0-');
         $scope.wheelControl.next();
+        $timeout.cancel(updatePromise);
+        updatePromise = $timeout(function() {
+          var name = $scope.curItem.name;
+          $scope.theme = name;
+        }, 200);
+        $scope.curItem = $scope.wheelControl.select();
       }
-    })
+    });
+    binds.add({
+      combo: 'axis1-',
+      threshold: 0.75,
+      action: 'keydown',
+      penalty: 600,
+      repeat: 80,
+      callback: function() {
+        // console.log('Axis0-');
+        $scope.wheelControl.prev();
+        $timeout.cancel(updatePromise);
+        updatePromise = $timeout(function() {
+          var name = $scope.curItem.name;
+          $scope.theme = name;
+        }, 200);
+        $scope.curItem = $scope.wheelControl.select();
+
+      }
+    });
     //  -  Defining path/current menu
     $scope.path = $routeParams.path;
     $scope.menus = $scope.path.split('/');
