@@ -1,10 +1,40 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml',
-  function($scope, $routeParams, $location, $document, $timeout, fs, zspin, ini, xml) {
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml', 'gamepads',
+  function($scope, $routeParams, $location, $document, $timeout, fs, zspin, ini, xml, gamepads) {
 
     /************* This... is crack. ************/
 
+    var binds = gamepads($scope);
+    binds.add({
+      combo: 'button1',
+      threshold: 0.5,
+      action: 'keydown',
+      callback: function() {
+        console.log('button1Down');
+        $scope.wheelControl.prev();
+      }
+    })
+    binds.add({
+      combo: 'axis0+',
+      threshold: 0.5,
+      action: 'keydown',
+      repeat: 100,
+      callback: function() {
+        console.log('Axis0+');
+        $scope.wheelControl.prev();
+      }
+    })
+    binds.add({
+      combo: 'axis0-',
+      threshold: 0.5,
+      action: 'keydown',
+      repeat: 20,
+      callback: function() {
+        console.log('Axis0-');
+        $scope.wheelControl.next();
+      }
+    })
     //  -  Defining path/current menu
     $scope.path = $routeParams.path;
     $scope.menus = $scope.path.split('/');
