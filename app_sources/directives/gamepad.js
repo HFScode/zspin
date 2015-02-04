@@ -33,7 +33,7 @@ app.factory('gamepads', ['$window', '$document', '$rootScope',
      */
     function _trigger($id, bind, input) {
       // Create a unique key for input
-      var uid = input.gamepad+':'+input.combo;
+      var combo = input.combo;
       // set state to 0 (up) or >1 (down)
       var state = (input.value > bind.threshold);
       // Compute last trigger age, default to 0
@@ -46,19 +46,19 @@ app.factory('gamepads', ['$window', '$document', '$rootScope',
           (state && bind.action === 'keydown') ||
           (!state && bind.action === 'keyup')) {
         // If state change or if it's time to repeat
-        if (state != bind._states[uid] || age >= bind.repeat) {
+        if (state != bind._states[combo] || age >= bind.repeat) {
           // Call callback in its scope
           var callback = bind.callback.bind(null, input);
           SCOPES[$id].$apply(callback);
           // Update last trigger date
+          // Add penalty if we're not alread repeating
           bind._tick = input.tick;
-          // If we're not alread repeating, add penalty
-          if (state != bind._states[uid])
+          if (state != bind._states[combo])
             bind._tick += bind.penalty;
         }
       }
       // Update input status
-      bind._states[uid] = state;
+      bind._states[combo] = state;
     }
 
     /***********************************

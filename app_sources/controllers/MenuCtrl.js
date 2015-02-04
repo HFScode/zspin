@@ -19,10 +19,10 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
     });
     binds.add({
       combo: 'axis1+',
-      threshold: 0.75,
+      threshold: 0.5,
       action: 'keydown',
-      penalty: 600,
-      repeat: 80,
+      penalty: 400,
+      repeat: 70,
       callback: function() {
         $scope.wheelControl.next();
         $timeout.cancel(updatePromise);
@@ -35,10 +35,10 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
     });
     binds.add({
       combo: 'axis1-',
-      threshold: 0.75,
+      threshold: 0.5,
       action: 'keydown',
-      penalty: 600,
-      repeat: 80,
+      penalty: 400,
+      repeat: 70,
       callback: function() {
         // console.log('Axis0-');
         $scope.wheelControl.prev();
@@ -48,7 +48,6 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
           $scope.theme = name;
         }, 200);
         $scope.curItem = $scope.wheelControl.select();
-
       }
     });
     //  -  Defining path/current menu
