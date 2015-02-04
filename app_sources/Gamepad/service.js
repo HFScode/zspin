@@ -23,19 +23,20 @@ app.factory('gamepads', ['$rootScope',
     function _trigger($id, bind, input) {
       // Create a unique key for input
       var combo = input.combo;
-      // set state to 0 (up) or >1 (down)
+      // set state to false (up) or true (down)
       var state = (input.value > bind.threshold);
       // Compute last trigger age, default to 0
-      var age = input.tick - (bind._tick||input.tick);
+      bind._tick = bind._tick || input.tick;
+      var age = input.tick - bind._tick;
       // find or init bind states
       bind._states = bind._states || {};
 
       // Match input status to bind status
-      if ((bind.action === 'keymove') ||
-          (state && bind.action === 'keydown') ||
-          (!state && bind.action === 'keyup')) {
-        // If state change or if it's time to repeat
-        if (state != bind._states[combo] || age >= bind.repeat) {
+      if ((bind.action === 'keymove' && age >= bind.repeat) ||
+         (((bind.action === 'keydown' && state) ||
+           (bind.action === 'keyup') && !state)) &&
+          (state != bind._states[combo] || age >= bind.repeat)
+         ) {
           // Call callback in its scope
           var callback = bind.callback.bind(null, input);
           SCOPES[$id].$apply(callback);
@@ -44,7 +45,6 @@ app.factory('gamepads', ['$rootScope',
           bind._tick = input.tick;
           if (state != bind._states[combo])
             bind._tick += bind.penalty;
-        }
       }
       // Update input status
       bind._states[combo] = state;
@@ -87,7 +87,7 @@ app.factory('gamepads', ['$rootScope',
      */
     function _tickInputs(gpd) {
       // Grap input index
-      var tick = +(new Date());
+      var tick = Date.now();
       var gpidx = gpd.index;
 
       // -> Update internal button values
