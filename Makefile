@@ -3,7 +3,7 @@ BUILD   =   ./build/
 RELEASE =   ./releases/
 GULP    =   ./node_modules/.bin/gulp
 BOWER   =   ./node_modules/.bin/bower
-NWBUILD =   ./node_modules/.bin/nwbuild
+NWBUILD =   node ./node_modules/.bin/nwbuild
 
 all: install build
 
