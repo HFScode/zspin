@@ -203,8 +203,8 @@ app.factory('gamepads', ['$window', '$document', '$rootScope',
       bind.action    = bind.action    || 'keydown';
       bind.threshold = bind.threshold || 0.5;
       bind.gamepad   = bind.gamepad   || '*';
-      bind.repeat    = bind.repeat    || 20;
-      bind.penalty   = bind.penalty   || 0;
+      bind.repeat    = bind.repeat    || 70;
+      bind.penalty   = bind.penalty   || 400;
       bind.state     = 0;
 
       // Register bind

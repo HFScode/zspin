@@ -1,59 +1,10 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml', 'gamepads',
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml',
   function($scope, $routeParams, $location, $document, $timeout, fs, zspin, ini, xml, gamepads) {
 
     /************* This... is crack. ************/
 
-    $scope.boite = function() {
-      console.log('boite');
-    };
-
-    var binds = gamepads.bindTo($scope);
-    binds.add({
-      gamepad: '*',
-      combo: '*',
-      threshold: 0.5,
-      action: 'keydown',
-      // penalty: 1000,
-      repeat: 1000,
-      callback: function(input) {
-        console.log('pad#%s %s:%s', input.gamepad, input.combo, input.value);
-      }
-    });
-    binds.add({
-      combo: 'axis1+',
-      threshold: 0.5,
-      action: 'keydown',
-      penalty: 400,
-      repeat: 70,
-      callback: function() {
-        $scope.wheelControl.next();
-        $timeout.cancel(updatePromise);
-        updatePromise = $timeout(function() {
-          var name = $scope.curItem.name;
-          $scope.theme = name;
-        }, 200);
-        $scope.curItem = $scope.wheelControl.select();
-      }
-    });
-    binds.add({
-      combo: 'axis1-',
-      threshold: 0.5,
-      action: 'keydown',
-      penalty: 400,
-      repeat: 70,
-      callback: function() {
-        // console.log('Axis0-');
-        $scope.wheelControl.prev();
-        $timeout.cancel(updatePromise);
-        updatePromise = $timeout(function() {
-          var name = $scope.curItem.name;
-          $scope.theme = name;
-        }, 200);
-        $scope.curItem = $scope.wheelControl.select();
-      }
-    });
     //  -  Defining path/current menu
     $scope.path = $routeParams.path;
     $scope.menus = $scope.path.split('/');
@@ -94,19 +45,31 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
 
     var updatePromise;
 
+    $scope.update = function() {
+      // Wait before considering an entry menu as selected
+      // Cancel any previous running timer
+      $timeout.cancel(updatePromise);
+      updatePromise = $timeout(function() {
+        var name = $scope.curItem.name;
+        $scope.theme = name;
+      }, 200);
+      $scope.curItem = $scope.wheelControl.select();
+    };
+
+    $scope.next = function() {
+      $scope.wheelControl.next();
+      $scope.update();
+    };
+
+    $scope.prev = function() {
+      $scope.wheelControl.prev();
+      $scope.update();
+    };
+
     //  -  Binding controls  -
     $document.bind('keydown', function(e) {
       if (!$scope.wheelControl)
         return;
-
-      // left/up keys
-      if (e.which == 37 || e.which == 38)
-        $scope.wheelControl.prev();
-
-      // right/down keys
-      if (e.which == 39 || e.which == 40) {
-        $scope.wheelControl.next();
-      }
 
       // enter key
       if (e.which == 13) {
@@ -122,16 +85,6 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
         var newPath = '/menus/' + newMenus.join('/');
         $location.path(newPath);
       }
-
-      // Wait before considering an entry menu as selected
-      // Cancel any previous running timer
-      $timeout.cancel(updatePromise);
-      updatePromise = $timeout(function() {
-        var name = $scope.curItem.name;
-        $scope.theme = name;
-      }, 200);
-
-      $scope.curItem = $scope.wheelControl.select();
 
       e.preventDefault();
     });
