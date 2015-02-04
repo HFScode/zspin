@@ -5,7 +5,7 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
     return {
       restrict: 'E',
       transclude: true,
-      templateUrl: 'artwork.html',
+      templateUrl: 'Artwork/template.html',
       scope: {
         name: '=',
         config: '=',

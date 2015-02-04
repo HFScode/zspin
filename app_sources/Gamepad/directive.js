@@ -8,7 +8,6 @@ app.directive('gamepad', function (gamepads) {
       var binds = scope.$eval(attrs.gamepad);
 
       angular.forEach(binds, function (func, gamepad) {
-        console.log(attrs, attrs.gamepadarepeat);
         binder.add({
           combo     : gamepad,
           callback  : func,

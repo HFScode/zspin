@@ -44,19 +44,6 @@ app.config(['$sceDelegateProvider', function($sceDelegateProvider){
   $sceDelegateProvider.resourceUrlWhitelist(['self', new RegExp('^.*$')]);
 }]);
 
-app.config(['$routeProvider',
-  function($routeProvider) {
-
-    $routeProvider.when('/menus/:path*', {
-      controller: 'MenuCtrl',
-      templateUrl: 'Menu.html',
-    }).otherwise({
-      redirectTo: '/menus/Main Menu',
-    });
-  }
-]);
-
-
 app.run(['gamepads', function(inputs){
 }]);
 
