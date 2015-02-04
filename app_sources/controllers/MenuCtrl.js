@@ -5,7 +5,11 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
 
     /************* This... is crack. ************/
 
-    var binds = gamepads($scope);
+    $scope.boite = function() {
+      console.log('boite');
+    };
+
+    var binds = gamepads.bindTo($scope);
     binds.add({
       gamepad: '*',
       combo: '*',
