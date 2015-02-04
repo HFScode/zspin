@@ -24,7 +24,8 @@
     "gsap": "~1.15.0",
     "ng-load": "~1.0.1",
     "ng-resize": "~1.1.0",
-    "jswheel": "https://github.com/vikbez/jswheel.git"
+    "jswheel": "https://github.com/vikbez/jswheel.git",
+    "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.4.5"
   },
   "resolutions": {
     "angular": "1.3.11"
