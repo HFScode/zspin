@@ -6,7 +6,7 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
     return {
       restrict: 'E',
       transclude: true,
-      templateUrl: 'theme.html',
+      templateUrl: 'Theme/template.html',
       scope: {
         menu: '=',
         theme: '=',

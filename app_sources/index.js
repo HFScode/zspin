@@ -49,7 +49,7 @@ app.config(['$routeProvider',
 
     $routeProvider.when('/menus/:path*', {
       controller: 'MenuCtrl',
-      templateUrl: 'Menu.html',
+      templateUrl: 'Menu/template.html',
     }).otherwise({
       redirectTo: '/menus/Main Menu',
     });
