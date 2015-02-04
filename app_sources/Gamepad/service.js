@@ -182,6 +182,7 @@ app.factory('gamepads', ['$rootScope',
       var $id = this.$id = $scope.$id;
       SCOPES[$id] = $scope;
       $scope.$on('$destroy', function() {
+        console.log('actual destroy')
         for (var combo in BINDS[$id])
           delete COMBOS[combo][$id];
         delete BINDS[$id];
@@ -196,7 +197,7 @@ app.factory('gamepads', ['$rootScope',
       bind.gamepad   = bind.gamepad   || '*';
       bind.repeat    = bind.repeat    || 70;
       bind.penalty   = bind.penalty   || 400;
-      bind.state     = 0;
+      bind.callback  = bind.callback  || function(){};
 
       // Register bind
       BINDS[$id] = BINDS[$id] || {};
@@ -222,6 +223,7 @@ app.factory('gamepads', ['$rootScope',
     service.bindTo = function($scope) {
       return new Binder($scope);
     };
+    service.gamepads = PADS;
 
     console.log('gamepads - ready');
     return service;
