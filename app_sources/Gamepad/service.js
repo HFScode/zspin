@@ -32,10 +32,11 @@ app.factory('gamepads', ['$rootScope',
       bind._states = bind._states || {};
 
       // Match input status to bind status
-      if ((bind.action === 'keymove' && age >= bind.repeat) ||
-         (((bind.action === 'keydown' && state) ||
-           (bind.action === 'keyup') && !state)) &&
-          (state != bind._states[combo] || age >= bind.repeat)
+      if ((bind.action === 'keymove') ||
+          (((bind.action === 'keydown' && state) ||
+            (bind.action === 'keyup' && !state)) &&
+           (state != bind._states[combo] || age >= bind.repeat)
+          )
          ) {
           // Call callback in its scope
           var callback = bind.callback.bind(null, input);
