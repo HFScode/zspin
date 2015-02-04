@@ -1,24 +1,15 @@
 'use strict';
 
-app.factory('gamepads', ['$window', '$document', '$rootScope',
-  function ($window, $document, $rootScope) {
+app.factory('gamepads', ['$rootScope',
+  function ($rootScope) {
     console.log('gamepads - init');
 
     var LOCK = false;
     var PADS = {};
-    var _raf  = window.requestAnimationFrame.bind(window);
 
     var SCOPES = {};
     var BINDS  = {};
     var COMBOS = {};
-    var GPDS   = {};
-    // var GAMESPADS = GPDSPADS;
-    // var service = {};
-    // service.gamepads = PADS;
-    // service.tick = false;
-
-    /*-----------------------------------------------------------------------*/
-
 
     /***********************************
      * _trigger
@@ -178,7 +169,7 @@ app.factory('gamepads', ['$window', '$document', '$rootScope',
 
       // Release polling lock
       LOCK = false;
-      _raf(poll);
+      requestAnimationFrame(poll);
     };
 
     /*-----------------------------------------------------------------------*/
