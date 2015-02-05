@@ -11,22 +11,23 @@ app.factory('zspin', ['fs',
     service.gui = gui;
 
     // Setup Paths
-    var rootPath = gui.App.dataPath;
-    service.rootPath = function() {
-      var args = [].slice.call(arguments, 0);
-      return fs.join.apply(fs, [rootPath].concat(args));
-    };
+    // var rootPath = gui.App.dataPath;
+    // service.rootPath = function() {
+    //   var args = [].slice.call(arguments, 0);
+    //   return fs.join.apply(fs, [rootPath].concat(args));
+    // };
 
-    var dataPath = fs.join(gui.App.dataPath, 'Zspin');
-    service.dataPath = function() {
+    var path = fs.join(gui.App.dataPath, 'Zspin');
+    service.path = function() {
       var args = [].slice.call(arguments, 0);
-      return fs.join.apply(fs, [dataPath].concat(args));
+      return fs.join.apply(fs, [path].concat(args));
     };
+    // fs.mkdir(service.mediasPath);
 
-    // Setting services's paths
-    service.mediasPath = fs.join(dataPath, 'Media');
-    service.settingsPath = fs.join(dataPath, 'Settings');
-    service.databasesPath = fs.join(dataPath, 'Databases');
+    // // Setting services's paths
+    // service.mediasPath = fs.join(dataPath, 'Media');
+    // service.settingsPath = fs.join(dataPath, 'Settings');
+    // service.databasesPath = fs.join(dataPath, 'Databases');
 
     // Make Paths
     // fs.mkdir(service.mediasPath);
