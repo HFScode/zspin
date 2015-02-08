@@ -3,34 +3,38 @@
 app.config(['$routeProvider',
   function($routeProvider) {
 
-    $routeProvider
-
     // splashscreen
-    .when('/start', {
+    $routeProvider.when('/start', {
       controller: 'StartCtrl',
       templateUrl: 'Start/template.html',
+    });
 
     // menu for navigation through wheels
-    }).when('/menus/:path*', {
+    $routeProvider.when('/menus/:path*', {
       controller: 'MenuCtrl',
       templateUrl: 'Menu/template.html',
+    });
 
     // gamepad debug
-    }).when('/debug/gamepads', {
+    $routeProvider.when('/debug/gamepads', {
       controller: 'DebugGamepadsCtrl',
       templateUrl: 'Debug/Gamepads/template.html',
+    });
 
     // main option menu
-    }).when('/options', {
+    $routeProvider.when('/options', {
       controller: 'OptionsCtrl',
       templateUrl: 'Options/template.html',
+    });
 
     // error page
-    }).when('/error', {
+    $routeProvider.when('/error', {
       controller: 'ErrorCtrl',
       templateUrl: 'Error/template.html',
+    });
 
-    }).otherwise({
+    // default route
+    $routeProvider.otherwise({
       redirectTo: '/error',
     });
   }
