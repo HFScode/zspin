@@ -79,10 +79,6 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       $location.path(newPath.join('/'));
     };
 
-    // $scope.openRoot = function() {
-    //   zspin.gui.Shell.openItem(zspin.dataPath());
-    // };
-
     /*************************** Settings loading ****************************/
 
     var menu = menus($scope.menu);
