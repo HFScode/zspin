@@ -4,9 +4,9 @@ app.config(['$routeProvider',
   function($routeProvider) {
 
     // splashscreen
-    $routeProvider.when('/start', {
-      controller: 'StartCtrl',
-      templateUrl: 'Start/template.html',
+    $routeProvider.when('/intro', {
+      controller: 'IntroCtrl',
+      templateUrl: 'Intro/template.html',
     });
 
     // menu for navigation through wheels
@@ -23,8 +23,8 @@ app.config(['$routeProvider',
 
     // main option menu
     $routeProvider.when('/options', {
-      controller: 'OptionsCtrl',
-      templateUrl: 'Options/template.html',
+      controller: 'SettingsCtrl',
+      templateUrl: 'Settings/stemplate.html',
     });
 
     // error page

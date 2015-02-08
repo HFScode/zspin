@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('OptionsCtrl', ['$scope', 'gamepads',
+app.controller('IntroCtrl', ['$scope', 'gamepads',
   function($scope, gamepads) {
     $scope.gamepads = gamepads.gamepads;
   }
