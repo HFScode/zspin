@@ -3,6 +3,12 @@
 app.config(['$routeProvider',
   function($routeProvider) {
 
+    // home
+    $routeProvider.when('/', {
+      controller: 'BootCtrl',
+      templateUrl: 'Boot/template.html',
+    });
+
     // splashscreen
     $routeProvider.when('/intro', {
       controller: 'IntroCtrl',
