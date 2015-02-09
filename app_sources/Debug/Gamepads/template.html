@@ -6,8 +6,8 @@
       <h2>gpd#{{idx}}</h2>
 
       <h3>status:</h3>
-      <pre ng-bind="gamepad|json"></pre>
-
+      <json-formatter json="gamepad" open=1></json-formatter>
+      <hr/>
       <h3>log:</h3>
       <pre ng-bind="log[idx]|json"></pre>
     </div>
