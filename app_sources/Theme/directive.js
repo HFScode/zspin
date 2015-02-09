@@ -70,7 +70,7 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
           console.time('time');
           console.time('timeExists');
           // Set path to current menu & theme path
-          var themePath = zspin.dataPath('Media', scope.menu, 'Themes');
+          var themePath = zspin.path('Media', scope.menu, 'Themes');
           var zipPath = fs.join(themePath, scope.theme+'.zip');
           if (scope.zipPath === zipPath)
             return;
@@ -119,7 +119,7 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
             if (!scope.video)
               return;
             // Check if the video file exists
-            var videoPath = zspin.dataPath('Media', scope.menu, 'Video');
+            var videoPath = zspin.path('Media', scope.menu, 'Video');
             scope.demo = fs.join(videoPath, scope.theme+'.flv');
             scope.demo = fs.join(videoPath, 'OpenBOR.flv');
 

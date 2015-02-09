@@ -22,7 +22,7 @@ app.factory('gamepads', ['$rootScope',
      */
     function _trigger($id, bind, input) {
       // Create a unique key for input
-      var combo = input.combo;
+      var combo = input.gamepad+':'+input.combo;
       // set state to false (up) or true (down)
       var state = (input.value > bind.threshold);
       // Compute last trigger age, default to 0
@@ -30,24 +30,27 @@ app.factory('gamepads', ['$rootScope',
       var age = input.tick - bind._tick;
       // find or init bind states
       bind._states = bind._states || {};
+      bind._values = bind._values || {};
 
-      // Match input status to bind status
-      if ((bind.action === 'keymove') ||
-          (((bind.action === 'keydown' && state) ||
-            (bind.action === 'keyup' && !state)) &&
-           (state != bind._states[combo] || age >= bind.repeat)
-          )
-         ) {
-          // Call callback in its scope
-          var callback = bind.callback.bind(null, input);
-          SCOPES[$id].$apply(callback);
-          // Update last trigger date
-          // Add penalty if we're not alread repeating
-          bind._tick = input.tick;
-          if (state != bind._states[combo])
-            bind._tick += bind.penalty;
+      if (
+          // We track 'keymove' and value has changed
+          ((bind.action === 'keymove') && (Math.abs(input.value != bind._values[combo]))) ||
+          // We track 'key[up|down]'' and key is up or down, or it's time to repeat
+          (((bind.action === 'keydown' && state) || (bind.action === 'keyup' && !state)) &&
+          (state != bind._states[combo] || age >= bind.repeat))
+        ) {
+
+        // Call callback in its scope
+        var callback = bind.callback.bind(null, input);
+        SCOPES[$id].$apply(callback);
+        // Update last trigger date
+        // Add penalty if we're not already repeating
+        bind._tick = input.tick;
+        if (state != bind._states[combo])
+          bind._tick += bind.penalty;
       }
       // Update input status
+      bind._values[combo] = input.value;
       bind._states[combo] = state;
     }
 

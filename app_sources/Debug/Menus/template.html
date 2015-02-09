@@ -1,0 +1,18 @@
+<div id="DebugMenus" class="container">
+  <hr/>
+  <label>Menu name:</label>
+  <select class="u-full-width" ng-model="menuName" ng-options="opt for opt in options" />
+  <button class="u-full-width" ng-click="update()">Load</button>
+
+  <hr/>
+  <div class="row">
+    <div class="one-half column">
+      <h3>Settings</h3>
+      <json-formatter json="settings" open="1"></json-formatter>
+    </div>
+    <div class="one-half column">
+      <h3>Databases</h3>
+      <json-formatter json="databases" open="2"></json-formatter>
+    </div>
+  </div>
+</div>

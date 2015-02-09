@@ -22,11 +22,12 @@ var vendors = {
     'bower_components/gsap/src/uncompressed/TweenLite.js',
     'bower_components/gsap/src/uncompressed/plugins/CSSPlugin.js',
     'bower_components/gsap/src/uncompressed/jquery.gsap.js',
+    'bower_components/json-formatter/dist/json-formatter.js'
   ],
   'styles': [
     'bower_components/skeleton/css/normalize.css',
     'bower_components/skeleton/css/skeleton.css',
-    'bower_components/jquery.circular-carousel/jquery.circular-carousel.css',
+    'bower_components/json-formatter/dist/json-formatter.css'
   ],
   'fonts': [
 //    'bower_components/bootstrap/dist/fonts/*', // * preserve dir structure

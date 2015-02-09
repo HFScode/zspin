@@ -21,6 +21,17 @@ app.config(['$routeProvider',
       templateUrl: 'Menu/template.html',
     });
 
+    // debug index
+    $routeProvider.when('/debug', {
+      templateUrl: 'Debug/template.html',
+    });
+
+    // menus debug
+    $routeProvider.when('/debug/menus', {
+      controller: 'DebugMenusCtrl',
+      templateUrl: 'Debug/Menus/template.html',
+    });
+
     // gamepad debug
     $routeProvider.when('/debug/gamepads', {
       controller: 'DebugGamepadsCtrl',
@@ -43,5 +54,6 @@ app.config(['$routeProvider',
     $routeProvider.otherwise({
       redirectTo: '/error',
     });
+
   }
 ]);

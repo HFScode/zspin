@@ -6,6 +6,7 @@ var app = angular.module('app', [
   'ngResize',
   // 'ngGamepad',
   'cfp.hotkeys',
+  'jsonFormatter',
   'templates',
 ]);
 

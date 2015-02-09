@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', '$timeout', 'fs', 'zspin', 'ini', 'xml',
-  function($scope, $routeParams, $location, $document, $timeout, fs, zspin, ini, xml, gamepads) {
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'zspin', 'menus',
+  function($scope, $routeParams, $location, $timeout, fs, zspin, menus) {
 
     /************* This... is crack. ************/
 
@@ -43,11 +43,10 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
       ]
     };
 
+    // Wait before considering an entry menu as selected
+    // Cancel any previous running timer
     var updatePromise;
-
     $scope.update = function() {
-      // Wait before considering an entry menu as selected
-      // Cancel any previous running timer
       $timeout.cancel(updatePromise);
       updatePromise = $timeout(function() {
         var name = $scope.curItem.name;
@@ -55,6 +54,8 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
       }, 200);
       $scope.curItem = $scope.wheelControl.select();
     };
+
+    /***************************** Wheel Control *****************************/
 
     $scope.next = function() {
       $scope.wheelControl.next();
@@ -66,50 +67,36 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$document', 
       $scope.update();
     };
 
-    //  -  Binding controls  -
-    $document.bind('keydown', function(e) {
-      if (!$scope.wheelControl)
-        return;
-
-      // enter key
-      if (e.which == 13) {
-        var newMenu = $scope.wheelControl.select();
-        var newPath = '/menus/' + $scope.path + '/' + newMenu.name;
-        $location.path(newPath);
-      }
-
-      // escape key
-      if (e.which == 27) { // WHY THIS SHIT GETS CALLED 2 TIMES IN SUBWHEEL
-        if ($scope.menus.length <= 1) return;
-        var newMenus = $scope.menus.slice(0, $scope.menus.length-1);
-        var newPath = '/menus/' + newMenus.join('/');
-        $location.path(newPath);
-      }
-
-      e.preventDefault();
-    });
-
-    $scope.openRoot = function() {
-      zspin.gui.Shell.openItem(zspin.dataPath());
+    $scope.enter = function() {
+      var newMenu = $scope.curItem.name;
+      var newPath = ['', 'menus', $scope.path, newMenu];
+      $location.path(newPath.join('/'));
     };
 
-    //  -  Get current menu's settings  -
-    var settingsFile = zspin.dataPath('Settings', $scope.menu+'.ini');
-    ini.parse(settingsFile).then(function(data) {
-      $scope.settings = data;
+    $scope.back = function() {
+      var newMenus = $scope.menus.slice(0, $scope.menus.length-1);
+      var newPath = ['', 'menus'].concat(newMenus);
+      $location.path(newPath.join('/'));
+    };
+
+    /*************************** Settings loading ****************************/
+
+    var menu = menus($scope.menu);
+
+    menu.settings().then(function(settings) {
+      $scope.settings = settings;
     });
 
-    //  -  Get current menu's entries  -
-    var databaseFile = zspin.dataPath('Databases', $scope.menu, $scope.menu+'.xml');
-    var wheelImagesRoot = zspin.dataPath('Media', $scope.menu, 'Images', 'Wheel');
+    menu.databases().then(function(databases) {
+      $scope.databases = databases;
 
-    xml.parse(databaseFile).then(function(database) {
-      $scope.database = database;
-      $scope.entries = database.menu.game.map(function(item) {
-        var name = item.name;
-        var path = fs.join(wheelImagesRoot, name+'.png');
-        return {name: name, file: path};
+      // Map databases game enties to jwheel entries
+      $scope.entries = databases.menu.game.map(function(item) {
+        var filename = item.name+'.png';
+        var filename = menu.mediaPath('Images', 'Wheel', filename);
+        return {name: item.name, file: filename};
       });
+
     });
 
   }

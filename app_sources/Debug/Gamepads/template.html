@@ -1,5 +1,15 @@
-<div id="DebugGamepad">
-  <pre gamepadAction="keymove" gamepad="{'*': undefined}">
-    {{gamepads|json}}
-  </pre>
+<div id="DebugGamepad" class="container" gamepadAction="keymove" gamepad="{'*': update}" >
+  <h1>Gamepads</h1>
+
+  <div class="row">
+    <div class="one-half column" ng-repeat="(idx, gamepad) in gamepads">
+      <h2>gpd#{{idx}}</h2>
+
+      <h3>status:</h3>
+      <json-formatter json="gamepad" open=1></json-formatter>
+      <hr/>
+      <h3>log:</h3>
+      <pre ng-bind="log[idx]|json"></pre>
+    </div>
+  </div>
 </div>
