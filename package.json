@@ -19,7 +19,14 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gulp": "node ./node_modules/.bin/gulp",
+    "bower": "node ./node_modules/.bin/bower",
+    "nwbuild": "node ./node_modules/.bin/nwbuild",
+    "make-install": "npm install && npm run bower -- install",
+    "make-build": "npm run gulp",
+    "make-watch": "npm run gulp -- watch",
+    "make-run": "npm run nwbuild -- -r ./build"
   },
   "author": "",
   "license": "ISC"
