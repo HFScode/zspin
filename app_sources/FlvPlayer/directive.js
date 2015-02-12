@@ -64,7 +64,6 @@ app.directive('flvplayer', ['$window', '$timeout',
           controls._rpc('setVolume', volume);
         };
         controls.setPosition = function(time) {
-          console.log('setPosition>', time);
           controls._rpc('setPosition', Math.round(time*1000));
         };
 
@@ -89,8 +88,9 @@ app.directive('flvplayer', ['$window', '$timeout',
           },
           onFinished: function () {
             controls.setPosition(0);
-            if (options.loop)
-              controls.play();
+            if (options.loop) {
+              $timeout(controls.play, 100);
+            }
           },
           onUpdate: function () {
             scope.$apply(function() {
@@ -164,7 +164,6 @@ app.directive('flvplayer', ['$window', '$timeout',
             document[uid].width = scope.width || value;
         });
         scope.$watch('options.height', function(value) {
-          console.log('o.height',  value);
           if (value || value === 0)
             document[uid].height = scope.height || value;
         });
