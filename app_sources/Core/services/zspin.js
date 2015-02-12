@@ -3,7 +3,17 @@
 app.factory('zspin', ['fs',
   function (fs) {
     console.log('zspin - init');
+
     var gui = require('nw.gui');
+    var flashTrust = require('nw-flash-trust');
+
+    try {
+      var appName = 'zspin';
+      var trustManager = flashTrust.initSync(appName);
+    } catch(err) {
+      if (err.message === 'Flash Player config folder not found.') {
+      }
+    }
 
     var service = {};
 
@@ -22,6 +32,13 @@ app.factory('zspin', ['fs',
       var args = [].slice.call(arguments, 0);
       return fs.join.apply(fs, [path].concat(args));
     };
+
+    var root = process.cwd();
+    var introFile = fs.join(root, 'swf', 'player_flv_js.swf');
+    trustManager.add(introFile);
+    console.log('flash trust', trustManager.list());
+
+
     // fs.mkdir(service.mediasPath);
 
     // // Setting services's paths
