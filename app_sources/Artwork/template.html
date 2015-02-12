@@ -1,20 +1,12 @@
 
-<img ng-cloak ng-if="file.type=='png'" id="{{name}}" class="theme-entry theme-entry-item" ng-src="{{file.path}}" ng-style="style" />
+<div ng-cloak id="{{name}}" class="theme-entry" ng-style="style">
+  <img ng-if="file.type=='png'" class="theme-entry-item" ng-src="{{file.path}}" width="100%" height="100%"/>
 
-<div ng-cloak ng-if="file.type=='swf'" id="{{name}}" class="theme-entry" ng-style="style" >
-  <object width="100%" height="100%" data="{{file.path}}" class="theme-entry-item" type="application/x-shockwave-flash">
+  <object ng-if="file.type=='swf'" class="theme-entry-item" data="{{file.path}}" type="application/x-shockwave-flash" width="100%" height="100%">
     <param name="autoplay" value="true">
     <param name="wmode" value="transparent">
     <param name="scale" value="exactfit">
   </object>
-</div>
 
-<div ng-cloak ng-if="file.type=='flv'" id="{{name}}" class="theme-entry" ng-style="style">
-  <object type="application/x-shockwave-flash" data="swf/player_flv_maxi.swf" width="100%" height="100%">
-    <param name="autoplay" value="true" />
-    <param name="movie" value="swf/player_flv_maxi.swf" />
-    <param name="scale" value="exactfit" />
-    <param name="wmode" value="transparent" />
-    <param name="FlashVars" value="flv=file://{{file.path}}&margin=0&showplayer=never&autoplay=1&loop=1&volume=0" />
-  </object>
+  <flvplayer ng-if="file.type=='flv'" class="theme-entry-item" flv="{{file.path}}" loop="loop" autoplay="true" width="100%" height="100%" ></flvplayer>
 </div>

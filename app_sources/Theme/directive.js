@@ -5,6 +5,7 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
 
     return {
       restrict: 'E',
+      replace: true,
       transclude: true,
       templateUrl: 'Theme/template.html',
       scope: {
