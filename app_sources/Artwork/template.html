@@ -1,12 +1,11 @@
+<div ng-cloak class="theme-entry" ng-style="style">
+  <img ng-if="type=='png'" class="theme-entry-item" ng-src="{{src}}" width="100%" height="100%"/ ng-load="getImageSize()">
 
-<div ng-cloak id="{{name}}" class="theme-entry" ng-style="style">
-  <img ng-if="file.type=='png'" class="theme-entry-item" ng-src="{{file.path}}" width="100%" height="100%"/>
-
-  <object ng-if="file.type=='swf'" class="theme-entry-item" data="{{file.path}}" type="application/x-shockwave-flash" width="100%" height="100%">
+  <object ng-if="type=='swf'" class="theme-entry-item" data="{{src}}" type="application/x-shockwave-flash" width="100%" height="100%">
     <param name="autoplay" value="true">
     <param name="wmode" value="transparent">
     <param name="scale" value="exactfit">
   </object>
 
-  <flvplayer ng-if="file.type=='flv'" class="theme-entry-item" flv="{{file.path}}" loop="loop" autoplay="true" width="100%" height="100%" ></flvplayer>
+  <flvplayer ng-if="type=='flv'" class="theme-entry-item" flv="{{src}}" loop="true" autoplay="true" width="100%" height="100%" />
 </div>

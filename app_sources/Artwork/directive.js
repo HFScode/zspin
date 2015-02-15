@@ -8,74 +8,55 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
       transclude: true,
       templateUrl: 'Artwork/template.html',
       scope: {
-        name: '=',
+        src: '@',
         config: '=',
-        file: '=',
-        overlay: '=',
+        overlay: '@',
       },
       link: function(scope, el, attrs) {
 
-        // Get the size of a .swf (w,h) by parsing the file
-        function getFlashSize() {
-          var d = $q.defer();
-          var path = scope.file.path;
-          SWFReader.read(scope.file.path, function(err, res) {
-            if (err) { d.reject(err); }
-            else { d.resolve(res.frameSize); }
-          });
-          return d.promise;
-        }
-
-        function getVideoSize() {
-          var d = $q.defer();
-          $timeout(d.resolve, 0);
-          return d.promise;
-        }
-
-
-        // Get the size of an <img> by asking the browser
-        function getImageSize() {
-          var d = $q.defer();
-          var $el = el.find('.theme-entry-item');
-          $el.on('load', function(e) {
-            d.resolve({
-              width  : e.target.naturalWidth,
-              height : e.target.naturalHeight,
+        // Get the size of a .swf (w,h) by parsing the src
+        scope.getFlashSize = function() {
+          SWFReader.read(scope.src, function(err, res) {
+            scope.$apply(function() {
+              scope.size = res && res.frameSize;
             });
           });
-          return d.promise;
-        }
+        };
+
+        // Get the size of an <img> by asking the browser
+        scope.getImageSize = function() {
+          console.log('hey !');
+          var $el = el.find('.theme-entry-item').on();
+          scope.size = {
+            width  : $el[0].naturalWidth,
+            height : $el[0].naturalHeight,
+          };
+        };
 
         /*------------------------- Get Artwork Size ------------------------*/
-
         scope.size = null;
 
-        function updateSize(size) {
-          console.log('topdelire', scope.name);
-          scope.size = size || {};
-          updateStyle();
+        function extname(filename) {
+          return filename.toLowerCase().replace(/^.*\./, '');
+        }
+        function basename(filename) {
+          return filename.toLowerCase().replace(/\..*?$/, '');
         }
 
-        scope.$watch('file', function(file) {
-          // if file is a flash file
-          if (file && file.type === 'swf')
-            getFlashSize().then(updateSize);
-          // if file is a plain image file
-          else if (file && file.type === 'png')
-            getImageSize().then(updateSize);
-          // if the image is a flash video
-          else if (file && file.type === 'flv')
-            getVideoSize().then(updateSize);
-         });
+        scope.type = extname(scope.src);
+        if (scope.type === 'swf')
+          scope.getFlashSize();
+        if (scope.type === 'flv')
+          scope.size = {width: 200, height: 200};
 
         /*------------------------ Set Artwork Style ------------------------*/
 
-        scope.style = {display: 'none'};
+        scope.style = {opacity: 0};
 
         // Conpute & Set element's css rules
         function updateStyle() {
-          scope.style = {display: 'none'};
-          console.log('>',  scope.name, scope.config, scope.size);
+          scope.style = {opacity: 0};
+          // console.log('>',  scope.name, scope.config, scope.size);
           // If we miss either config or size, abort
           if (!scope.config || !scope.size)
             return ;
@@ -98,7 +79,7 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
           // If the item is an overlay, the previously parsed config
           // is its artorwk's and the actual size and position can be
           // deduced from it.
-          if (scope.overlay === true) {
+         if (scope.overlay && scope.overlay !== 'false') {
             // By default, the overlay has its center aligned with the artwork's center
             css.left = css.left + ((css.width - scope.size.width) / 2);
             css.top  = css.top + ((css.height - scope.size.height) / 2);
@@ -123,9 +104,10 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
         }
 
         // Update styles when needed
-        scope.$on('resize', updateStyle);
-        // scope.$watch('size', updateStyle);
+        scope.$watch('src', updateStyle);
+        scope.$watch('size', updateStyle);
         scope.$watch('config', updateStyle);
+        scope.$on('resize', updateStyle);
 
       }
     };

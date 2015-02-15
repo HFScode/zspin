@@ -10,13 +10,6 @@
     display: block;
     z-index: 1;
 
-    &#background {
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
     // This makes no sense
     &#artwork4 { z-index: 5; }
     &#artwork3 { z-index: 4; }

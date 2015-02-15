@@ -9,7 +9,6 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     $scope.path = $routeParams.path;
     $scope.menus = $scope.path.split('/');
     $scope.menu = $scope.menus[$scope.menus.length-1];
-    console.log('local', $scope.path, $scope.menu);
 
     //  -  Defining wheel parameters  -
     $scope.wheelItems = [];
@@ -50,7 +49,8 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       $timeout.cancel(updatePromise);
       updatePromise = $timeout(function() {
         var name = $scope.curItem.name;
-        $scope.theme = name;
+        $scope.theme = zspin.path('Media', $scope.menu, 'Themes', name+'.zip');
+        // $scope.theme = name;
       }, 200);
       $scope.curItem = $scope.wheelControl.select();
     };
@@ -82,7 +82,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     /*************************** Settings loading ****************************/
 
     var menu = menus($scope.menu);
-
+    $scope.video = zspin.path('Media', $scope.menu, 'Video', 'OpenBOR.flv');
     menu.settings().then(function(settings) {
       $scope.settings = settings;
     });
@@ -92,8 +92,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
 
       // Map databases game enties to jwheel entries
       $scope.entries = databases.menu.game.map(function(item) {
-        var filename = item.name+'.png';
-        var filename = menu.mediaPath('Images', 'Wheel', filename);
+        var filename = menu.mediaPath('Images', 'Wheel', item.name+'.png');
         return {name: item.name, file: filename};
       });
 
