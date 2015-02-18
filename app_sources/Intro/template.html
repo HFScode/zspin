@@ -1,3 +1,10 @@
 <div id="Intro">
-Start
+  <flvplayer flv="file://{{video}}" ng-model="player" autoplay="true" loop="true"></flvplayer>
+  <button ng-click="player.controls.play()">Play</button>
+  <button ng-click="player.controls.pause()">Pause</button>
+  <button ng-click="player.controls.stop()">Stop</button>
+  <button ng-click="player.controls.setPosition(55)">t=55</button>
+  <button ng-click="player.controls.setVolume(100)">v=100</button>
+  <button ng-click="player.controls.setVolume(0)">v=0</button>
+  <json-formatter json="player" open=1></json-formatter>
 </div>
