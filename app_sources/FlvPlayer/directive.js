@@ -4,7 +4,6 @@ app.directive('flvplayer', ['$window', '$timeout',
       restrict: 'E',
       transclude: true,
       scope: {
-        autoload : '@',
         autoplay : '@',
         loop     : '@',
         flv      : '@',
@@ -22,12 +21,11 @@ app.directive('flvplayer', ['$window', '$timeout',
         // Model options
         var options = scope.options = model.options = model.options || {};
         options.flv           = scope.flv              || options.flv       || '';
-        options.autoload      = !!scope.autoload       || options.autoload  || true;
         options.autoplay      = !!scope.autoplay       || options.autoplay  || false;
         options.loop          = !!scope.loop           || options.loop      || false;
         options.width         = parseInt(scope.width)  || options.width     || 320;
         options.height        = parseInt(scope.height) || options.height    || 240;
-        options.volume        = parseInt(scope.volume) || options.volume    || 1;
+        options.volume        = parseInt(scope.volume) || options.volume    || 0;
         options.buffer        = options.buffer         || 5;
         options.interval      = options.interval       || 100;
 
@@ -36,7 +34,7 @@ app.directive('flvplayer', ['$window', '$timeout',
         status.ready         = false;
         status.position      = 0;
         status.duration      = NaN;
-        status.volume        = 100;
+        status.volume        = 0;
         status.isPlaying     = false;
         status.bytesTotal    = NaN;
         status.bytesLoaded   = NaN;
@@ -48,9 +46,6 @@ app.directive('flvplayer', ['$window', '$timeout',
         controls._rpc = function(name, args) {
           document[uid].SetVariable('method:'+name, args||'');
         };
-        controls.setUrl = function(url) {
-          controls._rpc('setUrl', url);
-        };
         controls.play = function() {
           controls._rpc('play');
         };
@@ -59,9 +54,10 @@ app.directive('flvplayer', ['$window', '$timeout',
         };
         controls.stop = function() {
           controls._rpc('stop');
+          controls._rpc('setPosition', '0');
         };
         controls.setVolume = function(volume) {
-          controls._rpc('setVolume', volume);
+          controls._rpc('setVolume', volume||'0');
         };
         controls.setPosition = function(time) {
           controls._rpc('setPosition', Math.round(time*1000));
@@ -70,7 +66,7 @@ app.directive('flvplayer', ['$window', '$timeout',
         window[uid] = {
           onInit: function () {
             scope.$apply(function() {
-              controls.setVolume();
+              controls.setVolume(status.volume);
               status.ready = true;
             });
           },
@@ -87,10 +83,6 @@ app.directive('flvplayer', ['$window', '$timeout',
           onKeyUp: function (keyCode) {
           },
           onFinished: function () {
-            controls.setPosition(0);
-            if (options.loop) {
-              $timeout(controls.play, 100);
-            }
           },
           onUpdate: function () {
             scope.$apply(function() {
@@ -103,44 +95,53 @@ app.directive('flvplayer', ['$window', '$timeout',
               status.isPlaying    = l.isPlaying !== 'false';
               status.position     = l.position/1000 || 0;
               status.duration     = l.duration/1000;
-              status.volume       = parseInt(l.volume);
+              status.volume       = l.volume;
             });
+            var lookahead = options.interval / 1000;
+            var remaining = status.duration - status.position;
+            if (options.loop && remaining < lookahead) {
+              controls.stop();
+              controls.play();
+            }
           },
         };
 
+        function updateDOM() {
+          var flashVars = [
+            'listener='      + uid,                        // The javascript listener waiting for the flash events.
+            'flv='           + options.flv,                // Source of the flv video file
+            'autoplay='      + (options.autoplay?'1':'0'), // 1 to auto-play
+            'buffer='        + options.buffer,             // The number of seconds to buffer. By default set to 5
+            'interval='      + options.interval,           // Time interval between updates, in milliseconds.
+            'autoload=1',                                  // 1 to auto-load
+            'bgcolor=#000000',
+            'useHandCursor=0',                             // 0 to hide the hand when hovering the video.
+            'useexternalinterface=1',                      // 1 to use ExternalInterface to update the javascript listener.
+          ].join('&');
 
-        var flashVars = [
-          'listener='      + uid,                        // The javascript listener waiting for the flash events.
-          'flv='           + options.flv,                // Source of the flv video file
-          'autoload='      + (options.autoload?'1':'0'), // 1 to auto-play
-          'autoplay='      + (options.autoplay?'1':'0'), // 1 to auto-play
-          'buffer='        + options.buffer,             // The number of seconds to buffer. By default set to 5
-          'interval='      + options.interval,           // Time interval between updates, in milliseconds.
-          'useHandCursor=0',                             // 0 to hide the hand when hovering the video.
-          'useexternalinterface=1',                      // 1 to use ExternalInterface to update the javascript listener.
-        ].join('&');
-
-        el.html([
-            '<object id="'+uid+'" type="application/x-shockwave-flash"',
-            '    data="'+file+'"',
-            '    width="'+options.width+'"',
-            '    height="'+options.height+'">',
-            '  <param name="movie" value="'+file+'" />',
-            '  <param name="autoplay" value="true" />',
-            '  <param name="wmode" value="transparent" />',
-            '  <param name="AllowScriptAccess" value="always" />',
-            '  <param name="AllowNetworking" value="all" />',
-            '  <param name="FlashVars" value="'+flashVars+'" />',
-            '</object>',
-          ].join('\n')
-        );
+          el.html([
+              '<object id="'+uid+'" type="application/x-shockwave-flash"',
+              '    data="'+file+'"',
+              '    width="'+options.width+'"',
+              '    height="'+options.height+'">',
+              '  <param name="movie" value="'+file+'">',
+              '  <param name="autoplay" value="true">',
+              '  <param name="wmode" value="transparent">',
+              '  <param name="AllowScriptAccess" value="always">',
+              '  <param name="AllowNetworking" value="all">',
+              '  <param name="FlashVars" value="'+flashVars+'">',
+              '</object>',
+            ].join('')
+          );
+        }
 
         scope.$watch('flv', function(value) {
+          if (value)
           options.flv = value;
         });
         scope.$watch('loop', function(value) {
           if (value)
-            options.loop = value !== 'false';
+            options.loop = (value !== 'false');
         });
         scope.$watch('width', function(value) {
           if (value || value === 0)
@@ -151,24 +152,24 @@ app.directive('flvplayer', ['$window', '$timeout',
             options.height = value;
         });
         scope.$watch('volume', function(value) {
-          if (value || value === 0)
+          if ((value || value === 0) && status.ready)
             options.volume = value;
         });
 
         scope.$watch('options.flv', function(value) {
-          if (value || value === 0)
-            controls.setUrl(value);
+          if (value)
+            updateDOM();
         });
         scope.$watch('options.width', function(value) {
-          if (value || value === 0)
+          if ((value || value === 0) && document[uid])
             document[uid].width = scope.width || value;
         });
         scope.$watch('options.height', function(value) {
-          if (value || value === 0)
+          if ((value || value === 0) && document[uid])
             document[uid].height = scope.height || value;
         });
         scope.$watch('options.volume', function(value) {
-          if (value || value === 0)
+          if ((value || value === 0) && status.ready)
             controls.setVolume(parseInt(value));
         });
 
