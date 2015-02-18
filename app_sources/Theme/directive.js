@@ -14,17 +14,6 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
       },
       link: function(scope, el, attrs) {
 
-        function extname(filename) {
-          return filename.toLowerCase().replace(/^.*\./, '');
-        }
-        function basename(filename) {
-          return filename.toLowerCase().replace(/\..*?$/, '');
-        }
-
-        function tmp_path () {
-          return fs.join.bind(fs, scope.tmp.path).apply(fs, arguments);
-        }
-
         function updateEntries() {
           if (!scope.src) return;
 
@@ -41,6 +30,7 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
             return fs.mktmpdir();
           }).then(function (tmp) {
             scope.tmp = tmp;
+            scope.path = tmp.path;
 
             // Extract Zip file into temporary folder
             return zip.extract(scope.src, scope.tmp.path);
@@ -53,9 +43,10 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
 
             // Parse files entries into usefull objects
             scope.artworks = files.filter(function(file) {
-              return allowedExts.indexOf(extname(file)) !== -1;
+              return allowedExts.indexOf(fs.extname(file)) !== -1;
             }).map(function(file) {
-              return {name: basename(file), file: tmp_path(file)};
+              var path = scope.tmp.path;
+              return {name: fs.basename(file), file: fs.join(scope.path, file)};
             });
 
             // Add video from static
@@ -65,7 +56,7 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
             }
 
             // Load Theme.xml for theme config
-            return xml.parse(tmp_path('Theme.xml'));
+            return xml.parse(fs.join(scope.path, 'Theme.xml'));
           }).then(function (config) {
 
             // Register scope configs in scope

@@ -1,5 +1,5 @@
 <div ng-cloak class="Artwork" ng-style="style">
-  <img ng-if="type=='png'" class="Artwork-item" ng-src="{{src}}" width="100%" height="100%"/ ng-load="getImageSize()">
+  <img ng-if="type=='png'" class="Artwork-item" ng-src="{{src}}" width="100%" height="100%" ng-load="getImageSize()">
 
   <object ng-if="type=='swf'" class="Artwork-item" data="{{src}}" type="application/x-shockwave-flash" width="100%" height="100%">
     <param name="autoplay" value="true">

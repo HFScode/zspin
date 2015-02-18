@@ -18,100 +18,102 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
         scope.getFlashSize = function() {
           SWFReader.read(scope.src, function(err, res) {
             scope.$apply(function() {
-              scope.size = res && res.frameSize;
+              scope.naturalSize = res && res.frameSize;
             });
           });
         };
 
         // Get the size of an <img> by asking the browser
         scope.getImageSize = function() {
-          var $el = el.find('.Artwork-item').on();
-          scope.size = {
+          var $el = el.find('.Artwork-item');
+          scope.naturalSize = {
             width  : $el[0].naturalWidth,
             height : $el[0].naturalHeight,
           };
         };
 
         /*------------------------- Get Artwork Size ------------------------*/
-        scope.size = null;
-
-        function extname(filename) {
-          return filename.toLowerCase().replace(/^.*\./, '');
-        }
-        function basename(filename) {
-          return filename.toLowerCase().replace(/\..*?$/, '');
-        }
+        scope.naturalSize = null;
 
         function updateType() {
-          scope.type = extname(scope.src||'');
-          if (scope.type === 'swf') {
+          scope.type = fs.extname(scope.src||'');
+          scope.naturalSize = null;
+          if (scope.type === 'swf')
             scope.getFlashSize();
-          } else if (scope.type === 'flv') {
-            scope.size = {width: 200, height: 200};
-          } else {
-            scope.size = null;
-          }
+          if (scope.type === 'flv')
+            scope.naturalSize = {width: 200, height: 200};
+          // if (scope.type === 'png')
+          //   scope.getImageSize();
         }
 
-        /*------------------------ Set Artwork Style ------------------------*/
+        /*--------------------- Set Artwork Bounding Box --------------------*/
 
-        scope.style = {opacity: 0};
-
+        scope.box = {};
         // Conpute & Set element's css rules
-        function updateStyle() {
-          scope.style = {opacity: 0};
-          // console.log('>',  scope.name, scope.config, scope.size);
+        function updateBox() {
+          scope.box = {};
           // If we miss either config or size, abort
-          if (!scope.config || !scope.size)
+          if (!scope.config || !scope.naturalSize)
             return ;
 
           // Init variables
-          var css = {};
+          var box = {};
           var conf = scope.config;
 
           // Original artork size might be overrided in config
           // otherwise, use the native artwork size
-          css.width  = (conf.w || scope.size.width || 0);
-          css.height = (conf.h || scope.size.height || 0);
+          box.width  = (conf.w || scope.naturalSize.width || 0);
+          box.height = (conf.h || scope.naturalSize.height || 0);
 
           // Position (x,y) is defined as the position of the center
           // of the resized artwork relative to window (top,left)
           // posX = x - (width / 2)
-          css.left = (conf.x - (css.width / 2)) || 0;
-          css.top = (conf.y - (css.height / 2)) || 0;
+          box.left = (conf.x - (box.width / 2)) || 0;
+          box.top = (conf.y - (box.height / 2)) || 0;
 
           // If the item is an overlay, the previously parsed config
           // is its artorwk's and the actual size and position can be
           // deduced from it.
          if (scope.overlay && scope.overlay !== 'false') {
             // By default, the overlay has its center aligned with the artwork's center
-            css.left = css.left + ((css.width - scope.size.width) / 2);
-            css.top  = css.top + ((css.height - scope.size.height) / 2);
+            box.left = box.left + ((box.width - scope.naturalSize.width) / 2);
+            box.top  = box.top + ((box.height - scope.naturalSize.height) / 2);
             // Apply overlay offsets if any
-            css.left += parseInt(conf.overlayoffsetx);
-            css.top += parseInt(conf.overlayoffsety);
+            box.left += parseInt(conf.overlayoffsetx);
+            box.top += parseInt(conf.overlayoffsety);
             // The overlay size is its native one
-            css.width = (scope.size.width || 0);
-            css.height = (scope.size.height || 0);
+            box.width = (scope.naturalSize.width || 0);
+            box.height = (scope.naturalSize.height || 0);
           }
+
+          scope.box = box;
+          updateStyle();
+        }
+
+        /*---------------------- Set Artwork css Style ----------------------*/
+
+        scope.style = {opacity: 0};
+
+        function updateStyle() {
+          var css = {};
 
           // Scale from the Hyperspin's 1024 * 768 to zspin window size
           var W_RATIO = window.innerWidth / 1024;
           var H_RATIO = window.innerHeight / 768;
 
-          css.width = css.width * W_RATIO;
-          css.height = css.height * H_RATIO;
-          css.top = css.top * H_RATIO;
-          css.left = css.left * W_RATIO;
-
+          css.width  = scope.box.width * W_RATIO;
+          css.height = scope.box.height * H_RATIO;
+          css.top    = scope.box.top * H_RATIO;
+          css.left   = scope.box.left * W_RATIO;
           scope.style = css;
         }
 
         // Update type detection
         scope.$watch('src', updateType);
         // Update styles when needed
-        scope.$watch('size', updateStyle);
-        scope.$watch('config', updateStyle);
+        scope.$watch('config', updateBox);
+        scope.$watch('naturalSize', updateBox);
+        // Rescale styles when needed
         scope.$on('resize', updateStyle);
 
       }

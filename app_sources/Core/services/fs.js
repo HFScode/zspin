@@ -12,6 +12,14 @@ app.factory('fs', ['$q',
     //  -  Services for file system  -
     var service = {
 
+      extname: function(filename) {
+        return filename.toLowerCase().replace(/^.*\./, '');
+      },
+
+      basename: function (filename) {
+        return filename.toLowerCase().replace(/\..*?$/, '');
+      },
+
       join: function() {
         return path.join.apply(path, arguments);
       },

@@ -83,6 +83,21 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
 
     var menu = menus($scope.menu);
     $scope.demo = zspin.path('Media', $scope.menu, 'Video', 'OpenBOR.flv');
+
+    // Prob for intro video file
+    var videoPath = zspin.path('Media', $scope.menu, 'Video');
+    $scope.videoPlaceholder = null;
+    fs.readdir(videoPath).then(function(files) {
+      var videos = files.filter(function(file) {
+        return fs.basename(file) === 'no video';
+      }).map(function(file) {
+        return fs.join(videoPath, file);
+      });
+      if (videos.length !== 0)
+        $scope.videoPlaceholder = videos[0];
+    });
+
+
     menu.settings().then(function(settings) {
       $scope.settings = settings;
     });
