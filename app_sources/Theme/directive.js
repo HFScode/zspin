@@ -10,7 +10,7 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
       templateUrl: 'Theme/template.html',
       scope: {
         src: '@',
-        video: '@',
+        demo: '@',
       },
       link: function(scope, el, attrs) {
 
@@ -58,14 +58,22 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
               return {name: basename(file), file: tmp_path(file)};
             });
 
+            // Add video from static
+            if (scope.demo) {
+              var demo = {name: 'demo', file: scope.demo};
+              scope.artworks.push(demo);
+            }
+
             // Load Theme.xml for theme config
-            var configPath = fs.join(scope.tmp.path, 'Theme.xml');
-            return xml.parse(configPath);
+            return xml.parse(tmp_path('Theme.xml'));
           }).then(function (config) {
 
-            // Save config in scope
+            // Register scope configs in scope
             scope.configs = config.Theme || {};
+            // Set default background config
             scope.configs.background = {w: '1024', h: '768'};
+            // If we have a demo to play, it will be the same config
+            scope.configs.demo = scope.configs.video;
           });
         }
 
