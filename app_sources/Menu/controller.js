@@ -50,7 +50,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       updatePromise = $timeout(function() {
         var name = $scope.curItem.name;
         $scope.theme = zspin.path('Media', $scope.menu, 'Themes', name+'.zip');
-        // $scope.theme = name;
+        $scope.demo = zspin.path('Media', $scope.menu, 'Video', 'OpenBOR.flv');
       }, 200);
       $scope.curItem = $scope.wheelControl.select();
     };
@@ -82,7 +82,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     /*************************** Settings loading ****************************/
 
     var menu = menus($scope.menu);
-    $scope.video = zspin.path('Media', $scope.menu, 'Video', 'OpenBOR.flv');
+    $scope.demo = zspin.path('Media', $scope.menu, 'Video', 'OpenBOR.flv');
     menu.settings().then(function(settings) {
       $scope.settings = settings;
     });
