@@ -25,8 +25,7 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
 
         // Get the size of an <img> by asking the browser
         scope.getImageSize = function() {
-          console.log('hey !');
-          var $el = el.find('.theme-entry-item').on();
+          var $el = el.find('.Artwork-item').on();
           scope.size = {
             width  : $el[0].naturalWidth,
             height : $el[0].naturalHeight,
@@ -43,11 +42,16 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
           return filename.toLowerCase().replace(/\..*?$/, '');
         }
 
-        scope.type = extname(scope.src);
-        if (scope.type === 'swf')
-          scope.getFlashSize();
-        if (scope.type === 'flv')
-          scope.size = {width: 200, height: 200};
+        function updateType() {
+          scope.type = extname(scope.src||'');
+          if (scope.type === 'swf') {
+            scope.getFlashSize();
+          } else if (scope.type === 'flv') {
+            scope.size = {width: 200, height: 200};
+          } else {
+            scope.size = null;
+          }
+        }
 
         /*------------------------ Set Artwork Style ------------------------*/
 
@@ -103,8 +107,9 @@ app.directive('artwork', ['$q', '$timeout', 'fs',
           scope.style = css;
         }
 
+        // Update type detection
+        scope.$watch('src', updateType);
         // Update styles when needed
-        scope.$watch('src', updateStyle);
         scope.$watch('size', updateStyle);
         scope.$watch('config', updateStyle);
         scope.$on('resize', updateStyle);
