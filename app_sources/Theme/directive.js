@@ -10,7 +10,7 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
       templateUrl: 'Theme/template.html',
       scope: {
         src: '@',
-        demo: '@',
+        video: '@',
       },
       link: function(scope, el, attrs) {
 
@@ -46,14 +46,14 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
               return allowedExts.indexOf(fs.extname(file)) !== -1;
             }).map(function(file) {
               var path = scope.tmp.path;
-              return {name: fs.basename(file), file: fs.join(scope.path, file)};
+              return {name: fs.basenamelc(file), file: fs.join(scope.path, file)};
             });
 
-            // Add video from static
-            if (scope.demo) {
-              var demo = {name: 'demo', file: scope.demo};
-              scope.artworks.push(demo);
-            }
+            // // Add video from static
+            // if (scope.video) {
+            //   var demo = {name: 'demo', file: scope.demo};
+            //   scope.artworks.push(demo);
+            // }
 
             // Load Theme.xml for theme config
             return xml.parse(fs.join(scope.path, 'Theme.xml'));
@@ -64,7 +64,7 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
             // Set default background config
             scope.configs.background = {w: '1024', h: '768'};
             // If we have a demo to play, it will be the same config
-            scope.configs.demo = scope.configs.video;
+            // scope.configs.demo = scope.configs.video;
           });
         }
 

@@ -49,8 +49,8 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       $timeout.cancel(updatePromise);
       updatePromise = $timeout(function() {
         var name = $scope.curItem.name;
+        $scope.video = $scope.videos[name] || menus.defaultVideo;
         $scope.theme = zspin.path('Media', $scope.menu, 'Themes', name+'.zip');
-        $scope.demo = zspin.path('Media', $scope.menu, 'Video', 'OpenBOR.flv');
       }, 200);
       $scope.curItem = $scope.wheelControl.select();
     };
@@ -82,26 +82,19 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     /*************************** Settings loading ****************************/
 
     var menu = menus($scope.menu);
-    $scope.demo = zspin.path('Media', $scope.menu, 'Video', 'OpenBOR.flv');
+    // $scope.demo = zspin.path('Media', $scope.menu, 'Video', 'OpenBOR.flv');
 
-    // Prob for intro video file
-    var videoPath = zspin.path('Media', $scope.menu, 'Video');
-    $scope.videoPlaceholder = null;
-    fs.readdir(videoPath).then(function(files) {
-      var videos = files.filter(function(file) {
-        return fs.basename(file) === 'no video';
-      }).map(function(file) {
-        return fs.join(videoPath, file);
-      });
-      if (videos.length !== 0)
-        $scope.videoPlaceholder = videos[0];
+    // Load menu videos
+    menu.videos().then(function(videos) {
+      $scope.videos = videos;
     });
 
-
+    // Load menu settings
     menu.settings().then(function(settings) {
       $scope.settings = settings;
     });
 
+    // Load menu database
     menu.databases().then(function(databases) {
       $scope.databases = databases;
 
@@ -110,7 +103,6 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
         var filename = menu.mediaPath('Images', 'Wheel', item.name+'.png');
         return {name: item.name, file: filename};
       });
-
     });
 
   }

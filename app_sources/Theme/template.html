@@ -2,5 +2,7 @@
   <!-- <pre ng-bind="configs|json"></pre> -->
   <!-- <pre ng-bind="artworks|json"></pre> -->
 
-  <artwork ng-repeat="artwork in artworks" id="{{artwork.name}}" src="{{artwork.file}}" config="configs[artwork.name]" overlay="{{artwork.name=='video'}}" />
+  <artwork ng-repeat="a in artworks" id="{{a.name}}" src="{{a.file}}" config="configs[a.name]" overlay="{{a.name=='video'}}" />
+  <artwork ng-if="video" id="demo" src="{{video}}" config="configs['video']" />
+
  </div>

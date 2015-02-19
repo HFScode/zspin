@@ -17,6 +17,10 @@ app.factory('fs', ['$q',
       },
 
       basename: function (filename) {
+        return filename.replace(/\..*?$/, '');
+      },
+
+      basenamelc: function (filename) {
         return filename.toLowerCase().replace(/\..*?$/, '');
       },
 

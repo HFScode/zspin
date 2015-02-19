@@ -11,7 +11,7 @@ app.controller('DebugMenusCtrl', ['$scope', 'zspin', 'fs', 'menus',
     fs.readdir(zspin.path('Settings')).then(function(dirs) {
       $scope.options = dirs.map(function(dir) {
         return dir.replace('.ini', '');
-      })
+      });
     });
 
     $scope.update = function() {
@@ -24,6 +24,12 @@ app.controller('DebugMenusCtrl', ['$scope', 'zspin', 'fs', 'menus',
       $scope.menu.databases().then(function(data) {
         $scope.databases = data;
       });
+      $scope.videos = {};
+      $scope.menu.videos().then(function(videos) {
+        $scope.videos = videos;
+      });
+
+
     };
   }
 ]);
