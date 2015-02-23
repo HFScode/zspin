@@ -83,6 +83,7 @@ app.directive('flvplayer', ['$window', '$timeout',
           onKeyUp: function (keyCode) {
           },
           onFinished: function () {
+            controls.stop();
           },
           onUpdate: function () {
             scope.$apply(function() {
