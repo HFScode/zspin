@@ -16,3 +16,4 @@ FIX
 
 - width height null sur artwork SWF
 - trouver un fix pour le background en SWF qui prend pas toute la taille
+- [Error: getaddrinfo ENOTFOUND] when `make run` with no internet connection
