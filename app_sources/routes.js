@@ -45,10 +45,16 @@ app.config(['$routeProvider',
       templateUrl: 'Debug/Gamepads/template.html',
     });
 
+    // settings debug
+    $routeProvider.when('/debug/settings', {
+      controller: 'DebugSettingsCtrl',
+      templateUrl: 'Debug/Settings/template.html',
+    });
+
     // main option menu
-    $routeProvider.when('/options', {
+    $routeProvider.when('/settings', {
       controller: 'SettingsCtrl',
-      templateUrl: 'Settings/stemplate.html',
+      templateUrl: 'Settings/template.html',
     });
 
     // error page
