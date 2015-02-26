@@ -32,6 +32,13 @@ app.config(['$routeProvider',
       templateUrl: 'Debug/Menus/template.html',
     });
 
+    // flvplayer debug
+    $routeProvider.when('/debug/flvplayer', {
+      controller: 'DebugFlvPlayerCtrl',
+      templateUrl: 'Debug/FlvPlayer/template.html',
+    });
+
+
     // gamepad debug
     $routeProvider.when('/debug/gamepads', {
       controller: 'DebugGamepadsCtrl',
