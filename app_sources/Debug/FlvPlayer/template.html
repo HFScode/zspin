@@ -1,0 +1,78 @@
+<div id="DebugFlvPlayer" class="container">
+  <h1>FlvPlayer</h1>
+
+  <div class="row">
+    <div class="one-half column">
+      <flvplayer
+        flv="{{flv}}"
+        loop="{{loop}}"
+        autoplay="{{autoplay}}"
+        volume="{{volume}}"
+        width="{{width}}"
+        height="{{height}}"
+        ng-model="player">
+      </flvplayer>
+    </div>
+    <div class="one-half column">
+      <label>flv</label>
+      <input type="text" class="u-full-width" ng-model="flv" />
+
+      <div class="row">
+        <div class="one-half column">
+          <label>
+            <input type="checkbox" ng-model="autoplay"/>
+            <span class="label-body">autoplay</span>
+          </label>
+        </div>
+        <div class="one-half column">
+          <label>
+            <input type="checkbox" ng-model="loop"/>
+            <span class="label-body">loop</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="one-half column">
+          <label>width</label>
+          <input type="number" ng-model="width" />
+        </div>
+        <div class="one-half column">
+          <label>height</label>
+          <input type="number" ng-model="height" />
+        </div>
+      </div>
+      <label>volume</label>
+      <input type="number" ng-model="volume" />
+
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="one-third column">
+      <h3>options:</h3>
+      <json-formatter json="player.options" open=1></json-formatter>
+    </div>
+    <div class="one-third column">
+      <h3>status:</h3>
+      <json-formatter json="player.status" open=1></json-formatter>
+    </div>
+    <div class="one-third column">
+      <h3>controls:</h3>
+      <div class="row">
+        <div class="one-half column">
+          <button class="u-full-width" ng-click="player.controls.play()">Play</button>
+        </div>
+        <div class="one-half column">
+          <button class="u-full-width" ng-click="player.controls.pause()">Pause</button>
+        </div>
+      </div>
+      <button class="u-full-width" ng-click="player.controls.stop()">Stop</button>
+      <input class="u-full-width" type="number" ng-model="setPosition" />
+      <button class="u-full-width" ng-click="player.controls.setPosition(setPosition)">setPosition</button>
+      <input class="u-full-width" type="number" ng-model="setVolume" />
+      <button class="u-full-width" ng-click="player.controls.setVolume(setVolume)">setVolume</button>
+    </div>
+
+  </div>
+</div>
