@@ -14,7 +14,7 @@ app.directive('flvplayer', ['$window', '$timeout',
       },
       link: function(scope, el, attrs) {
         var uid = 'flvplayer'+(''+Math.random()).replace(/[^0-9]/g,'');
-        var file = 'file:///Users/godric/Projects/zspin/zspin-gui/build/swf/player_flv_js.swf';
+        var file = 'swf/player_flv_js.swf';
 
 
         var model = scope.model || {};
