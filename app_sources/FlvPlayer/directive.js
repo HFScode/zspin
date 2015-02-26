@@ -66,7 +66,7 @@ app.directive('flvplayer', ['$window', '$timeout',
         window[uid] = {
           onInit: function () {
             scope.$apply(function() {
-              controls.setVolume(status.volume);
+              controls.setVolume(options.volume);
               status.ready = true;
             });
           },
@@ -144,6 +144,10 @@ app.directive('flvplayer', ['$window', '$timeout',
           if (value)
             options.loop = (value !== 'false');
         });
+        scope.$watch('autoplay', function(value) {
+          if (value)
+            options.autoplay = (value !== 'false');
+        });
         scope.$watch('width', function(value) {
           if (value || value === 0)
             options.width = value;
@@ -153,7 +157,7 @@ app.directive('flvplayer', ['$window', '$timeout',
             options.height = value;
         });
         scope.$watch('volume', function(value) {
-          if ((value || value === 0) && status.ready)
+          if ((value || value === 0))
             options.volume = value;
         });
 
