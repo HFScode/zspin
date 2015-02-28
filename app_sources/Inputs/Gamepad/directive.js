@@ -8,7 +8,6 @@ app.directive('gamepad', ['gamepads', function (gamepads) {
       var binder = gamepads.bindTo(scope);
 
       scope.$watch('gamepad', function(binds, oldbinds) {
-        console.log('gpbinds:', binds);
         for (var oldcombo in oldbinds)
           binder.del(oldcombo);
         for (var combo in binds)

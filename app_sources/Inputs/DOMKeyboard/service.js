@@ -37,7 +37,7 @@ app.factory('DOMKeyboard', ['$rootScope', '$window',
         combo.unshift('Alt');
       if (e.metaKey && e.keyIdentifier != 'Meta')
         combo.unshift(isOSX?'Ctrl':'Meta');
-      console.log(combo);
+
       return combo.join('+').toLowerCase();
     }
 

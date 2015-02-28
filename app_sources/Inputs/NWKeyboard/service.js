@@ -55,7 +55,7 @@ app.factory('NWKeyboard', ['$rootScope', '$window',
       var $id = this.$id;
 
       var combo = bind.combo;
-      console.log('add', combo);
+      // console.log('add', combo);
 
       // Register bind
       BINDS[$id] = BINDS[$id] || {};
@@ -80,12 +80,12 @@ app.factory('NWKeyboard', ['$rootScope', '$window',
       HISTORY[combo] = true;
       write_history();
 
-      console.log('added', BINDS, COMBOS, HOTKEYS);
+      // console.log('added', BINDS, COMBOS, HOTKEYS);
     };
 
     Binder.prototype.del = function (combo) {
       var $id = this.$id;
-      console.log('del', combo);
+      // console.log('del', combo);
 
       // Remove from lookup table & cleanup if needed
       if (COMBOS[combo] && COMBOS[combo][$id]) {
@@ -106,7 +106,7 @@ app.factory('NWKeyboard', ['$rootScope', '$window',
         delete HISTORY[combo];
         write_history();
       }
-      console.log('deleted', BINDS, COMBOS, HOTKEYS);
+      // console.log('deleted', BINDS, COMBOS, HOTKEYS);
 
     };
 
@@ -118,7 +118,7 @@ app.factory('NWKeyboard', ['$rootScope', '$window',
       delete HISTORY[combo];
     }
     write_history();
-    console.log('cleanup', HISTORY);
+    // console.log('cleanup', HISTORY);
 
     var service = new Binder($rootScope);
     service.bindTo = function($scope) {

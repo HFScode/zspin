@@ -21,7 +21,6 @@ app.controller('DebugInputsCtrl', ['$scope', 'DOMKeyboard', 'NWKeyboard',
 
     $scope.nwLog = [];
     function nwTick() {
-      console.log('tick!');
       var timestamp = (new Date()).toISOString();
       var slice = $scope.nwLog || [];
       slice.push(timestamp);
@@ -37,7 +36,6 @@ app.controller('DebugInputsCtrl', ['$scope', 'DOMKeyboard', 'NWKeyboard',
 
     $scope.gpLog = [];
     function gpTick() {
-      console.log('tick!');
       var timestamp = (new Date()).toISOString();
       var slice = $scope.gpLog || [];
       slice.push(timestamp);
