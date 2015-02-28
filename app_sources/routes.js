@@ -45,6 +45,12 @@ app.config(['$routeProvider',
       templateUrl: 'Debug/Gamepads/template.html',
     });
 
+    // gamepad debug
+    $routeProvider.when('/debug/inputs', {
+      controller: 'DebugInputsCtrl',
+      templateUrl: 'Debug/Inputs/template.html',
+    });
+
     // settings debug
     $routeProvider.when('/debug/settings', {
       controller: 'DebugSettingsCtrl',

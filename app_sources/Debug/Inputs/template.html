@@ -1,0 +1,36 @@
+<div id="DebugInputs" class="container" >
+  <h1>Inputs</h1>
+
+  <div class="row">
+    <div class="one-half column" domkeyboard="domBind">
+      <h2>DOMKeyboard</h2>
+
+      <label>Combo:</label>
+      <input type="text" ng-model="domCombo">
+
+      <h3>log:</h3>
+      <pre ng-bind="domLog|json"></pre>
+    </div>
+    <div class="one-half column" nwkeyboard="nwBind">
+      <h2>NWKeyboard</h2>
+
+      <label>Combo:</label>
+      <input type="text" ng-model="nwCombo">
+
+      <h3>log:</h3>
+      <pre ng-bind="nwLog|json"></pre>
+    </div>
+  </div>
+  <div class="row">
+    <div class="one-half column" gamepad="gpBind">
+      <h2>Gamepad</h2>
+
+      <label>Combo:</label>
+      <input type="text" ng-model="gpCombo">
+
+      <h3>log:</h3>
+      <pre ng-bind="gpLog|json"></pre>
+    </div>
+
+  </div>
+</div>

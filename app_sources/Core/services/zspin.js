@@ -52,11 +52,11 @@ app.factory('zspin', ['fs',
     // fs.mkdir(service.databasesPath);
 
     // Create a shortcut.
-    var shortcut = new gui.Shortcut({key: 'Ctrl+4'});
-    gui.App.registerGlobalHotKey(shortcut);
-    shortcut.on('active', function() {
-      gui.Window.get().show();
-    });
+    // var shortcut = new gui.Shortcut({key: 'Ctrl+A'});
+    // gui.App.registerGlobalHotKey(shortcut);
+    // shortcut.on('active', function() {
+    //   gui.Window.get().show();
+    // });
 
     //gui.App.unregisterGlobalHotKey(shortcut);
     console.log('zspin - ready');

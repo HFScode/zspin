@@ -4,7 +4,6 @@ app.factory('gamepads', ['$rootScope',
   function ($rootScope) {
     console.log('gamepads - init');
 
-    var LOCK = false;
     var PADS = {};
 
     var SCOPES = {};
@@ -65,7 +64,8 @@ app.factory('gamepads', ['$rootScope',
     function _processInput(input) {
       var $id, binds, i, bind;
 
-      // For registered combo, process matching BINDS
+      // For registered combo, _trigger() matching BINDS
+      // console.log(COMBOS);
       for ($id in COMBOS[input.combo]) {
         binds = BINDS[$id][input.combo];
         for (i in binds) {
@@ -73,7 +73,7 @@ app.factory('gamepads', ['$rootScope',
             _trigger($id, binds[i], input);
         }
       }
-      // For catch-all combo, process matchin BINDS
+      // For catch-all combo, _trigger() matching BINDS
       for ($id in COMBOS['*']) {
         binds = BINDS[$id]['*'];
         for (i in binds) {
@@ -140,9 +140,11 @@ app.factory('gamepads', ['$rootScope',
       $rootScope.$emit('gamepad:diconnected', index);
     }
 
+    /*-----------------------------------------------------------------------*/
 
+    var LOCK = false;
     var poll = function() {
-      // If the polling is locked, abort
+      // If the lock is held, abort
       if (LOCK) { return; }
       LOCK = true;
 
@@ -153,11 +155,11 @@ app.factory('gamepads', ['$rootScope',
         var gpd = pads[i];
 
         // If gamepad has connected or disconnected
-        if (gpd && gpd.connected && !PADS[i]) {
+        if (gpd && gpd.connected && !PADS[i])
           _registerGamepad(gpd);
-        } else if (PADS[i] && (!gpd || !gpd.connected)) {
+        else if (PADS[i] && (!gpd || !gpd.connected))
           _unregisterGamepad(gpd ? gpd.index : i);
-        }
+
         // Process status update, if any
         if (gpd && PADS[i]) {
           if (PADS[i].timestamp !== gpd.timestamp) {
@@ -176,8 +178,6 @@ app.factory('gamepads', ['$rootScope',
       requestAnimationFrame(poll);
     };
 
-    /*-----------------------------------------------------------------------*/
-
     poll();
 
     /*-----------------------------------------------------------------------*/
@@ -185,13 +185,16 @@ app.factory('gamepads', ['$rootScope',
     function Binder ($scope) {
       var $id = this.$id = $scope.$id;
       SCOPES[$id] = $scope;
-      $scope.$on('$destroy', function() {
-        console.log('actual destroy')
-        for (var combo in BINDS[$id])
-          delete COMBOS[combo][$id];
-        delete BINDS[$id];
-      });
+      $scope.$on('$destroy', this.destroy.bind(this));
     }
+
+    Binder.prototype.destroy = function() {
+      var $id = this.$id;
+
+      for (var combo in BINDS[$id])
+        this.del(combo);
+      delete SCOPES[$id];
+    };
 
     Binder.prototype.add = function (bind) {
       var $id = this.$id;
@@ -215,9 +218,15 @@ app.factory('gamepads', ['$rootScope',
 
     Binder.prototype.del = function (combo) {
       var $id = this.$id;
-      if (BINDS[$id] && COMBOS[combo]) {
+      if (COMBOS[combo] && COMBOS[combo][$id]) {
         delete COMBOS[combo][$id];
+        if (!Object.keys(COMBOS[combo]).length)
+          delete COMBOS[combo];
+      }
+      if (BINDS[$id] && BINDS[$id][combo]) {
         delete BINDS[$id][combo];
+        if (!Object.keys(BINDS[$id]).length)
+          delete COMBOS[combo];
       }
     };
 
