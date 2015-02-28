@@ -1,3 +1,17 @@
-<div id="Settings">
-Options
+<div id="Settings" class="container">
+  <h1>Options</h1>
+  <hr/>
+
+  <h3>Bindings:</h3>
+
+  <div class="row" ng-repeat="bind in binds">
+    <div class="three columns u-center"><h5>{{bind}}:</h5></div>
+    <div class="three columns" ng-repeat="i in times(3) track by $index">
+      <button type="text" class="u-full-width" ng-focus="setFocus(bind, $index)" ng-blur="blur()">
+        {{settings[bind][$index]}}
+      </button>
+    </div>
+  </div>
+
+
 </div>
