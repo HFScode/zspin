@@ -2,16 +2,35 @@
   <h1>Options</h1>
   <hr/>
 
-  <h3>Bindings:</h3>
-
-  <div class="row" ng-repeat="bind in binds">
-    <div class="three columns u-center"><h5>{{bind}}:</h5></div>
-    <div class="three columns" ng-repeat="i in times(3) track by $index">
-      <button type="text" class="u-full-width" ng-focus="setFocus(bind, $index)" ng-blur="blur()">
-        {{settings[bind][$index]}}
+  <div class="row" ng-repeat="(bind, bindings) in binds">
+    <div class="three columns">
+      <h5>{{bind}}:</h5>
+    </div>
+    <div class="three columns">
+      <button type="text" class="u-full-width" ng-focus="focus(bind, 0)" ng-blur="blur()">
+        {{bindings[0].combo}}
+      </button>
+    </div>
+    <div class="three columns">
+      <button type="text" class="u-full-width" ng-focus="focus(bind, 1)" ng-blur="blur()">
+        {{bindings[1].combo}}
+      </button>
+    </div>
+    <div class="three columns">
+      <button type="text" class="u-full-width" ng-focus="focus(bind, 2)" ng-blur="blur()">
+        {{bindings[2].combo}}
       </button>
     </div>
   </div>
+  <hr/>
 
+  <div class="row">
+    <div class="six columns u-center">
+      <button class="u-full-width" ng-click="reset()">Reset</button>
+    </div>
+    <div class="six columns u-center">
+      <button class="button-primary u-full-width" ng-click="save()" >Save</button>
+    </div>
+  </div>
 
 </div>

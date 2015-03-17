@@ -1,39 +1,42 @@
 'use strict';
 
-app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads' ,
-  function($scope, DOMKeyboard, gamepads) {
+app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
+  function($scope, DOMKeyboard, gamepads, settings) {
 
     var gpBinder = gamepads.bindTo($scope);
     var kbBinder = DOMKeyboard.bindTo($scope);
 
-    $scope.times = function(num, val) {
-      return Array.apply(null, new Array(num))
-        .map(function() { return val||0; });
-    };
-
-    $scope.focus = undefined;
-    $scope.setFocus = function(bind, idx) {
-      console.log('focus', bind, idx);
-      $scope.focus = {bind: bind, idx: idx};
+    var focus = undefined;
+    $scope.focus = function(bind, idx) {
+      focus = {bind: bind, idx: idx};
     };
     $scope.blur = function() {
-      console.log('blur');
-      $scope.focus = undefined;
+      focus = undefined;
     };
 
-    function set(input) {
-      var focus = $scope.focus;
-      console.log(input, focus);
-      if (!$scope.focus) return;
+    var binds = $scope.binds = {'home': {}, 'up': {}, 'down': {}, 'left': {}, 'right': {}, 'enter': {}, 'back': {}};
+    gpBinder.add({combo: '*', callback: function(input) {
+      if (!focus) return;
+      binds[focus.bind] = binds[focus.bind] || {};
+      binds[focus.bind][focus.idx] = {source: 'gamepad', combo: input.combo};
+    }});
+    kbBinder.add({combo: '*', callback: function(input) {
+      if (!focus) return;
+      binds[focus.bind] = binds[focus.bind] || {};
+      binds[focus.bind][focus.idx] = {source: 'keyboard', combo: input.combo};
+    }});
 
-      settings[focus.bind] = settings[focus.bind] || [];
-      settings[focus.bind][focus.idx] = input.combo;
+    $scope.reset = function() {
+      angular.copy(settings.$obj.binds, $scope.binds);
     }
-    gpBinder.add({combo: '*', callback: set});
-    kbBinder.add({combo: '*', callback: set});
+    $scope.reset();
+    $scope.save = function() {
+      angular.copy($scope.binds, settings.$obj.binds);
+      settings.write();
+    }
 
-    $scope.binds = ['up', 'down', 'left', 'right', 'enter', 'back'];
-    var settings = $scope.settings = {};
+    // $scope.binds = ['home', 'up', 'down', 'left', 'right', 'enter', 'back'];
+    // $scope.settings = {};
 
   }
 ]);
