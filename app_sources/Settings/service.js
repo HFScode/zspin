@@ -21,6 +21,10 @@ app.factory('settings', ['zspin',
     };
 
     var path = zspin.path('Settings.json');
+    // Loads Settings.json next to binary if this file exists
+    if (fs.existsSync(zspin.binaryPath('Settings.json'))) {
+      path = zspin.binaryPath('Settings.json');
+    }
 
     service.write = function() {
       var data = JSON.stringify($obj, null, 2);
