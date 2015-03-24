@@ -21,7 +21,7 @@ watch:
 		$(GULP) watch
 
 release:
-		$(NWBUILD) -o $(RELEASE) $(BUILD) - p win32,osx32,linux32
+		$(NWBUILD) -o $(RELEASE) $(BUILD) -p win32,osx32,linux32
 
 clean:
 		rm -rf ./node_modules
