@@ -1,10 +1,12 @@
 'use strict';
 
-app.factory('settings', ['fs', 'zspin',
-  function(fs, zspin) {
+app.factory('settings', ['zspin',
+  function(zspin) {
     console.log('settings - init');
 
     var service = {};
+    var fs = require('fs');
+    var ini = require('ini');
 
     var $obj = service.$obj = {
       binds: {
@@ -16,21 +18,25 @@ app.factory('settings', ['fs', 'zspin',
         'enter': {},
         'back': {}
       }
-    }
+    };
 
     var path = zspin.path('Settings.json');
 
     service.write = function() {
       var data = JSON.stringify($obj, null, 2);
-      return fs.writeFile(path, data);
-    }
+      return fs.writeFileSync(path, data, 'utf8');
+    };
 
     service.load = function() {
+      var data = fs.readFileSync(path, 'utf8');
       try {
-        var data = require(path);
-        angular.copy(data, $obj);
-      } catch (e) {};
-    }
+        var obj = JSON.parse(data);
+        angular.copy(obj, $obj);
+      } catch (e) {
+        // fixme
+        console.log('Settings Error:', e);
+      }
+    };
 
     service.load();
 

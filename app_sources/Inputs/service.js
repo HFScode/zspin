@@ -1,51 +1,58 @@
 'use strict';
 
-app.factory('inputs', ['$rootScope', 'NWKeyboard', 'gamepads', 'settings',
-  function ($rootScope, keyboard, gamepads, settings) {
+app.factory('inputs', ['$rootScope', 'NWKeyboard', 'DOMKeyboard', 'gamepads', 'settings',
+  function ($rootScope, NWKeyboard, DOMKeyboard, gamepads, settings) {
+    console.log('inputs - init');
 
-    var SCOPES = {};
-    var BINDS  = {};
-    var COMBOS = {};
+    var $scope = $rootScope.$new();
+    var service = {};
 
-    function Binder ($scope) {
-      var $id = this.$id = $scope.$id;
+    var nwBinder = NWKeyboard.bindTo($scope);
+    var kbBinder = DOMKeyboard.bindTo($scope);
+    var gpBinder = gamepads.bindTo($scope);
+    var BINDS = [];
 
-      SCOPES[$id] = $scope;
+    function _fireInput(input, bind) {
+      $rootScope.$broadcast('input:'+input, bind)
+      console.log('!%s!', input, bind);
     }
 
-    Binder.prototype.add = function (bind) {
-      var $id = this.$id;
-      var combo = bind.combo;
-      bind.action    = bind.action    || 'keydown';
-      bind.callback  = bind.callback  || function(){};
+    service.loadSettings = function() {
+      var binds = settings.$obj.binds;
+      // console.log('loadSettings>', binds);
 
-      // Register bind
-      BINDS[$id] = BINDS[$id] || {};
-      BINDS[$id][combo] = BINDS[$id][combo] || [];
-      BINDS[$id][combo].push(bind);
+      for (var i in BINDS) {
+        var bind = BINDS[i];
+        if (bind.source == 'keyboard' && bind.global)
+          nwBinder.del(BINDS[i].combo);
+        else if (bind.source == 'keyboard')
+          kbBinder.del(BINDS[i].combo);
+        else if (bind.source == 'gamepad')
+          gpBinder.del(BINDS[i].combo);
+      }
 
-      // Register combo in lookup table
-      COMBOS[combo] = COMBOS[combo] || {};
-      COMBOS[combo][$id] = true;
-    };
+      BINDS = [];
+      // console.log('binds>', binds)
+      for (var input in binds) {
+        for (var idx in binds[input]) {
+          var bind = binds[input][idx];
+          var callback = _fireInput.bind(null, input, bind);
+          var args = {combo: bind.combo, callback: callback};
 
-    Binder.prototype.del = function (combo) {
-      var $id = this.$id;
-      if (BINDS[$id] && COMBOS[combo]) {
-        delete COMBOS[combo][$id];
-        delete BINDS[$id][combo];
+          if (bind.source == 'keyboard' && bind.global)
+            nwBinder.add(args);
+          else if (bind.source == 'keyboard')
+            kbBinder.add(args);
+          else if (bind.source == 'gamepad')
+            gpBinder.add(args);
+          BINDS.push(bind);
+        }
       }
     };
 
-    // Default binder bound to fake scope -1
-    // var binder = binder({$id: -1});
-    var service = new Binder($rootScope);
-    service.bindTo = function($scope) {
-      return new Binder($scope);
-    };
+    service.loadSettings();
 
-
-    console.log('gamepads - ready');
+    console.log('inputs - ready');
     return service;
   }
 ]);

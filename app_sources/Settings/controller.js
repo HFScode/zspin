@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
-  function($scope, DOMKeyboard, gamepads, settings) {
+app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings', 'inputs',
+  function($scope, DOMKeyboard, gamepads, settings, inputs) {
 
     var gpBinder = gamepads.bindTo($scope);
     var kbBinder = DOMKeyboard.bindTo($scope);
