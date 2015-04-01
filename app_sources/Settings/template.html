@@ -1,28 +1,52 @@
 <div id="Settings" class="container">
   <h1>Options</h1>
-  <hr/>
 
+  <!-- SAVE RESET -->
+
+  <div class="row">
+    <div class="six columns u-center">
+      <button class="u-full-width" ng-click="reset()">Reset</button>
+    </div>
+    <div class="six columns u-center">
+      <button class="button-primary u-full-width" ng-click="save()" >Save</button>
+    </div>
+  </div>
+
+  <hr/>
+  <!-- PATHS -->
+
+  <h3>Paths</h3>
+  <div class="row">
+    <div class="three columns">
+      <h5>Hyperspin folder</h5>
+    </div>
+    <div class="four columns">
+      <input type='text' ng-model='hsPath' />
+    </div>
+  </div>
+
+  <hr/>
+  <!-- KEYS -->
+
+  <h3>Keys</h3>
   <div class="row" ng-repeat="(bind, bindings) in binds">
     <div class="three columns">
       <h5>{{bind}}:</h5>
     </div>
     <div class="three columns">
-      <button type="text" class="u-full-width" ng-focus="focus(bind, 0)" ng-blur="blur()">
+      <button type="text" class="u-full-width" ng-click="setPress($event)" ng-focus="focus(bind, 0)" ng-blur="blur()">
         {{bindings[0].combo}}
       </button>
     </div>
-    <div class="three columns">
-      <button type="text" class="u-full-width" ng-focus="focus(bind, 1)" ng-blur="blur()">
-        {{bindings[1].combo}}
-      </button>
-    </div>
-    <div class="three columns">
-      <button type="text" class="u-full-width" ng-focus="focus(bind, 2)" ng-blur="blur()">
-        {{bindings[2].combo}}
+    <div class="one columns">
+      <button type="text" class="" ng-click="clear(bind)">
+        clear
       </button>
     </div>
   </div>
+
   <hr/>
+  <!-- SAVE RESET -->
 
   <div class="row">
     <div class="six columns u-center">

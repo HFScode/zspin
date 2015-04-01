@@ -35,6 +35,16 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
       settings.write();
     }
 
+    $scope.clear = function(input) {
+      binds[input] = {};
+      settings.write();
+    }
+
+    $scope.setPress = function(event) {
+      event.currentTarget.innerText = '<press a key>';
+    }
+
+    $scope.hsPath = 'C:\\FIXME\\BITCH';
     // $scope.binds = ['home', 'up', 'down', 'left', 'right', 'enter', 'back'];
     // $scope.settings = {};
 
