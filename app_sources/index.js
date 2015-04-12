@@ -19,7 +19,7 @@ app.config(['$sceDelegateProvider', function($sceDelegateProvider){
 }]);
 
 app.run(['settings', function(settings) {
-  settings.init();
+  // Force the settings service to be instanciated early
 }]);
 
 

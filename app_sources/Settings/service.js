@@ -6,9 +6,8 @@ app.factory('settings', ['zspin',
 
     var service = {};
     var fs = require('fs');
-    var ini = require('ini');
 
-    var $obj = service.$obj = {
+    service.$obj = {
       binds: {
         'home': {},
         'up': {},
@@ -26,22 +25,31 @@ app.factory('settings', ['zspin',
       path = zspin.binaryPath('Settings.json');
     }
 
+    // Blocking settings "write"
     service.write = function() {
-      var data = JSON.stringify($obj, null, 2);
+      var data = JSON.stringify(service.$obj, null, 2);
       return fs.writeFileSync(path, data, 'utf8');
     };
 
+    // Blocking settings "load"
     service.load = function() {
       var data = fs.readFileSync(path, 'utf8');
       try {
         var obj = JSON.parse(data);
-        angular.copy(obj, $obj);
+        angular.copy(obj, service.$obj);
       } catch (e) {
-        // fixme
         console.log('Settings Error:', e);
       }
     };
 
+    // Blocking settings "init" (find or create)
+    try {
+      fs.accessSync(path, fs.F_OK);
+    } catch (e) {
+      service.write();
+    }
+
+    // Load curent values
     service.load();
 
     console.log('settings - ready');
