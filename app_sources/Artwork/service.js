@@ -30,7 +30,7 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
       obj.type = fs.extname(obj.src||'');
 
       // Natural size method differ base on the type
-      var getSize = $q.when({width: 200, height: 200});
+      var getSize = $q.when(null);
       if (obj.type === 'png' || obj.type === 'jpg')
         getSize = getImageNaturalSize(obj.src);
       else if (obj.type === 'swf')
@@ -48,8 +48,8 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
 
     // Compute item bounding box base one config
     service.computeBox = function(obj, conf, isOverlay) {
-      // If we miss either config or size, abort
-      if (!conf || !obj.size)
+      // If we miss both config or size, abort
+      if (!conf && !obj.size)
         return {};
 
       // Init variables

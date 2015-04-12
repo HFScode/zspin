@@ -4,6 +4,7 @@ app.directive('artwork', ['$q', 'artworks',
 
     return {
       restrict: 'E',
+      replace: true,
       templateUrl: 'Artwork/template.html',
       scope: {
         src: '@',
@@ -17,8 +18,6 @@ app.directive('artwork', ['$q', 'artworks',
 
         function computeBox() {
           if (!scope.config || !scope.artwork)
-            return;
-          if (!scope.config.w && !scope.artwork.size)
             return;
           scope.box = artworks.computeBox(scope.artwork, scope.config, scope.overlay);
         }
@@ -39,7 +38,6 @@ app.directive('artwork', ['$q', 'artworks',
 
         // Update artwork on source change
         scope.$watch('src', function(src) {
-          console.log('oh', scope.src, scope.config)
           scope.artwork = artworks(src);
         });
 
