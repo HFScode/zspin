@@ -1,7 +1,7 @@
 'use strict'
 
-app.factory('xml', ['$q', 'zspin', 'fs',
-  function ($q, zspin, fs) {
+app.factory('xml', ['$q', 'fs', 'qbind',
+  function ($q, fs, qbind) {
     console.log('xml - init');
     var xml2js = require('xml2js');
 
@@ -21,12 +21,9 @@ app.factory('xml', ['$q', 'zspin', 'fs',
         });
       },
 
-      parseString: function(filepath) {
-        var defer = $q.defer();
-        wrapErrCallback(defer, parser, parser.parseString, arguments);
-        return defer.promise.then(function(args) {
-          return args[0];
-        });
+      parseString: function() {
+        return qbind.apply(parser, parser.parseString, arguments)
+          .then(function(args) { return args[0]; });
       }
 
     };

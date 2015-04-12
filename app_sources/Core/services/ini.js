@@ -12,9 +12,10 @@ app.factory('ini', ['zspin', 'fs',
         return fs.readFile(filepath, 'utf-8').then(function(data) {
           return ini.parse(data);
         });
-      }
+      },
 
     };
+
     console.log('ini - ready');
     return service;
   }
