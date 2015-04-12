@@ -55,7 +55,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       $timeout.cancel(updatePromise);
       updatePromise = $timeout(function() {
         var entryName = $scope.curEntry.name;
-        $scope.curTheme = $scope.themes[entryName] || $scope.themes['default'];
+        $scope.curTheme = $scope.themes[entryName] || $scope.themes['default'] || $scope.curTheme;
       }, 200);
       $scope.curEntry = $scope.wheelControl.select();
     };
@@ -63,12 +63,12 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     /***************************** Wheel Control *****************************/
 
     $scope.next = function() {
-      $scope.wheelControl.next();
+      $scope.wheelControl.move('next');
       $scope.updateEntry();
     };
 
     $scope.prev = function() {
-      $scope.wheelControl.prev();
+      $scope.wheelControl.move('prev');
       $scope.updateEntry();
     };
 
