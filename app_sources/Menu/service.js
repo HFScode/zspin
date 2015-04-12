@@ -4,61 +4,52 @@ app.factory('menus', ['$q', 'fs', 'zspin', 'ini', 'xml',
   function($q, fs, zspin, ini, xml) {
     console.log('menus - init');
 
-    var Menu = function Menu(name) {
-      this.name = name;
-    };
-
-    Menu.prototype.mediaPath = function() {
-      var args = ['Media', this.name];
-      args = args.concat([].slice.call(arguments, 0));
-      return zspin.path.apply(zspin, args);
-    };
-
-
-    Menu.prototype.settings = function() {
-      var filename = this.name+'.ini';
-      var filepath = zspin.path('Settings', filename);
-
-      return fs.exists(filepath).then(function() {
-        return ini.parse(filepath);
-      });
-    };
-
-    Menu.prototype.databases = function() {
-      var filename = this.name+'.xml';
-      var filepath = zspin.path('Databases', this.name, filename);
-
-      return fs.exists(filepath).then(function() {
-        return xml.parse(filepath);
-      });
-    };
-
-    Menu.prototype.videos = function() {
-      var videoPath = this.mediaPath('Video');
-      return fs.readdir(videoPath).then(function(files) {
-        var videos = {};
-        files.filter(function(file) {
-          return fs.extname(file) === 'flv';
-        }).forEach(function(file) {
-          videos[fs.basename(file)] = fs.join(videoPath, file);
-        });
-        return videos;
-      });
-    };
-
     var service = function (name) {
-      return new Menu(name || 'Main Menu');
+      var obj = {
+        name: name,
+      };
+
+      // Load database entries from $HS_PATH/Databases/$NAME/$NAME.xml
+      var databasePath = zspin.path('Databases', name, name+'.xml');
+      fs.access(databasePath, fs.F_OK).then(function() {
+        return xml.parse(databasePath);
+      }).then(function(data) {
+        obj.databases = data;
+      });
+
+      // Load database entries from $HS_PATH/Settings/$NAME.ini
+      var settingsPath = zspin.path('Settings', name+'.ini');
+      fs.access(settingsPath, fs.F_OK).then(function() {
+        return ini.parse(settingsPath);
+      }).then(function(data) {
+        obj.settings = data;
+      });
+
+      obj.getMedias = function (basePath, glob) {
+        // Load media entries from $HS_PATH/Media/$NAME/$BASEPATH/$PATTERN
+        var path = zspin.path('Media', name, basePath);
+        return fs.glob(glob, {cwd: path}).then(function(files) {
+          var obj = {};
+          files.forEach(function(file) {
+            var basename = fs.basename(file);
+            obj[basename] = fs.join(path, file);
+          });
+          return obj;
+        });
+      };
+
+      return obj;
     };
 
-    var defaultVideoPath = zspin.path('Media', 'Frontend', 'Video');
-    fs.readdir(defaultVideoPath).then(function(files) {
-      var videos = files.filter(function(file) {
-        return fs.basename(file) === 'No Video';
-      }).map(function(file) {
-        return fs.join(defaultVideoPath, file);
-      });
-      service.defaultVideo = videos[0];
-    });
+    /***************************** default video ******************************/
+
+    // // Look for the golbal default at %HS_PATH%/Media/Frontend/Video/No Video.(flv|mp4)
+    // service.defaultVideo = undefined;
+    // var path = zspin.path('Media', 'Frontend', 'Video');
+    // fs.glob('No Video*', {cwd: path}).then(function(files) {
+    //   if (files && files.length)
+    //     service.defaultVideo = fs.join(path, files[0]);
+    // });
 
     console.log('menus - ready');
     return service;

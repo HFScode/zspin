@@ -6,9 +6,15 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     /************* This... is crack. ************/
 
     //  -  Defining path/current menu
-    $scope.path = $routeParams.path;
-    $scope.menus = $scope.path.split('/');
-    $scope.menu = $scope.menus[$scope.menus.length-1];
+    var baseUrl = '/menus/';
+    var curPath = $routeParams.path;
+    var name = curPath.split('/').pop();
+    $scope.menuName = name;
+
+    //  - Retrieve the menu service item
+    var menu = $scope.menu = menus(name);
+    $scope.curTheme = undefined;
+    $scope.curVideo = undefined;
 
     //  -  Defining wheel parameters  -
     $scope.wheelItems = [];
@@ -45,64 +51,56 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     // Wait before considering an entry menu as selected
     // Cancel any previous running timer
     var updatePromise;
-    $scope.update = function() {
+    $scope.updateEntry = function() {
       $timeout.cancel(updatePromise);
       updatePromise = $timeout(function() {
-        var name = $scope.curItem.name;
-        $scope.video = $scope.videos[name] || menus.defaultVideo;
-        $scope.theme = zspin.path('Media', $scope.menu, 'Themes', name+'.zip');
+        var entryName = $scope.curEntry.name;
+        $scope.curTheme = $scope.themes[entryName] || $scope.themes['default'];
       }, 200);
-      $scope.curItem = $scope.wheelControl.select();
+      $scope.curEntry = $scope.wheelControl.select();
     };
 
     /***************************** Wheel Control *****************************/
 
     $scope.next = function() {
       $scope.wheelControl.next();
-      $scope.update();
+      $scope.updateEntry();
     };
 
     $scope.prev = function() {
       $scope.wheelControl.prev();
-      $scope.update();
+      $scope.updateEntry();
     };
 
     $scope.enter = function() {
       var newMenu = $scope.curItem.name;
-      var newPath = ['', 'menus', $scope.path, newMenu];
-      $location.path(newPath.join('/'));
+      var newPath = baseUrl + curPath + newMenu;
+      $location.path(newPath);
     };
 
     $scope.back = function() {
-      var newMenus = $scope.menus.slice(0, $scope.menus.length-1);
-      var newPath = ['', 'menus'].concat(newMenus);
-      $location.path(newPath.join('/'));
+      var newPath = baseUrl + curPath;
+      $location.path(newPath);
     };
 
-    /*************************** Settings loading ****************************/
-
-    var menu = menus($scope.menu);
-    // $scope.demo = zspin.path('Media', $scope.menu, 'Video', 'OpenBOR.flv');
-
-    // Load menu videos
-    menu.videos().then(function(videos) {
-      $scope.videos = videos;
-    });
-
-    // Load menu settings
-    menu.settings().then(function(settings) {
-      $scope.settings = settings;
-    });
+    /*************************** Database loading ****************************/
 
     // Load menu database
-    menu.databases().then(function(databases) {
-      $scope.databases = databases;
+    $scope.$watch('menu.databases', function(databases) {
+      if (!databases) return;
 
-      // Map databases game enties to jwheel entries
-      $scope.entries = databases.menu.game.map(function(item) {
-        var filename = menu.mediaPath('Images', 'Wheel', item.name+'.png');
-        return {name: item.name, file: filename};
+      // Databases Game enties to jwheel entries (with image)
+      $scope.menu.getMedias('Images/Wheel', '*').then(function(files) {
+        $scope.entries = databases.menu.game.map(function(e) {
+          return {name: e.name, file: files[e.name]};
+        });
       });
+
+      // Pre-Load available themes
+      $scope.menu.getMedias('Themes', '*.zip').then(function(files) {
+        $scope.themes = files;
+      });
+
     });
 
   }
