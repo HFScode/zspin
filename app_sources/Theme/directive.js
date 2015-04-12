@@ -1,75 +1,41 @@
 'use strict'
 
-app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'xml',
-  function($q, zspin, fs, zip, xml) {
+app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'themes',
+  function($q, zspin, fs, zip, themes) {
 
     return {
       restrict: 'E',
-      replace: true,
-      transclude: true,
       templateUrl: 'Theme/template.html',
       scope: {
         src: '@',
-        video: '@',
+        menu: '@',
       },
       link: function(scope, el, attrs) {
+        scope.tmpRoot = zspin.path('Cache', 'Theme');
+        scope.tmpPath = scope.tmpRoot;
 
-        function updateEntries() {
-          if (!scope.src) return;
+        // Update scope.theme when src attribute change
+        scope.$watch('src', function(src) {
+          if (!src) return;
 
-          // If we don't have file, do nothing
-          fs.exists(scope.src).then(function (exists) {
-            // If the file does not exist, abort
-            if (!exists) { return $q.reject(); }
+          var path = fs.dirname(src);
+          var name = scope.name || fs.basename(src);
 
-            // Reset to empty values
-            scope.artworks = {};
-            scope.configs = {};
-
-            // Create a temporary path for the zip contents
-            return fs.mktmpdir();
-          }).then(function (tmp) {
-            scope.tmp = tmp;
-            scope.path = tmp.path;
-
-            // Extract Zip file into temporary folder
-            return zip.extract(scope.src, scope.tmp.path);
-          }).then(function () {
-
-            // List the extracted entries
-            return fs.readdir(scope.tmp.path);
-          }).then(function (files) {
-            var allowedExts = ['png', 'swf', 'flv'];
-
-            // Parse files entries into usefull objects
-            scope.artworks = files.filter(function(file) {
-              return allowedExts.indexOf(fs.extname(file)) !== -1;
-            }).map(function(file) {
-              var path = scope.tmp.path;
-              return {name: fs.basenamelc(file), file: fs.join(scope.path, file)};
-            });
-
-            // // Add video from static
-            // if (scope.video) {
-            //   var demo = {name: 'demo', file: scope.demo};
-            //   scope.artworks.push(demo);
-            // }
-
-            // Load Theme.xml for theme config
-            return xml.parse(fs.join(scope.path, 'Theme.xml'));
-          }).then(function (config) {
-
-            // Register scope configs in scope
-            scope.configs = config.Theme || {};
-            // Set default background config
-            scope.configs.background = {w: '1024', h: '768'};
-            // If we have a demo to play, it will be the same config
-            // scope.configs.demo = scope.configs.video;
+          // Create new tmpPath, extract & load
+          scope.tmpPath = fs.join(scope.tmpRoot, name);
+          fs.mkdir(scope.tmpPath).then(function() {
+            return zip.extract(src, scope.tmpPath);
+          }).then(function() {
+            scope.theme = themes(scope.tmpPath, scope.menu, name);
           });
-        }
 
-        // Update entries when theme change
-        scope.$watch('src', updateEntries);
+        });
+
+        // Remove tmpRoot on destroy
+        scope.$on("$destroy", function handler() {
+          console.log('actual destroy');
+          fs.rmrf(scope.tmpPath);
+        });
 
       }
     };

@@ -1,8 +1,15 @@
 <div class="Theme">
-  <!-- <pre ng-bind="configs|json"></pre> -->
+  <!-- <pre ng-bind="theme|json"></pre> -->
   <!-- <pre ng-bind="artworks|json"></pre> -->
 
-  <artwork ng-repeat="a in artworks" id="{{a.name}}" src="{{a.file}}" config="configs[a.name]" overlay="{{a.name=='video'}}" />
-  <artwork ng-if="video" id="demo" src="{{video}}" config="configs['video']" />
+  <!-- Background -->
+  <artwork ng-if="theme.background" id="background" src="{{theme.background}}" config="{w: 1024, h: 768}"></artwork>
+
+  <!-- Artworks -->
+  <artwork ng-repeat="(name, file) in theme.artworks" id="{{name}}" src="{{file}}" config="theme.manifest[name]"></artwork>
+
+  <!-- Video & Overlay -->
+  <artwork ng-if="theme.video" id="video" src="{{theme.video}}" config="theme.manifest.video"></artwork>
+  <artwork ng-if="theme.overlay" id="overlay" src="{{theme.overlay}}" config="theme.manifest.video" overlay="true"></artwork>
 
  </div>
