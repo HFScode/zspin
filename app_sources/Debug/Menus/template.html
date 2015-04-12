@@ -2,23 +2,36 @@
   <hr/>
   <label>Menu name:</label>
   <select class="u-full-width" ng-model="menuName" ng-options="opt for opt in options" />
-  <button class="u-full-width" ng-click="update()">Load</button>
 
-  <hr/>
   <div class="row">
     <div class="one-half column">
       <h3>Settings</h3>
-      <json-formatter json="settings" open="1"></json-formatter>
+      <json-formatter json="menu.settings" open="1"></json-formatter>
     </div>
     <div class="one-half column">
       <h3>Databases</h3>
-      <json-formatter json="databases" open="2"></json-formatter>
+      <json-formatter json="menu.databases" open="2"></json-formatter>
     </div>
   </div>
+
+  <hr/>
   <div class="row">
-    <div class="one-half column">
-      <h3>Videos</h3>
-      <json-formatter json="videos" open="2"></json-formatter>
+    <div class="twelve column">
+      <h3>Medias</h3>
+      <div class="row">
+        <div class="six columns">
+          <input class="u-full-width" type="text" ng-model="mediasPath" />
+        </div>
+        <div class="four columns">
+          <input class="u-full-width" type="text" ng-model="mediasPattern" />
+        </div>
+        <div class="two columns">
+          <button ng-click="getMedias()">List</button>
+        </div>
+      </div>
+      <json-formatter json="medias" open="2"></json-formatter>
     </div>
   </div>
+
+  <hr/>
 </div>

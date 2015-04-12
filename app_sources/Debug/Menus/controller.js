@@ -2,34 +2,37 @@
 
 app.controller('DebugMenusCtrl', ['$scope', 'zspin', 'fs', 'menus',
   function($scope, zspin, fs, menus) {
-    $scope.menuName = 'Main Menu';
-
+    $scope.options = [];
+    $scope.menuName = null;
     $scope.menu = {};
-    $scope.settings = {};
-    $scope.databases = {};
+    $scope.medias = {};
 
-    fs.readdir(zspin.path('Settings')).then(function(dirs) {
+
+    // Load ini folder to provide Theme neme options
+    fs.glob('*.ini', {cwd: zspin.path('Settings')}).then(function(dirs) {
+      $scope.menuName = 'Main Menu';
       $scope.options = dirs.map(function(dir) {
         return dir.replace('.ini', '');
       });
     });
 
-    $scope.update = function() {
-      $scope.menu = menus($scope.menuName);
-      $scope.settings = {};
-      $scope.menu.settings().then(function(data) {
-        $scope.settings = data;
-      });
-      $scope.databases = {};
-      $scope.menu.databases().then(function(data) {
-        $scope.databases = data;
-      });
-      $scope.videos = {};
-      $scope.menu.videos().then(function(videos) {
-        $scope.videos = videos;
-      });
+    // Update $scope.menu when select input value changes
+    $scope.$watch('menuName', function(name) {
+      $scope.menu = menus(name || 'Main Menu');
 
+      $scope.medias = {};
+      $scope.mediasPath = 'Themes';
+      $scope.mediasPattern = '*.zip';
+    });
 
+    // List medias from theme
+    $scope.getMedias = function() {
+      var path = $scope.mediasPath;
+      var pattern = $scope.mediasPattern;
+      $scope.menu.getMedias(path, pattern).then(function(files) {
+        $scope.medias = files;
+      });
     };
+
   }
 ]);
