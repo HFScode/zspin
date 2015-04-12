@@ -1,11 +1,12 @@
 <div ng-cloak class="Artwork" ng-style="style">
-  <img ng-if="type=='png'" class="Artwork-item" ng-src="{{src}}" width="100%" height="100%" ng-load="getImageSize()">
+  <img ng-if="artwork.type=='png'" class="Artwork-item" ng-src="{{src}}" />
 
-  <object ng-if="type=='swf'" class="Artwork-item" data="{{src}}" type="application/x-shockwave-flash" width="100%" height="100%">
+  <object ng-if="artwork.type=='swf'" class="Artwork-item" data="{{src}}" type="application/x-shockwave-flash" >
     <param name="autoplay" value="true">
     <param name="wmode" value="transparent">
     <param name="scale" value="exactfit">
   </object>
 
-  <flvplayer ng-if="type=='flv'" class="Artworkt-item" flv="{{src}}" loop="true" autoplay="true" width="100%" height="100%" />
+  <flvplayer ng-if="artwork.type=='flv'" class="Artworkt-item" flv="{{src}}" loop="true" autoplay="true">
+  </flvplayer>
 </div>
