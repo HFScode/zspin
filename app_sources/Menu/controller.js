@@ -83,6 +83,12 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       $location.path(newPath);
     };
 
+    $scope.$on('input:right', $scope.next);
+    $scope.$on('input:down', $scope.next);
+    $scope.$on('input:left', $scope.prev);
+    $scope.$on('input:up', $scope.prev);
+
+
     /*************************** Database loading ****************************/
 
     // Load menu database
