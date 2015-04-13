@@ -19,8 +19,8 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     //  -  Defining wheel parameters  -
     $scope.wheelItems = [];
     $scope.wheelOptions = {
-      // animation time in s
-      transitionTime: 0.07,
+      // animation time in ms
+      transitionTime: 70,
       // index of item which serves as cursor
       selectPosition: 9,
       points: [
@@ -72,21 +72,36 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       $scope.updateEntry();
     };
 
+    $scope.prevLetter = function() {
+      $scope.wheelControl.moveToLetter('prev');
+      $scope.updateEntry();
+    };
+
+    $scope.nextLetter = function() {
+      $scope.wheelControl.moveToLetter('next');
+      $scope.updateEntry();
+    };
+
     $scope.enter = function() {
-      var newMenu = $scope.curItem.name;
-      var newPath = baseUrl + curPath + newMenu;
+      var newMenu = $scope.wheelControl.select().name;
+      var newPath = baseUrl + curPath + '/' + newMenu;
       $location.path(newPath);
     };
 
     $scope.back = function() {
+      if (curPath.indexOf('/') > -1) {
+        curPath = curPath.split('/').slice(0, -1).join('/');
+      }
       var newPath = baseUrl + curPath;
       $location.path(newPath);
     };
 
-    $scope.$on('input:right', $scope.next);
-    $scope.$on('input:down', $scope.next);
-    $scope.$on('input:left', $scope.prev);
     $scope.$on('input:up', $scope.prev);
+    $scope.$on('input:down', $scope.next);
+    $scope.$on('input:left', $scope.prevLetter);
+    $scope.$on('input:right', $scope.nextLetter);
+    $scope.$on('input:enter', $scope.enter);
+    $scope.$on('input:back', $scope.back);
 
 
     /*************************** Database loading ****************************/
