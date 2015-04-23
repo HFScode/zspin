@@ -16,7 +16,10 @@ app.factory('settings', ['zspin',
         'right': {},
         'enter': {},
         'back': {}
-      }
+      },
+      hsPath: '',
+      launcherPath: '',
+      launcherParams: ''
     };
 
     var path = zspin.path('Settings.json');

@@ -17,11 +17,36 @@
 
   <h3>Paths</h3>
   <div class="row">
-    <div class="three columns">
-      <h5>Hyperspin folder</h5>
+    <div class="five columns">
+      <h5>Hyperspin.exe path</h5>
     </div>
     <div class="four columns">
-      <input type='text' ng-model='hsPath' />
+      <input type='file' ng-model='hsPath' />
+    </div>
+  </div>
+
+  <hr/>
+  <!-- LAUNCHER -->
+
+  <h3>Launcher</h3>
+  <div class="row">
+    <div class="five columns">
+      <h5>Launcher binary</h5>
+    </div>
+    <div class="four columns">
+      <input type='file' ng-model='launcherPath' />
+    </div>
+  </div>
+  <div class="row">
+    <div class="five columns">
+      <h5>Launcher parameters</h5>
+    </div>
+    <div class="four columns">
+      <input type='text' ng-model='launcherParams' />
+    </div>
+    <div class="three columns">
+      {R} for rom, {S} for system<br/>
+      ex: -rom {R} -system {S}
     </div>
   </div>
 
@@ -30,7 +55,7 @@
 
   <h3>Keys</h3>
   <div class="row" ng-repeat="(bind, bindings) in binds">
-    <div class="three columns">
+    <div class="five columns">
       <h5>{{bind}}:</h5>
     </div>
     <div class="three columns">
