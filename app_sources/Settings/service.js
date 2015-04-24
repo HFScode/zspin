@@ -39,7 +39,7 @@ app.factory('settings', ['zspin',
       var data = fs.readFileSync(path, 'utf8');
       try {
         var obj = JSON.parse(data);
-        angular.copy(obj, service.$obj);
+        angular.extend(service.$obj, obj);
       } catch (e) {
         console.log('Settings Error:', e);
       }

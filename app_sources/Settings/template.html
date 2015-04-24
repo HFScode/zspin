@@ -21,7 +21,7 @@
       <h5>Hyperspin.exe path</h5>
     </div>
     <div class="four columns">
-      <input type='file' ng-model='hsPath' />
+      <input type='file' ng-model='settings.hsPath' />
     </div>
   </div>
 
@@ -34,7 +34,7 @@
       <h5>Launcher binary</h5>
     </div>
     <div class="four columns">
-      <input type='file' ng-model='launcherPath' />
+      <input type='file' ng-model='settings.launcherPath' />
     </div>
   </div>
   <div class="row">
@@ -42,7 +42,7 @@
       <h5>Launcher parameters</h5>
     </div>
     <div class="four columns">
-      <input type='text' ng-model='launcherParams' />
+      <input type='text' ng-model='settings.launcherParams' />
     </div>
     <div class="three columns">
       {R} for rom, {S} for system<br/>
@@ -54,7 +54,7 @@
   <!-- KEYS -->
 
   <h3>Keys</h3>
-  <div class="row" ng-repeat="(bind, bindings) in binds">
+  <div class="row" ng-repeat="(bind, bindings) in settings.binds">
     <div class="five columns">
       <h5>{{bind}}:</h5>
     </div>
