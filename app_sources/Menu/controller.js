@@ -3,7 +3,9 @@
 app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'zspin', 'menus',
   function($scope, $routeParams, $location, $timeout, fs, zspin, menus) {
 
-    /************* This... is crack. ************/
+    //  - requires
+    var fsRaw = require('fs');
+    var spawn = require('child_process').spawn;
 
     //  -  Defining path/current menu
     var baseUrl = '/menus/';
@@ -82,10 +84,22 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       $scope.updateEntry();
     };
 
+    var launcher = 'open';
+    var rom = '/Applications/Calculator.app';
+
     $scope.enter = function() {
-      var newMenu = $scope.wheelControl.select().name;
-      var newPath = baseUrl + curPath + '/' + newMenu;
-      $location.path(newPath);
+      var name = $scope.wheelControl.select().name;
+
+      // check if item is a database
+      var databasePath = zspin.path('Databases', name, name+'.xml');
+      if (fsRaw.existsSync(databasePath)) {
+        var newPath = baseUrl + curPath + '/' + name;
+        $location.path(newPath);
+
+      // if not, then this is a game, run it
+      } else {
+        var launcherProcess = spawn(launcher, [rom]);
+      }
     };
 
     $scope.back = function() {

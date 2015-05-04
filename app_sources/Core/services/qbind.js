@@ -36,9 +36,6 @@ app.factory('qbind', ['$q',
         return service.apply(self, func, args);
       },
 
-
-
-
       // Resolve a promise with the result of a function
       // that takes a callback(res1, res2, ...) as last argument.
       resolveSafe: function(d, self, func, args) {
