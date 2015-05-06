@@ -55,6 +55,13 @@ app.factory('settings', ['zspin',
     // Load curent values
     service.load();
 
+    // Create global home shortcut
+    var shortcut = new zspin.gui.Shortcut({key: service.$obj.binds['home'][0].combo});
+    zspin.gui.App.registerGlobalHotKey(shortcut);
+    shortcut.on('active', function() {
+      zspin.gui.Window.get().show();
+    });
+
     console.log('settings - ready');
     return service;
   }
