@@ -48,15 +48,21 @@ app.factory('settings', ['zspin',
     // Blocking settings "init" (find or create)
     try {
       fs.accessSync(path, fs.F_OK);
+      console.log('Settings file: ' + path);
     } catch (e) {
+      console.log('No settings file ! Creating ' + path);
       service.write();
     }
 
     // Load curent values
     service.load();
 
-    // Create global home shortcut
-    var shortcut = new zspin.gui.Shortcut({key: service.$obj.binds['home'][0].combo});
+    // Create global home shortcut (default to F10)
+    var shortcut_key = 'f10';
+    if (service.$obj.binds['home'][0] !== undefined) {
+      shortcut_key = service.$obj.binds['home'][0].combo;
+    }
+    var shortcut = new zspin.gui.Shortcut({key: shortcut_key});
     zspin.gui.App.registerGlobalHotKey(shortcut);
     shortcut.on('active', function() {
       zspin.gui.Window.get().show();
