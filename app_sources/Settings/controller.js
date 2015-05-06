@@ -36,6 +36,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     $scope.save = function() {
       angular.extend(settings.$obj, $scope.settings);
       settings.write();
+      inputs.loadSettings();
     }
     $scope.settings = {};
     $scope.reset();
