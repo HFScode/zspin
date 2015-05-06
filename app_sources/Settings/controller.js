@@ -50,6 +50,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
 
     $scope.updatePath = function() {
       $scope.settings[this.name] = this.value;
+      $scope.$apply();
     }
 
   }
