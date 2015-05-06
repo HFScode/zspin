@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('inputs', ['$rootScope', 'NWKeyboard', 'DOMKeyboard', 'gamepads', 'settings',
-  function ($rootScope, NWKeyboard, DOMKeyboard, gamepads, settings) {
+app.factory('inputs', ['$rootScope', 'NWKeyboard', 'DOMKeyboard', 'gamepads', 'zspin', 'settings',
+  function ($rootScope, NWKeyboard, DOMKeyboard, gamepads, zspin, settings) {
     console.log('inputs - init');
 
     var $scope = $rootScope.$new();
@@ -12,8 +12,21 @@ app.factory('inputs', ['$rootScope', 'NWKeyboard', 'DOMKeyboard', 'gamepads', 's
     var gpBinder = gamepads.bindTo($scope);
     var BINDS = [];
 
+    var nwWindow = zspin.gui.Window.get();
+    var isWindowFocused = true;
+    nwWindow.removeAllListeners('focus');
+    nwWindow.on('focus', function() {
+      isWindowFocused = true;
+    });
+    nwWindow.removeAllListeners('blur');
+    nwWindow.on('blur', function() {
+      isWindowFocused = false;
+    });
+
     function _fireInput(input, bind) {
-      $rootScope.$broadcast('input:'+input, bind)
+      if (!isWindowFocused && !bind.global)
+        return;
+      $rootScope.$broadcast('input:'+input, bind);
       console.log('!%s!', input, bind);
     }
 

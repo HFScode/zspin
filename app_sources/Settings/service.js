@@ -30,7 +30,10 @@ app.factory('settings', ['zspin',
 
     // Blocking settings "write"
     service.write = function() {
-      var data = JSON.stringify(service.$obj, null, 2);
+      var data = angular.copy(service.$obj);
+      for (var idx in data.binds['home'])
+        data.binds['home'][idx].global = true;
+      data = JSON.stringify(data, null, 2);
       return fs.writeFileSync(path, data, 'utf8');
     };
 
@@ -57,16 +60,12 @@ app.factory('settings', ['zspin',
     // Load curent values
     service.load();
 
-    // Create global home shortcut (default to F10)
-    var shortcut_key = 'f10';
-    if (service.$obj.binds['home'][0] !== undefined) {
-      shortcut_key = service.$obj.binds['home'][0].combo;
-    }
-    var shortcut = new zspin.gui.Shortcut({key: shortcut_key});
-    zspin.gui.App.registerGlobalHotKey(shortcut);
-    shortcut.on('active', function() {
-      zspin.gui.Window.get().show();
-    });
+    // Create global home shortcut
+    // var shortcut = new zspin.gui.Shortcut({key: service.$obj.binds['home'][0].combo});
+    // zspin.gui.App.registerGlobalHotKey(shortcut);
+    // shortcut.on('active', function() {
+    //   zspin.gui.Window.get().show();
+    // });
 
     console.log('settings - ready');
     return service;
