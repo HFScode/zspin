@@ -4,6 +4,8 @@ RELEASE =   ./releases/
 GULP    =   ./node_modules/.bin/gulp
 BOWER   =   ./node_modules/.bin/bower
 NWBUILD =   node ./node_modules/.bin/nwbuild
+# necessary to run without internet connection
+NWVER   =   0.12.1
 
 all: install build
 
@@ -15,7 +17,7 @@ build:
 		$(GULP)
 
 run:
-		$(NWBUILD) -r $(BUILD)
+		$(NWBUILD) -v $(NWVER) -r $(BUILD)
 
 watch:
 		$(GULP) watch
@@ -30,4 +32,4 @@ clean:
 fclean: clean
 		rm -rf $(BUILD)
 
-.PHONY: all build clean releases
+.PHONY: all install build run watch release clean fclean
