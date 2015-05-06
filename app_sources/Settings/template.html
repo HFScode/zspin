@@ -20,8 +20,10 @@
     <div class="five columns">
       <h5>Hyperspin.exe path</h5>
     </div>
-    <div class="four columns">
-      <input type='file' ng-model='settings.hsPath' />
+    <div class="seven columns">
+      <input type='text' readonly ng-model='settings.hsPath'/>
+      <input id='hsPath' type='file' name='hsPath' custom-on-change='updatePath'/>
+      <button onclick="document.getElementById('hsPath').click();">browse</button>
     </div>
   </div>
 
@@ -33,20 +35,18 @@
     <div class="five columns">
       <h5>Launcher binary</h5>
     </div>
-    <div class="four columns">
-      <input type='file' ng-model='settings.launcherPath' />
+    <div class="seven columns">
+      <input type='text' ng-model='settings.launcherPath'/>
+      <input id='launcherPath' type='file' name='launcherPath' custom-on-change='updatePath'/>
+      <button onclick="document.getElementById('launcherPath').click();">browse</button>
     </div>
   </div>
   <div class="row">
     <div class="five columns">
       <h5>Launcher parameters</h5>
     </div>
-    <div class="four columns">
-      <input type='text' ng-model='settings.launcherParams' />
-    </div>
-    <div class="three columns">
-      {R} for rom, {S} for system<br/>
-      ex: -rom {R} -system {S}
+    <div class="seven columns">
+      <input type='text' ng-model='settings.launcherParams' placeholder='ex: -rom {R} -system {S}'/>
     </div>
   </div>
 

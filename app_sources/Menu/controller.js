@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'zspin', 'menus',
-  function($scope, $routeParams, $location, $timeout, fs, zspin, menus) {
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'zspin', 'menus', 'settings',
+  function($scope, $routeParams, $location, $timeout, fs, zspin, menus, settings) {
 
     //  - requires
     var fsRaw = require('fs');
@@ -84,21 +84,22 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       $scope.updateEntry();
     };
 
-    var launcher = 'open';
-    var rom = '/Applications/Calculator.app';
 
     $scope.enter = function() {
-      var name = $scope.wheelControl.select().name;
+      var elem = $scope.wheelControl.select().name;
 
-      // check if item is a database
-      var databasePath = zspin.path('Databases', name, name+'.xml');
+      // check if item is a database, if yes, go to submenu
+      var databasePath = zspin.path('Databases', elem, elem+'.xml');
       if (fsRaw.existsSync(databasePath)) {
-        var newPath = baseUrl + curPath + '/' + name;
+        var newPath = baseUrl + curPath + '/' + elem;
         $location.path(newPath);
 
       // if not, then this is a game, run it
       } else {
-        var launcherProcess = spawn(launcher, [rom]);
+        var params = settings.$obj.launcherParams
+                             .replace('{R}', elem)
+                             .replace('{S}', menu.name);
+        var launcherProcess = spawn(settings.$obj.launcherPath, [params]);
       }
     };
 

@@ -48,9 +48,9 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
       event.currentTarget.innerText = '<press a key>';
     }
 
-    $scope.$watch('hsPath', function(newVal, oldVal) {
-      console.log(newVal, oldVal);
-    });
+    $scope.updatePath = function() {
+      $scope.settings[this.name] = this.value;
+    }
 
   }
 ]);

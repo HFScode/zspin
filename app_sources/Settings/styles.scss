@@ -3,4 +3,14 @@
   pre {
     font-size: 12px;
   }
+
+  .seven {
+    input {
+      width: 300px;
+    }
+
+    input[type='file'] {
+      display: none;
+    }
+  }
 }
