@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'zspin', 'menus', 'settings',
-  function($scope, $routeParams, $location, $timeout, fs, zspin, menus, settings) {
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'zspin', 'menus', 'settings', 'inputs',
+  function($scope, $routeParams, $location, $timeout, fs, zspin, menus, settings, inputs) {
 
     //  - requires
     var fsRaw = require('fs');
@@ -100,6 +100,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
                              .replace('{R}', elem)
                              .replace('{S}', menu.name);
         var launcherProcess = spawn(settings.$obj.launcherPath, [params]);
+        inputs.isWindowFocused = false;
       }
     };
 
