@@ -19,12 +19,18 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
       var binds = $scope.settings.binds;
       binds[focus.bind] = binds[focus.bind] || {};
       binds[focus.bind][focus.idx] = {source: 'gamepad', combo: input.combo};
+      if (focus.bind === 'home')
+        binds[focus.bind][focus.idx].global = true
+      inputs.loadSettings();
     }});
     kbBinder.add({combo: '*', callback: function(input) {
       if (!focus) return;
       var binds = $scope.settings.binds;
       binds[focus.bind] = binds[focus.bind] || {};
       binds[focus.bind][focus.idx] = {source: 'keyboard', combo: input.combo};
+      if (focus.bind === 'home')
+        binds[focus.bind][focus.idx].global = true
+      inputs.loadSettings();
     }});
 
     // Restore local settings to saved state
@@ -34,7 +40,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
 
     // Update global settings and persist to disk
     $scope.save = function() {
-      angular.extend(settings.$obj, $scope.settings);
+      angular.copy($scope.settings, settings.$obj);
       settings.write();
       inputs.loadSettings();
     }
@@ -43,9 +49,11 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
 
     $scope.clear = function(input) {
       $scope.settings.binds[input] = {};
+      inputs.loadSettings();
     }
 
     $scope.setPress = function(event) {
+      inputs.unloadSettings();
       event.currentTarget.innerText = '<press a key>';
     }
 

@@ -51,10 +51,7 @@ app.factory('settings', [
 
     // Blocking settings "write"
     service.write = function() {
-      var data = angular.copy(service.$obj);
-      for (var idx in data.binds['home'])
-        data.binds['home'][idx].global = true;
-      data = JSON.stringify(data, null, 2);
+      var data = JSON.stringify(service.$obj, null, 2);
       return $fs.writeFileSync(settingsPath, data, 'utf8');
     };
 

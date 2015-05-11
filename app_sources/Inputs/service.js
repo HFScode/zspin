@@ -30,10 +30,8 @@ app.factory('inputs', ['$rootScope', 'NWKeyboard', 'DOMKeyboard', 'gamepads', 'z
       console.log('!%s!', input, bind);
     }
 
-    service.loadSettings = function() {
-      var binds = settings.$obj.binds;
+    service.unloadSettings = function() {
 
-      // Remove any old binds
       for (var i in BINDS) {
         var bind = BINDS[i];
         if (bind.source == 'keyboard' && bind.global)
@@ -43,8 +41,13 @@ app.factory('inputs', ['$rootScope', 'NWKeyboard', 'DOMKeyboard', 'gamepads', 'z
         else if (bind.source == 'gamepad')
           gpBinder.del(BINDS[i].combo);
       }
+    };
 
-      // Add new binds
+    service.loadSettings = function() {
+      var binds = settings.$obj.binds;
+      service.unloadSettings();
+
+
       BINDS = [];
       for (var input in binds) {
         for (var idx in binds[input]) {
