@@ -4,7 +4,7 @@ app.controller('IntroCtrl', ['$scope', '$location', 'fs', 'settings',
   function($scope, $location, fs, settings) {
 
     // Prepend video file
-    var path = settings.dataPath('Media', 'Frontend', 'Video');
+    var path = settings.hsPath('Media', 'Frontend', 'Video');
 
     // Flvplayer interface
     $scope.player = {};

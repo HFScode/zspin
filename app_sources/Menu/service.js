@@ -10,7 +10,7 @@ app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml',
       };
 
       // Load database entries from $HS_PATH/Databases/$NAME/$NAME.xml
-      var databasePath = settings.dataPath('Databases', name, name+'.xml');
+      var databasePath = settings.hsPath('Databases', name, name+'.xml');
       fs.access(databasePath, fs.F_OK).then(function() {
         return xml.parse(databasePath);
       }).then(function(data) {
@@ -18,7 +18,7 @@ app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml',
       });
 
       // Load database entries from $HS_PATH/Settings/$NAME.ini
-      var settingsPath = settings.dataPath('Settings', name+'.ini');
+      var settingsPath = settings.hsPath('Settings', name+'.ini');
       fs.access(settingsPath, fs.F_OK).then(function() {
         return ini.parse(settingsPath);
       }).then(function(data) {
@@ -27,7 +27,7 @@ app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml',
 
       obj.getMedias = function (basePath, glob) {
         // Load media entries from $HS_PATH/Media/$NAME/$BASEPATH/$PATTERN
-        var path = settings.dataPath('Media', name, basePath);
+        var path = settings.hsPath('Media', name, basePath);
         return fs.glob(glob, {cwd: path}).then(function(files) {
           var obj = {};
           files.forEach(function(file) {
@@ -45,7 +45,7 @@ app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml',
 
     // // Look for the golbal default at %HS_PATH%/Media/Frontend/Video/No Video.(flv|mp4)
     // service.defaultVideo = undefined;
-    // var path = settings.dataPath('Media', 'Frontend', 'Video');
+    // var path = settings.hsPath('Media', 'Frontend', 'Video');
     // fs.glob('No Video*', {cwd: path}).then(function(files) {
     //   if (files && files.length)
     //     service.defaultVideo = fs.join(path, files[0]);

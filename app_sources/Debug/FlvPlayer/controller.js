@@ -3,7 +3,7 @@
 app.controller('DebugFlvPlayerCtrl', ['$scope', 'settings',
   function($scope, settings) {
 
-    $scope.flv = settings.dataPath('Media', 'Frontend', 'Video', 'Intro.flv');
+    $scope.flv = settings.hsPath('Media', 'Frontend', 'Video', 'Intro.flv');
     $scope.volume = 50;
     $scope.width = 320;
     $scope.height = 240;

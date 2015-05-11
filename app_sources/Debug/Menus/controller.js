@@ -9,7 +9,7 @@ app.controller('DebugMenusCtrl', ['$scope', 'settings', 'fs', 'menus',
 
 
     // Load ini folder to provide Theme neme options
-    fs.glob('*.ini', {cwd: settings.dataPath('Settings')}).then(function(dirs) {
+    fs.glob('*.ini', {cwd: settings.hsPath('Settings')}).then(function(dirs) {
       $scope.menuName = 'Main Menu';
       $scope.options = dirs.map(function(dir) {
         return dir.replace('.ini', '');

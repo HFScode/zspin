@@ -11,7 +11,7 @@ app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes',
         menu: '@',
       },
       link: function(scope, el, attrs) {
-        scope.tmpRoot = settings.dataPath('Cache', 'Theme');
+        scope.tmpRoot = settings.hsPath('Cache', 'Theme');
         scope.tmpPath = scope.tmpRoot;
 
         // Update scope.theme when src attribute change

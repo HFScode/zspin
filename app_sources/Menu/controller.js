@@ -89,7 +89,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       var elem = $scope.wheelControl.select().name;
 
       // check if item is a database, if yes, go to submenu
-      var databasePath = settings.dataPath('Databases', elem, elem+'.xml');
+      var databasePath = settings.hsPath('Databases', elem, elem+'.xml');
       if (fsRaw.existsSync(databasePath)) {
         var newPath = baseUrl + curPath + '/' + elem;
         $location.path(newPath);
