@@ -1,10 +1,10 @@
 'use strict';
 
-app.controller('BootCtrl', ['$scope', 'zspin',
+app.controller('BootCtrl', ['$scope', 'zspin', 'settings',
   function($scope, zspin) {
 
     $scope.openRoot = function() {
-      zspin.gui.Shell.openItem(zspin.path());
+      zspin.gui.Shell.openItem(settings.dataPath());
     };
 
   }

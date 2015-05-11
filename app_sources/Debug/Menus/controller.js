@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('DebugMenusCtrl', ['$scope', 'zspin', 'fs', 'menus',
-  function($scope, zspin, fs, menus) {
+app.controller('DebugMenusCtrl', ['$scope', 'settings', 'fs', 'menus',
+  function($scope, settings, fs, menus) {
     $scope.options = [];
     $scope.menuName = null;
     $scope.menu = {};
@@ -9,7 +9,7 @@ app.controller('DebugMenusCtrl', ['$scope', 'zspin', 'fs', 'menus',
 
 
     // Load ini folder to provide Theme neme options
-    fs.glob('*.ini', {cwd: zspin.path('Settings')}).then(function(dirs) {
+    fs.glob('*.ini', {cwd: settings.dataPath('Settings')}).then(function(dirs) {
       $scope.menuName = 'Main Menu';
       $scope.options = dirs.map(function(dir) {
         return dir.replace('.ini', '');

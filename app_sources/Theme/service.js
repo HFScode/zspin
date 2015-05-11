@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('themes', ['$q', 'fs', 'zspin', 'zip', 'xml',
-  function($q, fs, zspin, zip, xml) {
+app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml',
+  function($q, fs, settings, zip, xml) {
     console.log('themes - init');
 
     function registerFiles(path, files, dst) {
@@ -54,7 +54,7 @@ app.factory('themes', ['$q', 'fs', 'zspin', 'zip', 'xml',
 
         // Look for video in $HSROOT/Media/$MENU/Video/$NAME.*
         if (obj.manifest.video) {
-          var path = zspin.path('Media', obj.menu, 'Video');
+          var path = settings.dataPath('Media', obj.menu, 'Video');
           fs.glob(obj.name+'.*', {cwd: path}).then(function(files) {
             if (files && files.length !== 0)
               obj.video = fs.join(path, files[0]);
@@ -69,7 +69,7 @@ app.factory('themes', ['$q', 'fs', 'zspin', 'zip', 'xml',
 
     // Look for the golbal default at %HS_PATH%/Media/Frontend/Video/No Video.(flv|mp4)
     service.defaultVideo = '';
-    var path = zspin.path('Media', 'Frontend', 'Video');
+    var path = settings.dataPath('Media', 'Frontend', 'Video');
     fs.glob('No Video*', {cwd: path}).then(function(files) {
       if (files && files.length !== 0)
         service.defaultVideo = fs.join(path, files[0]);

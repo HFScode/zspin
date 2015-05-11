@@ -1,7 +1,7 @@
 'use strict'
 
-app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'themes',
-  function($q, zspin, fs, zip, themes) {
+app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes',
+  function($q, settings, fs, zip, themes) {
 
     return {
       restrict: 'E',
@@ -11,7 +11,7 @@ app.directive('theme', ['$q', 'zspin', 'fs', 'zip', 'themes',
         menu: '@',
       },
       link: function(scope, el, attrs) {
-        scope.tmpRoot = zspin.path('Cache', 'Theme');
+        scope.tmpRoot = settings.dataPath('Cache', 'Theme');
         scope.tmpPath = scope.tmpRoot;
 
         // Update scope.theme when src attribute change

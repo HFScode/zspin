@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'zspin', 'menus', 'settings', 'inputs',
-  function($scope, $routeParams, $location, $timeout, fs, zspin, menus, settings, inputs) {
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'menus', 'settings', 'inputs',
+  function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs) {
 
     //  - requires
     var fsRaw = require('fs');
@@ -89,7 +89,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       var elem = $scope.wheelControl.select().name;
 
       // check if item is a database, if yes, go to submenu
-      var databasePath = zspin.path('Databases', elem, elem+'.xml');
+      var databasePath = settings.dataPath('Databases', elem, elem+'.xml');
       if (fsRaw.existsSync(databasePath)) {
         var newPath = baseUrl + curPath + '/' + elem;
         $location.path(newPath);

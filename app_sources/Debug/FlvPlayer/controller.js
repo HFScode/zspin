@@ -1,9 +1,9 @@
 'use strict';
 
-app.controller('DebugFlvPlayerCtrl', ['$scope', 'zspin',
-  function($scope, zspin) {
+app.controller('DebugFlvPlayerCtrl', ['$scope', 'settings',
+  function($scope, settings) {
 
-    $scope.flv = zspin.path('Media', 'Frontend', 'Video', 'Intro.flv');
+    $scope.flv = settings.dataPath('Media', 'Frontend', 'Video', 'Intro.flv');
     $scope.volume = 50;
     $scope.width = 320;
     $scope.height = 240;

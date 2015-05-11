@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 app.factory('zspin', ['fs',
   function (fs) {
@@ -26,23 +26,6 @@ app.factory('zspin', ['fs',
     //   var args = [].slice.call(arguments, 0);
     //   return fs.join.apply(fs, [rootPath].concat(args));
     // };
-
-    var binaryPath = process.cwd(); // FIXME test this in windows/linux
-    if (process.platform == 'darwin') {
-        // avoids to get the binary app.nw when released in .app package
-        binaryPath = binaryPath.replace(/\/[^\/]+\.app\/.*$/g, '');
-    }
-
-    service.binaryPath = function() {
-      var args = [].slice.call(arguments, 0);
-      return fs.join.apply(fs, [binaryPath].concat(args));
-    }
-
-    var path = fs.join(gui.App.dataPath, 'Zspin');
-    service.path = function() {
-      var args = [].slice.call(arguments, 0);
-      return fs.join.apply(fs, [path].concat(args));
-    };
 
     var root = process.cwd();
     var introFile = fs.join(root, 'swf', 'player_flv_js.swf');
