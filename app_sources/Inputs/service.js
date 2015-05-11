@@ -65,13 +65,6 @@ app.factory('inputs', ['$rootScope', 'NWKeyboard', 'DOMKeyboard', 'gamepads', 'z
 
     service.loadSettings();
 
-    // Create global home shortcut
-    $scope.$on('input:home', function () {
-      // zspin.gui.Window.get().show(); // use for pause mode
-      zspin.gui.Window.get().focus(); //use when quitting game
-      isWindowFocused = true;
-    });
-
     console.log('inputs - ready');
     return service;
   }

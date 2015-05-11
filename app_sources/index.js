@@ -23,3 +23,9 @@ app.run(['settings', 'inputs', function(settings, inputs) {
 }]);
 
 
+app.run(['$rootScope', 'zspin', function($rootScope, zspin) {
+  // Create global home shortcut
+  $rootScope.$on('input:home', function () {
+    zspin.gui.Window.get().focus(); //use when quitting game
+  });
+}])
