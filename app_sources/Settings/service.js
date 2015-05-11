@@ -30,6 +30,12 @@ app.factory('settings', [
     };
 
     // Generates a path relative to the 'hsPath' path setting
+    service.binaryPath = function() {
+      var args = [].slice.call(arguments, 0);
+      return $path.join.apply(null, [binaryPath].concat(args));
+    };
+
+    // Generates a path relative to the 'hsPath' path setting
     service.dataPath = function() {
       var args = [].slice.call(arguments, 0);
       return $path.join.apply(null, [dataPath].concat(args));
