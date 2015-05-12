@@ -13,6 +13,7 @@ var vendors = {
   'scripts': [
     'bower_components/jquery/dist/jquery.js',
     'bower_components/jswheel/jswheel.js',
+    'bower_components/toastr/toastr.js',
     'bower_components/angular/angular.js',
     'bower_components/ng-load/ng-load.js',
     'bower_components/ng-resize/ngresize.js',
@@ -22,12 +23,13 @@ var vendors = {
     'bower_components/gsap/src/uncompressed/TweenLite.js',
     'bower_components/gsap/src/uncompressed/plugins/CSSPlugin.js',
     'bower_components/gsap/src/uncompressed/jquery.gsap.js',
-    'bower_components/json-formatter/dist/json-formatter.js'
+    'bower_components/json-formatter/dist/json-formatter.js',
   ],
   'styles': [
     'bower_components/skeleton/css/normalize.css',
     'bower_components/skeleton/css/skeleton.css',
-    'bower_components/json-formatter/dist/json-formatter.css'
+    'bower_components/json-formatter/dist/json-formatter.css',
+    'bower_components/toastr/toastr.css',
   ],
   'fonts': [
 //    'bower_components/bootstrap/dist/fonts/*', // * preserve dir structure

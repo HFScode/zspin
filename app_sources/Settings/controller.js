@@ -42,6 +42,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     $scope.save = function() {
       angular.copy($scope.settings, settings.$obj);
       settings.write();
+      toastr.success('Settings saved !');
       inputs.loadSettings();
     }
     $scope.settings = {};
