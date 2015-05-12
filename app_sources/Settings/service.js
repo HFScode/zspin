@@ -10,9 +10,9 @@ app.factory('settings', [
     var gui = require('nw.gui');
 
     // Path for the app datas
-    // for example in osx: ~/Library/Application Support/zspin/Zspin
-    var dataPath = $path.join(gui.App.dataPath, 'Zspin');
-    var settingsPath = $path.join(dataPath, 'Settings.json')
+    // for example in osx: ~/Library/Application Support/zspin/
+    var dataPath = gui.App.dataPath;
+    var settingsPath = $path.join(dataPath, 'Settings.json');
 
     service.$obj = {
       binds: {

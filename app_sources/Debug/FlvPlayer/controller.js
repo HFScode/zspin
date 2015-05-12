@@ -12,6 +12,6 @@ app.controller('DebugFlvPlayerCtrl', ['$scope', 'settings',
     $scope.setPosition = 30;
     $scope.setVolume = 0;
 
-    // /Users/godric/Library/Application\ Support/zspin/Zspin/Media/Frontend/Video/Intro.flv
+    // /Users/godric/Library/Application\ Support/zspin/Media/Frontend/Video/Intro.flv
   }
 ]);
