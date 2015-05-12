@@ -6,7 +6,7 @@ BOWER   	=   ./node_modules/.bin/bower
 NWBUILD 	=   node ./node_modules/.bin/nwbuild
 PLATFORM	?=  win32,osx32,linux32
 # necessary to run without internet connection
-NWVER   	?=	0.12.1
+NWVER   	?=  0.12.1
 
 all: install build
 

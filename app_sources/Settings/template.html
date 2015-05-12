@@ -18,11 +18,11 @@
   <h3>Paths</h3>
   <div class="row">
     <div class="five columns">
-      <h5>Hyperspin.exe path</h5>
+      <h5>HyperSpin.exe path</h5>
     </div>
     <div class="seven columns">
       <input type='text' readonly ng-model='settings.hsPath'/>
-      <input id='hsPath' type='file' name='hsPath' custom-on-change='updatePath'/>
+      <input id='hsPath' accept='.exe' type='file' name='hsPath' custom-on-change='updatePath'/>
       <button onclick="document.getElementById('hsPath').click();">browse</button>
     </div>
   </div>
