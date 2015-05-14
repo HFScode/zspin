@@ -1,2 +1,39 @@
+// ============================================================================
+// Variables
+// ============================================================================
 
+$grey: #e1e1e1;
+$white: #fff;
+$black: #000;
 
+// ============================================================================
+// Global styles (every page style)
+// ============================================================================
+
+#Navbar {
+    position: fixed;
+    top: 0;
+    color: $white;
+    background-color: rgba(90, 90, 90, .90);
+    z-index: 10;
+    width: 98%;
+    border-bottom: 1px solid $grey;
+    margin: 0;
+    padding: 1%;
+
+    .button, button {
+        height: 30px;
+        line-height: 30px;
+        margin-bottom: 0;
+        color: $white;
+    }
+}
+
+.container {
+    margin-top: 70px;
+    margin-bottom: 70px;
+}
+
+.toast-top-right {
+    top: 60px;
+}

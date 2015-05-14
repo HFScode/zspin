@@ -1,16 +1,14 @@
+<div id="Navbar">
+  <button onClick="javascript:history.back();">Back</button>
+  <div class='u-pull-right'>
+    <button ng-click="reset()">Reset</button>
+    <button class="button-primary" ng-click="save()" >Save</button>
+  </div>
+</div>
 <div id="Settings" class="container">
   <h1>Options</h1>
 
   <!-- SAVE RESET -->
-
-  <div class="row">
-    <div class="six columns u-center">
-      <button class="u-full-width" ng-click="reset()">Reset</button>
-    </div>
-    <div class="six columns u-center">
-      <button class="button-primary u-full-width" ng-click="save()" >Save</button>
-    </div>
-  </div>
 
   <hr/>
   <!-- PATHS -->
@@ -67,18 +65,6 @@
       <button type="text" class="" ng-click="clear(bind)">
         clear
       </button>
-    </div>
-  </div>
-
-  <hr/>
-  <!-- SAVE RESET -->
-
-  <div class="row">
-    <div class="six columns u-center">
-      <button class="u-full-width" ng-click="reset()">Reset</button>
-    </div>
-    <div class="six columns u-center">
-      <button class="button-primary u-full-width" ng-click="save()" >Save</button>
     </div>
   </div>
 
