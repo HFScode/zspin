@@ -15,5 +15,9 @@ app.controller('BootCtrl', ['$scope', 'zspin', 'settings',
       zspin.gui.Shell.openItem(settings.binaryPath());
     };
 
+    $scope.showDevTools = function() {
+      zspin.gui.Window.get().showDevTools();
+    };
+
   }
 ]);

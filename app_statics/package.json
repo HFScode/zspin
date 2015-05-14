@@ -6,7 +6,8 @@
   "window": {
     "title": "Zspin",
     "width": 1024,
-    "height": 768
+    "height": 768,
+    "toolbar": false
   },
   "webkit": {
     "plugin": true
