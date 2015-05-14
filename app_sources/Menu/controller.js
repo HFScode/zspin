@@ -96,10 +96,14 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
 
       // if not, then this is a game, run it
       } else {
-        var params = settings.$obj.launcherParams
-                             .replace('{R}', elem)
-                             .replace('{S}', menu.name);
-        var launcherProcess = spawn(settings.$obj.launcherPath, [params]);
+        var params = settings.$obj.launcherParams.split(' ');
+
+        for (var i=0; i < params.length; i++) {
+          params[i] = params[i].replace('{R}', elem)
+                               .replace('{S}', menu.name);
+        }
+
+        var launcherProcess = spawn(settings.$obj.launcherPath, params);
         inputs.isWindowFocused = false;
       }
     };
