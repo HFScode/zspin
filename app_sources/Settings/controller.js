@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings', 'inputs',
-  function($scope, DOMKeyboard, gamepads, settings, inputs) {
+app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings', 'inputs', 'toastr',
+  function($scope, DOMKeyboard, gamepads, settings, inputs, toastr) {
 
     var gpBinder = gamepads.bindTo($scope);
     var kbBinder = DOMKeyboard.bindTo($scope);
@@ -61,6 +61,15 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     $scope.updatePath = function() {
       $scope.settings[this.name] = this.value;
       $scope.$apply();
+    }
+
+    if ($scope.settings.hsPath == '') {
+      toastr.warning("You must configure HyperSpin.exe path !", {
+        tapToDismiss: false,
+        timeOut: 0,
+        extendedTimeOut: 0,
+        closeButton: true,
+      });
     }
 
   }
