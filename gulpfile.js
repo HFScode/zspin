@@ -110,6 +110,24 @@ gulp.task('app:templates', function() {
 
 gulp.task('app', ['app:statics', 'app:scripts', 'app:styles', 'app:templates']);
 
+/********************************** release **********************************/
+gulp.task('release-win64', ['default'], function() {
+  var NwBuilder = require('node-webkit-builder');
+  var nw = new NwBuilder({
+      files: ['./build/**', '!./build/plugins/*.plugin', '!./build/plugins/*.so'],
+      buildDir: './releases/',
+      version: '0.12.1',
+      cacheDir: './node_modules/node-webkit-builder/cache',
+      platforms: ['win64'],
+  });
+
+  nw.build().then(function () {
+     console.log('all done!');
+  }).catch(function (error) {
+      console.error(error);
+  });
+});
+
 /*********************************** Watch ***********************************/
 
 gulp.task('watch', ['default'], function() {
