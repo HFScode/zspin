@@ -99,8 +99,8 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
         var params = settings.$obj.launcherParams.split(' ');
 
         for (var i=0; i < params.length; i++) {
-          params[i] = params[i].replace('{R}', elem)
-                               .replace('{S}', menu.name);
+          params[i] = params[i].replace('{rom}', elem)
+                               .replace('{system}', menu.name);
         }
 
         var launcherProcess = spawn(settings.$obj.launcherPath, params);
