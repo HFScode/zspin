@@ -22,6 +22,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     $scope.focus = function(bind, idx) {
       focus = {bind: bind, idx: idx};
     };
+
     $scope.blur = function() {
       focus = undefined;
     };
@@ -35,6 +36,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
         binds[focus.bind][focus.idx].global = true
       inputs.loadSettings();
     }});
+
     kbBinder.add({combo: '*', callback: function(input) {
       if (!focus) return;
       var binds = $scope.settings.binds;
@@ -67,7 +69,11 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
 
     $scope.setPress = function(event) {
       inputs.unloadSettings();
-      event.currentTarget.innerText = '<press a key>';
+      // event.currentTarget.value = '<press a key>';
+    }
+
+    $scope.cancelInput = function(event) {
+      event.preventDefault();
     }
 
     $scope.updatePath = function() {

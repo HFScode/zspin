@@ -58,9 +58,15 @@
       <h5>{{bind.name}}:</h5>
     </div>
     <div class="three columns">
-      <button type="text" class="u-full-width" ng-click="setPress($event)" ng-focus="focus(bind.name, 0)" ng-blur="blur()">
-        {{settings.binds[bind.name][0].combo}}
-      </button>
+      <input  type="text"
+              class="button"
+              ng-click="setPress($event, bind.name)"
+              ng-focus="focus(bind.name, 0)"
+              ng-blur="blur()"
+              ng-value="settings.binds[bind.name][0].combo || '<none>'"
+              ng-keydown="cancelInput($event)"
+              >
+      </input>
     </div>
     <div class="two columns">
       <button type="text" class="" ng-click="clear(bind.name)">

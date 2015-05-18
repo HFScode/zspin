@@ -18,19 +18,20 @@ app.factory('settings', [
     // in the sortedBinds array, otherwise the binding won't be available
     service.$obj = {
       binds: {
-        'home': {},
-        'settings': {},
-        'devtools': {},
-        'up': {},
-        'down': {},
-        'left': {},
-        'right': {},
-        'enter': {},
-        'back': {}
+        'up':       {'0': {'source': 'keyboard', 'combo': 'up'}},
+        'down':     {'0': {'source': 'keyboard', 'combo': 'down'}},
+        'left':     {'0': {'source': 'keyboard', 'combo': 'left'}},
+        'right':    {'0': {'source': 'keyboard', 'combo': 'right'}},
+        'enter':    {'0': {'source': 'keyboard', 'combo': 'enter'}},
+        'back':     {'0': {'source': 'keyboard', 'combo': 'shift'}},
+        'home':     {'0': {'source': 'keyboard', 'combo': 'f10'}},
+        'settings': {'0': {'source': 'keyboard', 'combo': 'ctrl+s'}},
+        'devtools': {'0': {'source': 'keyboard', 'combo': 'ctrl+d'}},
       },
       hsPath: '',
       launcherPath: '',
-      launcherParams: ''
+      launcherParams: '{system} {rom}',
+      firstRun: true,
     };
 
     // Generates a path relative to the 'hsPath' path setting

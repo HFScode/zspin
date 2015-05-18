@@ -18,6 +18,8 @@ app.factory('DOMKeyboard', ['$rootScope', '$window',
           combo.push(keyIdentifier);
         else if (codePoint == 127)
           combo.push('Delete');
+        else if (codePoint == 8)
+          combo.push('Backspace');
       } else {
         if (e.keyIdentifier == 'Control')
           combo.push(isOSX?'Meta':'Ctrl');

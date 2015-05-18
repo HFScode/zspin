@@ -13,4 +13,14 @@
       display: none;
     }
   }
+
+  .bind input[type='text'] {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+
+    &:focus {
+      border-width: 2px;
+    }
+  }
+
 }
