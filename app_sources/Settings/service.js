@@ -14,9 +14,13 @@ app.factory('settings', [
     var dataPath = gui.App.dataPath;
     var settingsPath = $path.join(dataPath, 'Settings.json');
 
+    // info: when adding a bind, be sure to also add it in settings/controller.js
+    // in the sortedBinds array, otherwise the binding won't be available
     service.$obj = {
       binds: {
         'home': {},
+        'settings': {},
+        'devtools': {},
         'up': {},
         'down': {},
         'left': {},

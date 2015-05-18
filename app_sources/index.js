@@ -34,9 +34,22 @@ app.run(['settings', 'inputs', function(settings, inputs) {
   // Force the settings service to be instanciated early
 }]);
 
-app.run(['$rootScope', 'zspin', function($rootScope, zspin) {
+app.run(['$rootScope', 'zspin', '$location', function($rootScope, zspin, location) {
+
   // Create global home shortcut
   $rootScope.$on('input:home', function () {
     zspin.gui.Window.get().focus(); //use when quitting game
   });
+
+  // Create devtools shortcut
+  $rootScope.$on('input:devtools', function () {
+    zspin.gui.Window.get().showDevTools();
+  });
+
+  // Create settings shortcut
+  $rootScope.$on('input:settings', function () {
+    console.log('Settings');
+    location.url('/settings');
+  });
+
 }]);
