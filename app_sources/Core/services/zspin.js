@@ -7,13 +7,8 @@ app.factory('zspin', ['fs',
     var gui = require('nw.gui');
     var flashTrust = require('nw-flash-trust');
 
-    try {
-      var appName = 'zspin';
-      var trustManager = flashTrust.initSync(appName);
-    } catch(err) {
-      if (err.message === 'Flash Player config folder not found.') {
-      }
-    }
+    var appName = 'zspin';
+    var trustManager = flashTrust.initSync(appName);
 
     var service = {};
 
