@@ -52,20 +52,25 @@
   <!-- KEYS -->
 
   <h3>Keys</h3>
-  <div class="row" ng-repeat="(bind, bindings) in settings.binds">
-    <div class="five columns">
-      <h5>{{bind}}:</h5>
+
+   <div class="bind row" ng-repeat="(idx, bind) in sortedBinds">
+    <div class="two columns">
+      <h5>{{bind.name}}:</h5>
     </div>
     <div class="three columns">
-      <button type="text" class="u-full-width" ng-click="setPress($event)" ng-focus="focus(bind, 0)" ng-blur="blur()">
-        {{bindings[0].combo}}
+      <button type="text" class="u-full-width" ng-click="setPress($event)" ng-focus="focus(bind.name, 0)" ng-blur="blur()">
+        {{settings.binds[bind.name][0].combo}}
       </button>
     </div>
-    <div class="one columns">
-      <button type="text" class="" ng-click="clear(bind)">
+    <div class="two columns">
+      <button type="text" class="" ng-click="clear(bind.name)">
         clear
       </button>
     </div>
+    <div class="four columns">
+      <span>{{bind.desc}}</span>
+    </div>
   </div>
+
 
 </div>
