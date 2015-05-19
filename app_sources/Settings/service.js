@@ -27,6 +27,7 @@ app.factory('settings', [
         'home':     {'0': {'source': 'keyboard', 'combo': 'f10'}},
         'settings': {'0': {'source': 'keyboard', 'combo': 'ctrl+s'}},
         'devtools': {'0': {'source': 'keyboard', 'combo': 'ctrl+d'}},
+        'devmenu':  {'0': {'source': 'keyboard', 'combo': 'ctrl+shift+d'}},
       },
       hsPath: '',
       launcherPath: '',
