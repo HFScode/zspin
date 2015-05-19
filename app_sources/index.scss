@@ -37,3 +37,48 @@ $black: #000;
 .toast-top-right {
     top: 60px;
 }
+
+// Buttons inherited from skeleton.css
+.button.button-warning,
+button.button-warning,
+input[type="submit"].button-warning,
+input[type="reset"].button-warning,
+input[type="button"].button-warning {
+  color: $white;
+  background-color: #E7C100;
+  border-color: #E7C100; }
+.button.button-warning:hover,
+button.button-warning:hover,
+input[type="submit"].button-warning:hover,
+input[type="reset"].button-warning:hover,
+input[type="button"].button-warning:hover,
+.button.button-warning:focus,
+button.button-warning:focus,
+input[type="submit"].button-warning:focus,
+input[type="reset"].button-warning:focus,
+input[type="button"].button-warning:focus {
+  color: $white;
+  background-color: #DAB600;
+  border-color: #DAB600; }
+
+.button.button-error,
+button.button-error,
+input[type="submit"].button-error,
+input[type="reset"].button-error,
+input[type="button"].button-error {
+  color: $white;
+  background-color: #FF5725;
+  border-color: #FF5725; }
+.button.button-error:hover,
+button.button-error:hover,
+input[type="submit"].button-error:hover,
+input[type="reset"].button-error:hover,
+input[type="button"].button-error:hover,
+.button.button-error:focus,
+button.button-error:focus,
+input[type="submit"].button-error:focus,
+input[type="reset"].button-error:focus,
+input[type="button"].button-error:focus {
+  color: $white;
+  background-color: #EC5022;
+  border-color: #EC5022; }
