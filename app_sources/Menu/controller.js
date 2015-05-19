@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'menus', 'settings', 'inputs',
-  function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs) {
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'menus', 'settings', 'inputs', 'zspin',
+  function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs, zspin) {
 
     //  - requires
     var fsRaw = require('fs');
@@ -111,6 +111,8 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     $scope.back = function() {
       if (curPath.indexOf('/') > -1) {
         curPath = curPath.split('/').slice(0, -1).join('/');
+      } else {
+        zspin.quit();
       }
       var newPath = baseUrl + curPath;
       $location.path(newPath);

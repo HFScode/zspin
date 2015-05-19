@@ -34,6 +34,10 @@ app.factory('zspin', ['fs',
       guiWindow.focus();
     };
 
+    service.quit = function() {
+      gui.App.quit();
+    };
+
     console.log('zspin - ready');
     return service;
   }
