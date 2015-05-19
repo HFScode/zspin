@@ -1,7 +1,7 @@
 <div id="Navbar">
-  <button onClick="javascript:history.back();">Back</button>
+  <a href='#/menus/Main menu' ng-show="!settings.firstRun"><button>Back</button></a>
   <div class='u-pull-right'>
-    <button ng-click="reset()">Reset</button>
+    <button ng-click="reset()">Reset keys</button>
     <button class="button-primary" ng-click="save()" >Save</button>
   </div>
 </div>

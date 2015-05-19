@@ -19,6 +19,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     ];
 
     var focus = undefined;
+
     $scope.focus = function(bind, idx) {
       focus = {bind: bind, idx: idx};
     };
@@ -50,36 +51,43 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     // Restore local settings to saved state
     $scope.reset = function() {
       angular.copy(settings.$obj, $scope.settings);
-    }
+    };
 
     // Update global settings and persist to disk
     $scope.save = function() {
+      if ($scope.settings.hsPath === '') {
+        toastr.warning("You must configure HyperSpin.exe path !");
+        return;
+      }
+      $scope.settings.firstRun = false;
+
       angular.copy($scope.settings, settings.$obj);
       settings.write();
       toastr.success('Settings saved !');
       inputs.loadSettings();
-    }
+    };
+
     $scope.settings = {};
     $scope.reset();
 
     $scope.clear = function(input) {
       $scope.settings.binds[input] = {};
       inputs.loadSettings();
-    }
+    };
 
     $scope.setPress = function(event) {
       inputs.unloadSettings();
       // event.currentTarget.value = '<press a key>';
-    }
+    };
 
     $scope.cancelInput = function(event) {
       event.preventDefault();
-    }
+    };
 
     $scope.updatePath = function() {
       $scope.settings[this.name] = this.value;
       $scope.$apply();
-    }
+    };
 
     $scope.openData = function() {
       zspin.gui.Shell.openItem(settings.dataPath());
@@ -93,17 +101,16 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
       zspin.gui.Shell.openItem(settings.binaryPath());
     };
 
-    if ($scope.settings.hsPath == '') {
-      toastr.warning("You must configure HyperSpin.exe path !", {
-        tapToDismiss: false,
-        timeOut: 0,
-        extendedTimeOut: 0,
-        closeButton: true,
     $scope.factoryReset = function() {
       settings.deleteSettingsFile();
       zspin.reloadApp();
     };
 
+    if ($scope.settings.firstRun) {
+      toastr.info("Welcome to Zspin !<br/>Please configure me !", {
+        allowHtml: true,
+        timeOut: 5000,
+        extendedTimeOut: 5000,
       });
     }
 
