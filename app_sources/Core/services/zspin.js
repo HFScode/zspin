@@ -9,6 +9,7 @@ app.factory('zspin', ['fs',
 
     var appName = 'zspin';
     var trustManager = flashTrust.initSync(appName);
+    var guiWindow = gui.Window.get();
 
     var service = {};
 
@@ -21,7 +22,16 @@ app.factory('zspin', ['fs',
     console.log('flash trust', trustManager.list());
 
     service.reloadApp = function() {
-      gui.Window.get().reload(3);
+      guiWindow.reload(3);
+    };
+
+    service.toggleFullscreen = function() {
+      guiWindow.toggleFullscreen();
+      guiWindow.focus();
+    };
+
+    service.focus = function() {
+      guiWindow.focus();
     };
 
     console.log('zspin - ready');

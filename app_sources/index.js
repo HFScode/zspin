@@ -41,6 +41,16 @@ app.run(['$rootScope', 'zspin', '$location', function($rootScope, zspin, $locati
     zspin.gui.Window.get().focus(); //use when quitting game
   });
 
+  // Create settings shortcut
+  $rootScope.$on('input:settings', function () {
+    $location.url('/settings');
+  });
+
+  // Create fullscreen shortcut
+  $rootScope.$on('input:fullscreen', function () {
+    zspin.toggleFullscreen();
+  });
+
   // Create devtools shortcut
   $rootScope.$on('input:devtools', function () {
     zspin.gui.Window.get().showDevTools();
@@ -49,12 +59,6 @@ app.run(['$rootScope', 'zspin', '$location', function($rootScope, zspin, $locati
   // Create devmenu shortcut
   $rootScope.$on('input:devmenu', function () {
     $location.url('/debug');
-  });
-
-  // Create settings shortcut
-  $rootScope.$on('input:settings', function () {
-    console.log('Settings');
-    $location.url('/settings');
   });
 
 }]);

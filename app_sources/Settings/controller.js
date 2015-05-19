@@ -7,15 +7,16 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     var kbBinder = DOMKeyboard.bindTo($scope);
     // the purpose of this is to sort binds for displaying configuration fields
     $scope.sortedBinds = [
-      {'name':'up',       'desc': 'Up navigation in menus'},
-      {'name':'down',     'desc': 'Down navigation in menus'},
-      {'name':'left',     'desc': 'Left navigation in menus'},
-      {'name':'right',    'desc': 'Right navigation in menus'},
-      {'name':'enter',    'desc': 'Select a menu'},
-      {'name':'back',     'desc': 'Go back in a menu'},
-      {'name':'home',     'desc': 'Global "show zspin" button, works when zspin is not focused'},
-      {'name':'settings', 'desc': 'Go to settings menu'},
-      {'name':'devtools', 'desc': 'Show the developer tools window'},
+      {'name':'up',         'desc': 'Up navigation in menus'},
+      {'name':'down',       'desc': 'Down navigation in menus'},
+      {'name':'left',       'desc': 'Left navigation in menus'},
+      {'name':'right',      'desc': 'Right navigation in menus'},
+      {'name':'enter',      'desc': 'Select a menu'},
+      {'name':'back',       'desc': 'Go back in a menu'},
+      {'name':'home',       'desc': 'Global "show zspin" button, works when zspin is not focused'},
+      {'name':'settings',   'desc': 'Go to settings menu'},
+      {'name':'fullscreen', 'desc': 'Toggle fullscreen'},
+      {'name':'devtools',   'desc': 'Show the developer tools window'},
     ];
 
     var focus = undefined;
