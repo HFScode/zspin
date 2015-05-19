@@ -20,11 +20,18 @@ app.controller('IntroCtrl', ['$scope', '$location', 'fs', 'settings',
         $scope.video = videos[0];
     });
 
+    function stopVideo() {
+      $scope.player.controls.stop();
+    }
+
     // Check for playback status change
     $scope.$watch('player.status.isPlaying', function(isPlaying, wasPlaying) {
       if (!isPlaying && wasPlaying)
         $location.path('/menus/Main Menu');
     });
+
+    $scope.$on('input:enter', stopVideo);
+    $scope.$on('input:back', stopVideo);
 
   }
 ]);
