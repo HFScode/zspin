@@ -20,6 +20,10 @@ app.factory('zspin', ['fs',
     trustManager.add(introFile);
     console.log('flash trust', trustManager.list());
 
+    service.reloadApp = function() {
+      gui.Window.get().reload(3);
+    };
+
     console.log('zspin - ready');
     return service;
   }

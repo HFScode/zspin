@@ -99,6 +99,11 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
         timeOut: 0,
         extendedTimeOut: 0,
         closeButton: true,
+    $scope.factoryReset = function() {
+      settings.deleteSettingsFile();
+      zspin.reloadApp();
+    };
+
       });
     }
 

@@ -72,6 +72,11 @@ app.factory('settings', [
       }
     };
 
+    // deletes the Settings.json file
+    service.deleteSettingsFile = function() {
+      $fs.unlinkSync(settingsPath);
+    };
+
     // Settings setup 
     //
     // This has to be blocking because we can't do anything without

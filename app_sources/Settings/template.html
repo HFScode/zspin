@@ -89,5 +89,14 @@
     <button ng-click="openBinary()">open binary path</button>
   </div>
 
+  <hr/>
+  <!-- FACTORY RESET -->
+
+  <h3>Factory Reset</h3>
+
+  <div ng-init='showReset=false'>
+    <button ng-click="showReset=!showReset">Reset all settings</button>
+    <button class='button-error' ng-click='factoryReset()' ng-show='showReset'>I'm sure. Do it.</button>
+  </div>
 
 </div>
