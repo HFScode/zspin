@@ -15,6 +15,7 @@ app.factory('zspin', ['fs',
 
     // Register global requires
     service.gui = gui;
+    service.guiWindow = guiWindow;
 
     var root = process.cwd();
     var introFile = fs.join(root, 'swf', 'player_flv_js.swf');

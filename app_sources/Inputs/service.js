@@ -12,14 +12,13 @@ app.factory('inputs', ['$rootScope', 'NWKeyboard', 'DOMKeyboard', 'gamepads', 'z
     var gpBinder = gamepads.bindTo($scope);
     var BINDS = [];
 
-    var nwWindow = zspin.gui.Window.get();
     var isWindowFocused = true;
-    nwWindow.removeAllListeners('focus');
-    nwWindow.on('focus', function() {
+    zspin.guiWindow.removeAllListeners('focus');
+    zspin.guiWindow.on('focus', function() {
       isWindowFocused = true;
     });
-    nwWindow.removeAllListeners('blur');
-    nwWindow.on('blur', function() {
+    zspin.guiWindow.removeAllListeners('blur');
+    zspin.guiWindow.on('blur', function() {
       isWindowFocused = false;
     });
 

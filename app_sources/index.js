@@ -34,11 +34,24 @@ app.run(['settings', 'inputs', function(settings, inputs) {
   // Force the settings service to be instanciated early
 }]);
 
+app.run(['zspin', function(zspin) {
+  // initialize window menu
+  var nativeMenuBar = new zspin.gui.Menu({type: "menubar"});
+
+  // check operating system for the menu
+  if (process.platform === "darwin") {
+      nativeMenuBar.createMacBuiltin(zspin.appName);
+  }
+
+  // actually assign menu to window
+  zspin.guiWindow.menu = nativeMenuBar;
+}]);
+
 app.run(['$rootScope', 'zspin', '$location', function($rootScope, zspin, $location) {
 
   // Create global home shortcut
   $rootScope.$on('input:home', function () {
-    zspin.gui.Window.get().focus(); //use when quitting game
+    zspin.guiWindow.focus(); //use when quitting game
   });
 
   // Create settings shortcut
@@ -53,7 +66,7 @@ app.run(['$rootScope', 'zspin', '$location', function($rootScope, zspin, $locati
 
   // Create devtools shortcut
   $rootScope.$on('input:devtools', function () {
-    zspin.gui.Window.get().showDevTools();
+    zspin.guiWindow.showDevTools();
   });
 
   // Create devmenu shortcut
