@@ -25,7 +25,7 @@ app.directive('flvplayer', ['$window', '$timeout',
         options.loop          = !!scope.loop           || options.loop      || false;
         options.width         = parseInt(scope.width)  || options.width     || 320;
         options.height        = parseInt(scope.height) || options.height    || 240;
-        options.volume        = parseInt(scope.volume) || options.volume    || 0;
+        options.volume        = parseInt(scope.volume) || options.volume    || 255;
         options.buffer        = options.buffer         || 5;
         options.interval      = options.interval       || 100;
 
