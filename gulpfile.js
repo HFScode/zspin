@@ -1,13 +1,43 @@
 'use strict';
 
+var argv       = require('yargs').argv;
+var fs         = require('fs');
 var gulp       = require('gulp');
 var gu_concat  = require('gulp-concat');
+var gu_dl      = require("gulp-download");
 var gu_uglify  = require('gulp-uglify');
 var gu_minify  = require('gulp-minify-css');
 var gu_sass    = require('gulp-sass');
+var gu_util    = require('gulp-util');
+var gu_unzip   = require('gulp-unzip');
 var gu_tpls    = require('gulp-angular-templatecache');
 var gu_lr      = require('gulp-livereload');
 var gu_install = require('gulp-install');
+var nw_builder = require('node-webkit-builder');
+
+var nwVersion = '0.12.1';
+var libUrl = 'http://zspin.vik.io/libraries/libs-'+nwVersion+'.zip';
+var platform = null;
+
+// platform detection
+// if -p parameter undefined, platform = current platform
+// else platform = -p parameter value
+if (argv.p === undefined) {
+  if (process.platform === 'darwin') {
+    platform = process.arch === 'x64' ? 'osx64' : 'osx32';
+  } else if (process.platform === 'win32') {
+    platform = (process.arch === 'x64' ||
+      process.env.hasOwnProperty('PROCESSOR_ARCHITEW6432')) ? 'win64' : 'win32';
+  } else if (process.platform === 'linux') {
+    platform = process.arch === 'x64' ? 'linux64' : 'linux32';
+  } else {
+    throw new gu_util.PluginError('platform_detection', 'Unknown platform, aborting.');
+  }
+} else {
+  platform = argv.p;
+}
+
+/************************************ Vendors ********************************/
 
 var vendors = {
   'scripts': [
@@ -17,6 +47,7 @@ var vendors = {
     'bower_components/ng-load/ng-load.js',
     'bower_components/ng-resize/ngresize.js',
     'bower_components/angular-route/angular-route.js',
+    'bower_components/angular-piwik/angular-piwik.js',
     'bower_components/angular-animate/angular-animate.js',
     // 'bower_components/angular-gamepad/dist/angular-gamepad.js', // Fixme
     'bower_components/angular-hotkeys/build/hotkeys.js',
@@ -110,23 +141,84 @@ gulp.task('app:templates', function() {
 
 gulp.task('app', ['app:statics', 'app:scripts', 'app:styles', 'app:templates']);
 
-/********************************** release **********************************/
-gulp.task('release-win64', ['default'], function() {
-  var NwBuilder = require('node-webkit-builder');
-  var nw = new NwBuilder({
-      files: ['./build/**', '!./build/plugins/*.plugin', '!./build/plugins/*.so'],
-      buildDir: './releases/',
-      version: '0.12.1',
-      cacheDir: './node_modules/node-webkit-builder/cache',
-      platforms: ['win64'],
+/******************************** Libraries **********************************/
+
+gulp.task('libraries:download', function() {
+  if (fs.existsSync('cache/libraries.zip')) {
+    return;
+  } else {
+    return gu_dl(libUrl)
+      .pipe(gulp.dest('cache'));
+  }
+});
+
+gulp.task('libraries:unzip', ['libraries:download'], function() {
+  if (fs.existsSync('libraries/win64')) {
+    return;
+  } else {
+    return gulp.src('cache/libraries.zip')
+      .pipe(gu_unzip())
+      .pipe(gulp.dest('libraries'));
+  }
+});
+
+gulp.task('libraries:ffmpeg', ['libraries:unzip'], function() {
+  var dest = 'node_modules/node-webkit-builder/cache/'+nwVersion+'/'+platform;
+
+  if (platform.indexOf('osx') === 0) {
+    dest += '/nwjs.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
+  }
+
+  return gulp.src('libraries/'+platform+'/ffmpeg/*')
+    .pipe(gulp.dest(dest));
+});
+
+gulp.task('libraries:flashplayer', ['libraries:unzip'], function() {
+  return gulp.src('libraries/'+platform+'/flashplayer/**')
+    .pipe(gulp.dest('build/plugins'));
+});
+
+gulp.task('libraries', ['libraries:ffmpeg', 'libraries:flashplayer']);
+
+/********************************** Releases *********************************/
+
+gulp.task('release:check-platform', function() {
+  if (argv.p === undefined) {
+    throw new gu_util.PluginError(
+      'task release',
+      'Undefined platform !\nUse -p [win32,win64,osx32,osx64,linux32,linux64]\n'
+    );
+  }
+});
+
+gulp.task('release:build', ['release:check-platform', 'vendors', 'app',
+  'libraries:flashplayer'], function() {
+
+  var nw = new nw_builder({
+      files: ['build/**'],
+      buildDir: 'releases/',
+      version: nwVersion,
+      cacheDir: 'node_modules/node-webkit-builder/cache',
+      platforms: [platform],
   });
 
-  nw.build().then(function () {
-     console.log('all done!');
-  }).catch(function (error) {
-      console.error(error);
+  nw.build(function(err) {
+    if (!!err) {
+      throw new gu_util.PluginError('task release:build', err);
+    }
+
+    // copying ffmpeg after build
+    var ffmpeg_dest = 'releases/zspin/'+platform;
+    if (platform.indexOf('osx') === 0) {
+      ffmpeg_dest += '/zspin.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
+    }
+    gulp.src('libraries/'+platform+'/ffmpeg/*')
+      .pipe(gulp.dest(ffmpeg_dest));
   });
+
 });
+
+gulp.task('release', ['release:check-platform', 'release:build']);
 
 /*********************************** Watch ***********************************/
 
@@ -136,8 +228,8 @@ gulp.task('watch', ['default'], function() {
   gulp.watch(app.styles,    ['app:styles']);
   gulp.watch(app.scripts,   ['app:scripts']);
   gulp.watch(app.templates, ['app:templates']);
-  gulp.watch('build/**').on('change', gu_lr.changed);
+  gulp.watch('build/*/*/*').on('change', gu_lr.changed);
 });
 
-gulp.task('default', ['vendors', 'app']);
+gulp.task('default', ['vendors', 'app', 'libraries']);
 

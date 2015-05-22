@@ -4,9 +4,7 @@ RELEASE 	=   ./releases/
 GULP    	=   ./node_modules/.bin/gulp
 BOWER   	=   ./node_modules/.bin/bower
 NWBUILD 	=   node ./node_modules/.bin/nwbuild
-PLATFORM	?=  win32,osx32,linux32
-# necessary to run without internet connection
-NWVER   	?=  0.12.1
+PLATFORM	?=  win64
 
 all: install build
 
@@ -24,7 +22,7 @@ watch:
 		$(GULP) watch
 
 release:
-		$(NWBUILD) -o $(RELEASE) $(BUILD) -v $(NWVER) -p $(PLATFORM)
+		$(GULP) release -p $(PLATFORM)
 
 clean:
 		rm -rf ./node_modules
