@@ -9,6 +9,7 @@ var app = angular.module('app', [
   'templates',
   'toastr',
   'ngAnimate',
+  'piwik',
 ]);
 
 app.config(['resizeProvider', function(resizeProvider){
