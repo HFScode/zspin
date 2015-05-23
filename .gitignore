@@ -1,6 +1,8 @@
 bower_components/
-node_modules/
 build/
+cache/
+libraries/
+node_modules/
 releases/
 !public/index.html
 !public/package.json
