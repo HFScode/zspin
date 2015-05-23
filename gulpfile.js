@@ -9,14 +9,15 @@ var gu_uglify  = require('gulp-uglify');
 var gu_minify  = require('gulp-minify-css');
 var gu_sass    = require('gulp-sass');
 var gu_util    = require('gulp-util');
-var gu_unzip   = require('gulp-unzip');
 var gu_tpls    = require('gulp-angular-templatecache');
 var gu_lr      = require('gulp-livereload');
 var gu_install = require('gulp-install');
 var nw_builder = require('node-webkit-builder');
+var unzip      = require('unzip');
 
 var nwVersion = '0.12.1';
-var libUrl = 'http://zspin.vik.io/libraries/libs-'+nwVersion+'.zip';
+var libFile = 'libs-'+nwVersion+'.zip';
+var libUrl = 'http://zspin.vik.io/libraries/'+libFile;
 var platform = null;
 
 // platform detection
@@ -144,7 +145,7 @@ gulp.task('app', ['app:statics', 'app:scripts', 'app:styles', 'app:templates']);
 /******************************** Libraries **********************************/
 
 gulp.task('libraries:download', function() {
-  if (fs.existsSync('cache/libraries.zip')) {
+  if (fs.existsSync('cache/'+libFile)) {
     return;
   } else {
     return gu_dl(libUrl)
@@ -156,13 +157,14 @@ gulp.task('libraries:unzip', ['libraries:download'], function() {
   if (fs.existsSync('libraries/win64')) {
     return;
   } else {
-    return gulp.src('cache/libraries.zip')
-      .pipe(gu_unzip())
-      .pipe(gulp.dest('libraries'));
+    // gulp-unzip is not ready yet; see:
+    // https://github.com/suisho/gulp-unzip/issues/13
+    return fs.createReadStream('cache/'+libFile)
+      .pipe(unzip.Extract({path: 'libraries'}));
   }
 });
 
-gulp.task('libraries:ffmpeg', ['libraries:unzip'], function() {
+gulp.task('libraries:ffmpeg', ['libraries:unzip', 'release:check-nwjs'], function() {
   var dest = 'node_modules/node-webkit-builder/cache/'+nwVersion+'/'+platform;
 
   if (platform.indexOf('osx') === 0) {
@@ -191,18 +193,34 @@ gulp.task('release:check-platform', function() {
   }
 });
 
-gulp.task('release:build', ['release:check-platform', 'vendors', 'app',
-  'libraries:flashplayer'], function() {
+gulp.task('release:check-nwjs', function() {
+  var nwb = new nw_builder({
+    files: ['build/**'],
+    buildDir: 'releases/',
+    version: nwVersion,
+    cacheDir: 'node_modules/node-webkit-builder/cache',
+    platforms: [platform],
+  });
 
-  var nw = new nw_builder({
+  // see https://github.com/mllrsohn/node-webkit-builder/blob/master/lib/index.js#L89
+  return nwb.checkFiles().bind(nwb)
+    .then(nwb.resolveLatestVersion)
+    .then(nwb.checkVersion)
+    .then(nwb.platformFilesForVersion)
+    .then(nwb.downloadNodeWebkit);
+});
+
+gulp.task('release:build', ['release:check-platform', 'release:check-nwjs',
+  'vendors', 'app', 'libraries:flashplayer'], function() {
+
+  nw_builder({
       files: ['build/**'],
       buildDir: 'releases/',
       version: nwVersion,
       cacheDir: 'node_modules/node-webkit-builder/cache',
       platforms: [platform],
-  });
 
-  nw.build(function(err) {
+  }).build(function(err) {
     if (!!err) {
       throw new gu_util.PluginError('task release:build', err);
     }

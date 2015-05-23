@@ -26,8 +26,9 @@ release:
 		$(GULP) release -p $(PLATFORM)
 
 clean:
-		rm -rf ./node_modules
 		rm -rf ./bower_components
+		rm -rf ./build
+		rm -rf ./node_modules
 
 fclean: clean
 		rm -rf $(BUILD)
