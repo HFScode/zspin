@@ -213,14 +213,16 @@ gulp.task('release:check-nwjs', function() {
 gulp.task('release:build', ['release:check-platform', 'release:check-nwjs',
   'vendors', 'app', 'libraries:flashplayer'], function() {
 
-  nw_builder({
+  var nwb = new nw_builder({
       files: ['build/**'],
       buildDir: 'releases/',
       version: nwVersion,
       cacheDir: 'node_modules/node-webkit-builder/cache',
       platforms: [platform],
 
-  }).build(function(err) {
+  });
+
+  nwb.build(function(err) {
     if (!!err) {
       throw new gu_util.PluginError('task release:build', err);
     }
