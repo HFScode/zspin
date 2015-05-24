@@ -67,7 +67,7 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml',
 
     /***************************** default video ******************************/
 
-    // Look for the golbal default at %HS_PATH%/Media/Frontend/Video/No Video.(flv|mp4)
+    // Look for the global default at %HS_PATH%/Media/Frontend/Video/No Video.(flv|mp4)
     service.defaultVideo = '';
     var path = settings.hsPath('Media', 'Frontend', 'Video');
     fs.glob('No Video*', {cwd: path}).then(function(files) {

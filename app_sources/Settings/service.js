@@ -79,13 +79,13 @@ app.factory('settings', [
       $fs.unlinkSync(settingsPath);
     };
 
-    // Settings setup 
+    // Settings setup
     //
     // This has to be blocking because we can't do anything without
     // the settings. Blocking coveniently stops angular from loading
     // before everything is ready.
 
-    // Path of the app exetubale 
+    // Path of the app executable
     var binaryPath = $path.dirname(process.execPath); // FIXME test this in windows/linux
     if (process.platform == 'darwin') {
       binaryPath = binaryPath.replace(new RegExp('/[^/]+\.app/.*$'), '');
@@ -107,7 +107,7 @@ app.factory('settings', [
       service.write();
     }
 
-    // Load curent values
+    // Load current values
     service.load();
 
     console.log('settings - ready');
