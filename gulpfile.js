@@ -249,7 +249,7 @@ gulp.task('watch', ['default'], function() {
   gulp.watch(app.styles,    ['app:styles']);
   gulp.watch(app.scripts,   ['app:scripts']);
   gulp.watch(app.templates, ['app:templates']);
-  gulp.watch('build/*/*/*').on('change', gu_lr.changed);
+  gulp.watch('build/**/*.{js,html,scss}').on('change', gu_lr.changed);
 });
 
 gulp.task('default', ['vendors', 'app', 'libraries']);
