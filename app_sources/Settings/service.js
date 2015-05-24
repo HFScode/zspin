@@ -31,6 +31,7 @@ app.factory('settings', [
         'devmenu':    {'0': {'source': 'keyboard', 'combo': 'ctrl+shift+d'}},
       },
       hsPath: '',
+      cachePath: 'zspin.cache',
       launcherPath: '',
       launcherParams: '{system} {rom}',
       firstRun: true,

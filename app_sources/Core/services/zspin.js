@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('zspin', ['fs',
-  function (fs) {
+app.factory('zspin', ['fs', 'settings',
+  function (fs, settings) {
     console.log('zspin - init');
 
     var gui = require('nw.gui');
@@ -38,6 +38,13 @@ app.factory('zspin', ['fs',
     service.quit = function() {
       gui.App.quit();
     };
+
+    guiWindow.on('close', function() {
+      this.hide(); // Smooth user experience
+      console.log("Exiting...");
+      fs.rmrf(settings.hsPath(settings.$obj.cachePath, 'Theme'));
+      this.close(true);
+    });
 
     console.log('zspin - ready');
     return service;

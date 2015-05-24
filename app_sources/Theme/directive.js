@@ -11,7 +11,7 @@ app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes',
         menu: '@',
       },
       link: function(scope, el, attrs) {
-        scope.tmpRoot = settings.hsPath('Cache', 'Theme');
+        scope.tmpRoot = settings.hsPath(settings.$obj.cachePath, 'Theme');
         scope.tmpPath = scope.tmpRoot;
 
         // Update scope.theme when src attribute change
@@ -29,12 +29,6 @@ app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes',
             scope.theme = themes(scope.tmpPath, scope.menu, name);
           });
 
-        });
-
-        // Remove tmpRoot on destroy
-        scope.$on("$destroy", function handler() {
-          console.log('actual destroy');
-          fs.rmrf(scope.tmpPath);
         });
 
       }
