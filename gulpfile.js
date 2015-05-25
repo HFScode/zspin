@@ -48,7 +48,7 @@ var vendors = {
     'bower_components/ng-load/ng-load.js',
     'bower_components/ng-resize/ngresize.js',
     'bower_components/angular-route/angular-route.js',
-    'bower_components/angular-piwik/angular-piwik.js',
+    'bower_components/angular-piwik/dist/angular-piwik.js',
     'bower_components/angular-animate/angular-animate.js',
     // 'bower_components/angular-gamepad/dist/angular-gamepad.js', // Fixme
     'bower_components/angular-hotkeys/build/hotkeys.js',
