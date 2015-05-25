@@ -19,7 +19,6 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     $scope.curVideo = undefined;
 
     //  -  Defining wheel parameters  -
-    $scope.wheelItems = [];
     $scope.wheelOptions = {
       // animation time in ms
       transitionTime: 70,
@@ -125,7 +124,6 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     $scope.$on('input:enter', $scope.enter);
     $scope.$on('input:back', $scope.back);
 
-
     /*************************** Database loading ****************************/
 
     // Load menu database
@@ -144,6 +142,12 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
         $scope.themes = files;
       });
 
+    });
+
+    // Force load first theme
+    $scope.$watch('entries', function(entries) {
+      if (!entries) return;
+      $scope.curTheme = $scope.themes[entries[0].name];
     });
 
   }
