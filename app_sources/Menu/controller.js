@@ -103,7 +103,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
                                .replace('{system}', menu.name);
         }
 
-        var launcherProcess = spawn(settings.$obj.launcherPath, params);
+        spawn(settings.$obj.launcherPath, params);
         inputs.isWindowFocused = false;
       }
     };

@@ -34,6 +34,8 @@ app.factory('settings', [
       cachePath: 'zspin.cache',
       launcherPath: '',
       launcherParams: '{system} {rom}',
+      execOnStart: '',
+      execOnExit: '',
       firstRun: true,
     };
 

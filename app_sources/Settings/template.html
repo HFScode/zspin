@@ -79,6 +79,31 @@
   </div>
 
   <hr/>
+  <!-- EXECUTION -->
+
+  <h3>Execute app</h3>
+  <div class="row">
+    <div class="five columns">
+      <h5>On zspin start</h5>
+    </div>
+    <div class="seven columns">
+      <input type='text' ng-model='settings.execOnStart'/>
+      <input id='execOnStart' type='file' name='execOnStart' custom-on-change='updatePath'/>
+      <button onclick="document.getElementById('execOnStart').click();">browse</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="five columns">
+      <h5>On zspin exit</h5>
+    </div>
+    <div class="seven columns">
+      <input type='text' ng-model='settings.execOnExit'/>
+      <input id='execOnExit' type='file' name='execOnExit' custom-on-change='updatePath'/>
+      <button onclick="document.getElementById('execOnExit').click();">browse</button>
+    </div>
+  </div>
+
+  <hr/>
   <!-- FOLDERS -->
 
   <h3>Folders</h3>

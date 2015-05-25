@@ -6,6 +6,7 @@ app.factory('zspin', ['fs', 'settings',
 
     var gui = require('nw.gui');
     var flashTrust = require('nw-flash-trust');
+    var spawn = require('child_process').spawn;
 
     var appName = 'zspin';
     var trustManager = flashTrust.initSync(appName);
@@ -40,11 +41,32 @@ app.factory('zspin', ['fs', 'settings',
     };
 
     guiWindow.on('close', function() {
-      this.hide(); // Smooth user experience
       console.log("Exiting...");
+      // Smooth user experience
+      this.hide();
+
+      //running execOnExit app if present
+      if (settings.$obj.execOnExit !== '') {
+        var cmdLine = settings.$obj.execOnExit.split(' ');
+        var params = cmdLine.slice(1);
+        var binary = cmdLine[0];
+        spawn(binary, params, {detached: true});
+      }
+
+      // Cleaning theme cache dir
       fs.rmrf(settings.hsPath(settings.$obj.cachePath, 'Theme'));
+
+      // Closing app
       this.close(true);
     });
+
+    // Loads any startup command
+    if (settings.$obj.execOnStart !== '') {
+      var cmdLine = settings.$obj.execOnStart.split(' ');
+      var params = cmdLine.slice(1);
+      var binary = cmdLine[0];
+      spawn(binary, params, {detached: true});
+    }
 
     console.log('zspin - ready');
     return service;
