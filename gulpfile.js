@@ -193,7 +193,7 @@ gulp.task('release:check-platform', function() {
   }
 });
 
-gulp.task('release:check-nwjs', function() {
+gulp.task('release:check-nwjs', ['app:statics'], function() {
   // check and downloads nwjs if not present.
   var nwb = new nw_builder({
     files: ['build/**'],
