@@ -142,6 +142,22 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
         $scope.themes = files;
       });
 
+      // Load params for wheel if available
+      $scope.menu.getWheel().then(function(data) {
+        var tmp = [];
+        for (var i in data.points) {
+          tmp.push([
+            data.points[i].x,
+            data.points[i].y,
+            data.points[i].angle,
+            data.points[i].scale,
+            data.points[i].index
+          ]);
+        }
+        data.points = tmp;
+        $scope.wheelOptions = data;
+      });
+
     });
 
     // Force load first theme

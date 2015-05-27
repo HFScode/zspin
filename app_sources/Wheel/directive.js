@@ -43,6 +43,7 @@ app.directive('wheel', ['resize',
         // Either matter
         scope.$watch('items', updateWheel);
         scope.$watch('points', updateWheel);
+        scope.$watch('options', updateWheel);
       }
     };
   }

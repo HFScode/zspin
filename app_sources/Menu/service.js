@@ -38,6 +38,17 @@ app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml',
         });
       };
 
+      obj.getWheel = function() {
+        // Load wheel.json for this menu if found
+        var path = settings.hsPath('Databases', name, 'wheel.json');
+
+        return fs.access(path, fs.F_OK).then(function() {
+          return fs.readFile(path, 'utf-8').then(function(data) {
+            return JSON.parse(data);
+          });
+        });
+      };
+
       return obj;
     };
 
