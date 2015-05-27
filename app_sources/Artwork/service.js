@@ -8,7 +8,7 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
 
     function getFlashNaturalSize(src) {
       return qbind.call(SWFReader, SWFReader.read, src)
-        .then(function(res) { return res.frameSize; });
+        .then(function(res) { return res[0].frameSize; });
     }
 
     function getImageNaturalSize(src) {
