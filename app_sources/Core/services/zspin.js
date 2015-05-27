@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('zspin', ['fs', 'settings',
-  function (fs, settings) {
+app.factory('zspin', ['fs', 'settings', '$http',
+  function (fs, settings, $http) {
     console.log('zspin - init');
 
     var gui = require('nw.gui');
@@ -40,6 +40,10 @@ app.factory('zspin', ['fs', 'settings',
     service.quit = function() {
       gui.App.quit();
     };
+
+    // check if we have internet
+    $http.get('http://stats.vik.io/ping?'+Math.random(), {timeout: 1000})
+      .success(function () {service.haveInternet = true;});
 
     guiWindow.on('close', function() {
       console.log("Exiting...");

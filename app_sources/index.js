@@ -35,7 +35,7 @@ app.run(['settings', 'inputs', function(settings, inputs) {
   // Force the settings service to be instanciated early
 }]);
 
-app.run(['zspin', '$http', function(zspin, $http) {
+app.run(['zspin', function(zspin) {
   // initialize window menu
   var nativeMenuBar = new zspin.gui.Menu({type: "menubar"});
 
@@ -46,11 +46,6 @@ app.run(['zspin', '$http', function(zspin, $http) {
 
   // actually assign menu to window
   zspin.guiWindow.menu = nativeMenuBar;
-
-  // check if we have internet
-  $http.get('http://stats.vik.io/ping?'+Math.random(), {timeout: 1000}).success(function () {
-    zspin.haveInternet = true;
-  });
 }]);
 
 app.run(['$rootScope', 'zspin', '$location', function($rootScope, zspin, $location) {
