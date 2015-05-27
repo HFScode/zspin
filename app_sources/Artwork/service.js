@@ -11,6 +11,13 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
         .then(function(res) { return res[0].frameSize; });
     }
 
+    function getVideoNaturalSize(src) {
+      var $el = angular.element('<video src="'+src+'"/>');
+      return qbind.callSafe($el, $el.on, 'load').then(function(ev) {
+        return {width: $el[0].naturalWidth, height: $el[0].naturalHeight};
+      });
+    }
+
     function getImageNaturalSize(src) {
       var $el = angular.element('<img src="'+src+'"/>');
       return qbind.callSafe($el, $el.on, 'load').then(function(ev) {
@@ -37,6 +44,9 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
         getSize = getFlashNaturalSize(obj.src);
       else if (obj.type === 'flv')
         getSize = $q.when({width: 200, height: 200});
+      else if (obj.type === 'mp4')
+        getSize = getVideoNaturalSize(obj.src);
+
       getSize.then(function(size) {
         obj.size = size;
       });
