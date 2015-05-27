@@ -12,9 +12,9 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
     }
 
     function getVideoNaturalSize(src) {
-      var $el = angular.element('<video src="'+src+'"/>');
-      return qbind.callSafe($el, $el.on, 'load').then(function(ev) {
-        return {width: $el[0].naturalWidth, height: $el[0].naturalHeight};
+      var $el = angular.element('<video preload="metadata" src="'+src+'"/>');
+      return qbind.callSafe($el, $el.on, 'loadedmetadata').then(function(ev) {
+        return {width: $el[0].videoWidth, height: $el[0].videoHeight};
       });
     }
 
