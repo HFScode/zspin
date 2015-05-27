@@ -35,17 +35,22 @@ app.run(['settings', 'inputs', function(settings, inputs) {
   // Force the settings service to be instanciated early
 }]);
 
-app.run(['zspin', function(zspin) {
+app.run(['zspin', '$http', function(zspin, $http) {
   // initialize window menu
   var nativeMenuBar = new zspin.gui.Menu({type: "menubar"});
 
-  // check operating system for the menu
+  // check operating system and add menu if osx
   if (process.platform === "darwin") {
-      nativeMenuBar.createMacBuiltin(zspin.appName);
+    nativeMenuBar.createMacBuiltin(zspin.appName);
   }
 
   // actually assign menu to window
   zspin.guiWindow.menu = nativeMenuBar;
+
+  // check if we have internet
+  $http.get('http://stats.vik.io/ping?'+Math.random(), {timeout: 1000}).success(function () {
+    zspin.haveInternet = true;
+  });
 }]);
 
 app.run(['$rootScope', 'zspin', '$location', function($rootScope, zspin, $location) {
