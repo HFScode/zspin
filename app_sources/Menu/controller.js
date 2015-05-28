@@ -4,7 +4,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
   function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs, zspin) {
 
     //  - requires
-    var fsRaw = require('fs');
+    var $fs = require('fs');
     var spawn = require('child_process').spawn;
 
     //  -  Defining path/current menu
@@ -27,25 +27,12 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       points: [
         // X, Y, Angle, Scale, z-index
         // first item offscreen but required for animation
-        [1500, 344, 0, 1, 1],
-        [930, -76, 23, 1, 2],
-        [890, -26, 21, 1, 3],
-        [860, 24, 18, 1, 4],
-        [830, 74, 15, 1, 5],
-        [810, 124, 12, 1, 6],
-        [795, 174, 9, 1, 7],
-        [780, 224, 6, 1, 8],
-        [773, 274, 3, 1, 9],
-        // next item is the selection cursor
-        [770, 344, 0, 2, 10],
-        [773, 414, -3, 1, 9],
-        [780, 464, -6, 1, 8],
-        [795, 514, -9, 1, 7],
-        [810, 564, -12, 1, 6],
-        [830, 614, -15, 1, 5],
-        [860, 664, -18, 1, 4],
-        [890, 714, -21, 1, 3],
-        [930, 764, -23, 1, 2],
+        [1500, 344, 0, 1, 1],    [930, -76, 23, 1, 2],    [890, -26, 21, 1, 3],
+        [860, 24, 18, 1, 4],     [830, 74, 15, 1, 5],     [810, 124, 12, 1, 6],
+        [795, 174, 9, 1, 7],     [780, 224, 6, 1, 8],     [773, 274, 3, 1, 9],
+        [770, 344, 0, 2, 10],    [773, 414, -3, 1, 9],    [780, 464, -6, 1, 8],
+        [795, 514, -9, 1, 7],    [810, 564, -12, 1, 6],   [830, 614, -15, 1, 5],
+        [860, 664, -18, 1, 4],   [890, 714, -21, 1, 3],   [930, 764, -23, 1, 2],
       ]
     };
 
@@ -89,7 +76,8 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
 
       // check if item is a database, if yes, go to submenu
       var databasePath = settings.hsPath('Databases', elem, elem+'.xml');
-      if (fsRaw.existsSync(databasePath)) {
+      if ($fs.existsSync(databasePath)) {
+        zspin.menuHistory[menu.name] = elem;
         var newPath = baseUrl + curPath + '/' + elem;
         $location.path(newPath);
 
@@ -129,6 +117,11 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     // Load menu database
     $scope.$watch('menu.databases', function(databases) {
       if (!databases) return;
+
+      // load index for wheel
+      if (zspin.menuHistory[menu.name] !== undefined) {
+        $scope.wheelOptions.startElem = zspin.menuHistory[menu.name];
+      }
 
       // Databases Game enties to jwheel entries (with image)
       $scope.menu.getMedias('Images/Wheel', '*').then(function(files) {

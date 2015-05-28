@@ -18,6 +18,7 @@ app.factory('zspin', ['fs', 'settings', '$http',
     service.gui = gui;
     service.guiWindow = guiWindow;
     service.haveInternet = false;
+    service.menuHistory = {};
 
     var root = process.cwd();
     var introFile = fs.join(root, 'swf', 'player_flv_js.swf');

@@ -26,7 +26,7 @@ app.factory('inputs', ['$rootScope', 'NWKeyboard', 'DOMKeyboard', 'gamepads', 'z
       if (!isWindowFocused && !bind.global)
         return;
       $rootScope.$broadcast('input:'+input, bind);
-      console.log('!%s!', input, bind);
+      // console.log('!%s!', input, bind);
     }
 
     service.unloadSettings = function() {
