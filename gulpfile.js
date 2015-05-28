@@ -19,6 +19,7 @@ var nwVersion = '0.12.1';
 var libFile = 'libs-'+nwVersion+'.zip';
 var libUrl = 'http://zspin.vik.io/libraries/'+libFile;
 var platform = null;
+var task = argv._[0];
 
 // platform detection
 // if -p parameter undefined, platform = current platform
@@ -166,7 +167,17 @@ gulp.task('libraries:unzip', ['libraries:download'], function() {
 
 gulp.task('libraries:ffmpeg', ['libraries:unzip', 'release:check-nwjs'], function() {
   var dest = 'node_modules/node-webkit-builder/cache/'+nwVersion+'/'+platform;
+  if (platform.indexOf('osx') === 0) {
+    dest += '/nwjs.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
+  }
 
+  return gulp.src('libraries/'+platform+'/ffmpeg/*')
+    .pipe(gulp.dest(dest));
+});
+
+gulp.task('libraries:ffmpeg-release', ['libraries:unzip', 'release:check-nwjs',
+  'release:build'], function() {
+  var dest = 'releases/zspin/'+platform;
   if (platform.indexOf('osx') === 0) {
     dest += '/nwjs.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
   }
@@ -223,23 +234,10 @@ gulp.task('release:build', ['release:check-platform', 'release:check-nwjs',
 
   });
 
-  nwb.build(function(err) {
-    if (!!err) {
-      throw new gu_util.PluginError('task release:build', err);
-    }
-
-    // copying ffmpeg after build
-    var ffmpeg_dest = 'releases/zspin/'+platform;
-    if (platform.indexOf('osx') === 0) {
-      ffmpeg_dest += '/zspin.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
-    }
-    gulp.src('libraries/'+platform+'/ffmpeg/*')
-      .pipe(gulp.dest(ffmpeg_dest));
-  });
-
+  return nwb.build();
 });
 
-gulp.task('release', ['release:check-platform', 'release:build']);
+gulp.task('release', ['release:build', 'libraries:ffmpeg-release']);
 
 /*********************************** Watch ***********************************/
 
