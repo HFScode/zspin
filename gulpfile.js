@@ -195,7 +195,7 @@ gulp.task('libraries:ffmpeg-release', ['libraries:unzip', 'release:check-nwjs',
   'release:build'], function() {
   var dest = 'releases/zspin/'+platform;
   if (platform.indexOf('osx') === 0) {
-    dest += '/nwjs.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
+    dest += '/zspin.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
   }
 
   return gulp.src('libraries/'+platform+'/ffmpeg/*')
