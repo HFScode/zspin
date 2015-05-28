@@ -12,9 +12,11 @@ var gu_util    = require('gulp-util');
 var gu_tpls    = require('gulp-angular-templatecache');
 var gu_lr      = require('gulp-livereload');
 var gu_install = require('gulp-install');
+var gu_zip     = require('gulp-zip');
 var nw_builder = require('node-webkit-builder');
 var unzip      = require('unzip');
 
+var version = '0.0.1';
 var nwVersion = '0.12.1';
 var libFile = 'libs-'+nwVersion+'.zip';
 var libUrl = 'http://zspin.vik.io/libraries/'+libFile;
@@ -237,7 +239,13 @@ gulp.task('release:build', ['release:check-platform', 'release:check-nwjs',
   return nwb.build();
 });
 
-gulp.task('release', ['release:build', 'libraries:ffmpeg-release']);
+gulp.task('release:zip', ['release:build', 'libraries:ffmpeg-release'], function() {
+  return gulp.src('releases/zspin/'+platform+'/*')
+    .pipe(gu_zip('zspin-'+version+'-'+platform+'.zip'))
+    .pipe(gulp.dest('releases'));
+});
+
+gulp.task('release', ['release:zip']);
 
 /*********************************** Watch ***********************************/
 
