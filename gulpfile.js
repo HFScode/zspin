@@ -254,7 +254,7 @@ gulp.task('release:build', ['release:check-platform', 'release:check-nwjs',
 });
 
 gulp.task('release:zip', ['release:build', 'libraries:ffmpeg-release'], function() {
-  return gulp.src('releases/zspin/'+platform+'/*')
+  return gulp.src('releases/zspin/'+platform+'/**/*')
     .pipe(gu_zip('zspin-'+version+'-'+platform+'.zip'))
     .pipe(gulp.dest('releases'));
 });
