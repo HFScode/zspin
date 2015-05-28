@@ -4,7 +4,7 @@
   "description": "Multi OS emulator frontend",
   "main": "index.html",
   "window": {
-    "title": "Zspin",
+    "title": "zspin",
     "width": 1024,
     "height": 768,
     "toolbar": false,

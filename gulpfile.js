@@ -4,14 +4,16 @@ var argv       = require('yargs').argv;
 var fs         = require('fs');
 var gulp       = require('gulp');
 var gu_concat  = require('gulp-concat');
-var gu_dl      = require("gulp-download");
-var gu_uglify  = require('gulp-uglify');
+var gu_dl      = require('gulp-download');
+var gu_if      = require('gulp-if');
+var gu_install = require('gulp-install');
+var gu_jedit   = require("gulp-json-editor");
+var gu_lr      = require('gulp-livereload');
 var gu_minify  = require('gulp-minify-css');
 var gu_sass    = require('gulp-sass');
-var gu_util    = require('gulp-util');
 var gu_tpls    = require('gulp-angular-templatecache');
-var gu_lr      = require('gulp-livereload');
-var gu_install = require('gulp-install');
+var gu_uglify  = require('gulp-uglify');
+var gu_util    = require('gulp-util');
 var gu_zip     = require('gulp-zip');
 var nw_builder = require('node-webkit-builder');
 var unzip      = require('unzip');
@@ -22,6 +24,7 @@ var libFile = 'libs-'+nwVersion+'.zip';
 var libUrl = 'http://zspin.vik.io/libraries/'+libFile;
 var platform = null;
 var task = argv._[0];
+var debug = argv.d;
 
 // platform detection
 // if -p parameter undefined, platform = current platform
@@ -75,7 +78,7 @@ var vendors = {
 gulp.task('vendors:scripts', function() {
   return gulp.src(vendors.scripts)
     .pipe(gu_concat('vendors.js'))
-    .pipe(gu_uglify())
+    .pipe(gu_if(!debug, gu_uglify()))
     .pipe(gulp.dest('build/js'));
 });
 
@@ -118,6 +121,17 @@ gulp.task('app:statics', function() {
     .pipe(gu_install());
 });
 
+gulp.task('app:packagefile', ['app:statics'], function() {
+  // if param -d (debug), show toolbar and set windowed
+  return gulp.src('app_statics/package.json')
+    .pipe(gu_if(debug, gu_jedit(function (json) {
+      json.window.toolbar = true;
+      json.window.fullscreen = false;
+      return json;
+    })))
+    .pipe(gulp.dest('build'));
+});
+
 gulp.task('app:scripts', function() {
   return gulp.src(app.scripts)
     .pipe(gu_concat('app.js'))
@@ -143,7 +157,7 @@ gulp.task('app:templates', function() {
 });
 
 
-gulp.task('app', ['app:statics', 'app:scripts', 'app:styles', 'app:templates']);
+gulp.task('app', ['app:statics', 'app:scripts', 'app:styles', 'app:templates', 'app:packagefile']);
 
 /******************************** Libraries **********************************/
 

@@ -20,7 +20,7 @@ run:
 		$(NWBUILD) -v $(NWVER) -r $(BUILD)
 
 watch:
-		$(GULP) watch
+		$(GULP) watch -d
 
 release:
 		$(GULP) release -p $(PLATFORM)
