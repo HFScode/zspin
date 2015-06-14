@@ -21,7 +21,9 @@ app.controller('IntroCtrl', ['$scope', '$location', 'fs', 'settings',
     });
 
     function stopVideo() {
-      $scope.player.controls.stop();
+      // $scope.player.controls.stop();
+      // UGLY FIX (windows says cannot call method on NPObject):
+      $location.path('/menus/Main Menu');
     }
 
     // Check for playback status change

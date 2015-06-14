@@ -181,33 +181,34 @@ gulp.task('libraries:unzip', ['libraries:download'], function() {
   }
 });
 
-gulp.task('libraries:ffmpeg', ['libraries:unzip', 'release:check-nwjs'], function() {
-  var dest = 'node_modules/node-webkit-builder/cache/'+nwVersion+'/'+platform;
-  if (platform.indexOf('osx') === 0) {
-    dest += '/nwjs.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
-  }
+// gulp.task('libraries:ffmpeg', ['libraries:unzip', 'release:check-nwjs'], function() {
+//   var dest = 'node_modules/node-webkit-builder/cache/'+nwVersion+'/'+platform;
+//   if (platform.indexOf('osx') === 0) {
+//     dest += '/nwjs.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
+//   }
 
-  return gulp.src('libraries/'+platform+'/ffmpeg/*')
-    .pipe(gulp.dest(dest));
-});
+//   return gulp.src('libraries/'+platform+'/ffmpeg/*')
+//     .pipe(gulp.dest(dest));
+// });
 
-gulp.task('libraries:ffmpeg-release', ['libraries:unzip', 'release:check-nwjs',
-  'release:build'], function() {
-  var dest = 'releases/zspin/'+platform;
-  if (platform.indexOf('osx') === 0) {
-    dest += '/zspin.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
-  }
+// gulp.task('libraries:ffmpeg-release', ['libraries:unzip', 'release:check-nwjs',
+//   'release:build'], function() {
+//   var dest = 'releases/zspin/'+platform;
+//   if (platform.indexOf('osx') === 0) {
+//     dest += '/zspin.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
+//   }
 
-  return gulp.src('libraries/'+platform+'/ffmpeg/*')
-    .pipe(gulp.dest(dest));
-});
+//   return gulp.src('libraries/'+platform+'/ffmpeg/*')
+//     .pipe(gulp.dest(dest));
+// });
 
 gulp.task('libraries:flashplayer', ['libraries:unzip'], function() {
   return gulp.src('libraries/'+platform+'/flashplayer/**')
     .pipe(gulp.dest('build/plugins'));
 });
 
-gulp.task('libraries', ['libraries:ffmpeg', 'libraries:flashplayer']);
+// gulp.task('libraries', ['libraries:ffmpeg', 'libraries:flashplayer']);
+gulp.task('libraries', ['libraries:flashplayer']);
 
 /********************************** Releases *********************************/
 
@@ -253,7 +254,8 @@ gulp.task('release:build', ['release:check-platform', 'release:check-nwjs',
   return nwb.build();
 });
 
-gulp.task('release:zip', ['release:build', 'libraries:ffmpeg-release'], function() {
+// gulp.task('release:zip', ['release:build', 'libraries:ffmpeg-release'], function() {
+gulp.task('release:zip', ['release:build'], function() {
   return gulp.src('releases/zspin/'+platform+'/**/*')
     .pipe(gu_zip('zspin-'+version+'-'+platform+'.zip'))
     .pipe(gulp.dest('releases'));

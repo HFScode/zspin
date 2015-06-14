@@ -10,7 +10,7 @@
   <flvplayer ng-if="artwork.type=='flv'" class="Artwork-item" flv="{{src}}" loop="true" autoplay="true">
   </flvplayer>
 
-  <video ng-if="artwork.type=='mp4'" class="Artwork-item" loop="true" autoplay="true">
-    <source ng-src="{{src}}" type="video/mp4"/>
-  </video>
+  <flvplayer ng-if="artwork.type=='mp4'" class="Artwork-item" flv="{{src}}" loop="true" autoplay="true">
+  </flvplayer>
+
 </div>

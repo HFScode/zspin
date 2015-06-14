@@ -13,6 +13,7 @@
   "webkit": {
     "plugin": true
   },
+  "chromium-args": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
