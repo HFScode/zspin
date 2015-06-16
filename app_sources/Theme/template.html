@@ -1,4 +1,9 @@
-<div class="Theme">
+<div class="Theme Html" ng-if="theme.html">
+    <iframe ng-src="{{theme.html}}" />
+    <div class="no-click"></div>
+</div>
+
+<div class="Theme HSpin" ng-if="!theme.html">
   <!-- <pre ng-bind="theme|json"></pre> -->
   <!-- <pre ng-bind="artworks|json"></pre> -->
 

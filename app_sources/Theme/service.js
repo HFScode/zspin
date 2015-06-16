@@ -3,8 +3,9 @@
 app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml',
   function($q, fs, settings, zip, xml) {
     console.log('themes - init');
+    var $fs = require('fs');
 
-    function registerFiles(path, files, dst) {
+  function registerFiles(path, files, dst) {
       var obj = dst || {};
       files.forEach(function(file) {
         var basename = fs.basename(file);
@@ -21,7 +22,23 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml',
         manifest: {},
         artworks: {},
         background: null,
+        html: null,
+        video: null,
       };
+
+      var htmlPath = fs.join(path, 'index.html');
+      if ($fs.existsSync(htmlPath, $fs.F_OK)) {
+        obj.html = htmlPath;
+
+        // Look for video in $HSROOT/Media/$MENU/Video/$NAME.*
+        var path = settings.hsPath('Media', obj.menu, 'Video');
+        fs.glob(obj.name+'.*', {cwd: path}).then(function(files) {
+          if (files && files.length !== 0)
+            obj.video = fs.join(path, files[0]);
+        });
+
+        return obj;
+      }
 
       var ownFiles = {};
       // Glob to list theme files

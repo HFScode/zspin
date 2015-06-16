@@ -76,7 +76,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
 
       // check if item is a database, if yes, go to submenu
       var databasePath = settings.hsPath('Databases', elem, elem+'.xml');
-      if ($fs.existsSync(databasePath)) {
+      if ($fs.existsSync(databasePath, $fs.F_OK)) {
         zspin.menuHistory[menu.name] = elem;
         var newPath = baseUrl + curPath + '/' + elem;
         $location.path(newPath);

@@ -1,17 +1,35 @@
-
 .Theme {
   position: fixed;
   top: 0; bottom: 0;
   left: 0; right: 0;
   overflow: hidden;
+  -webkit-user-select: none;
+}
+
+.Theme.Html {
+  iframe {
+    border: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .no-click {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.Theme.HSpin {
 
   .Artwork {
-
     // This makes no sense
     &#artwork4 { z-index: 5; }
     &#artwork3 { z-index: 4; }
     &#artwork2 { z-index: 3; }
-    &#overlay  { z-index: 2; }
+    &#overlay { z-index: 2; }
     &#artwork1 { z-index: 1; }
     &#background { z-index: 0; }
   }

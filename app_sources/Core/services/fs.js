@@ -40,7 +40,7 @@ app.factory('fs', ['$q', 'qbind',
         return path.join.apply(path, arguments);
       },
 
-      /********************** General Purpose Proxies  **********************/
+      /********************** General Purpose Proxies  ***********************/
 
       // apply: function(funcname, args) {
       //   var defer = $q.defer();
