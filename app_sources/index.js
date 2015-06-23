@@ -12,15 +12,18 @@ var app = angular.module('app', [
   'piwik',
 ]);
 
+// =========== resize provider
 app.config(['resizeProvider', function(resizeProvider){
   resizeProvider.throttle = 10;
   resizeProvider.initBind = true;
 }]);
 
+// =========== url whitelist
 app.config(['$sceDelegateProvider', function($sceDelegateProvider){
   $sceDelegateProvider.resourceUrlWhitelist(['self', new RegExp('^.*$')]);
 }]);
 
+// =========== toastr notifications config
 app.config(function(toastrConfig) {
   angular.extend(toastrConfig, {
     extendedTimeOut: 1000,
@@ -31,11 +34,14 @@ app.config(function(toastrConfig) {
   });
 });
 
+// =========== Preload services
 app.run(['settings', 'inputs', function(settings, inputs) {
   // Force the settings service to be instanciated early
 }]);
 
+// =========== zspin core settings
 app.run(['zspin', function(zspin) {
+
   // initialize window menu
   var nativeMenuBar = new zspin.gui.Menu({type: "menubar"});
 
@@ -48,6 +54,7 @@ app.run(['zspin', function(zspin) {
   zspin.guiWindow.menu = nativeMenuBar;
 }]);
 
+// =========== config shortcuts
 app.run(['$rootScope', 'zspin', '$location', function($rootScope, zspin, $location) {
 
   // Create global home shortcut
