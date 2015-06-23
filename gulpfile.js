@@ -124,7 +124,8 @@ var app = {
 gulp.task('app:statics', function() {
   return gulp.src(app.statics)
     .pipe(gulp.dest('build'))
-    .pipe(gu_install());
+    .pipe(gu_install())
+    .pipe(gu_lr());
 });
 
 gulp.task('app:packagefile', ['app:statics'], function() {
@@ -135,13 +136,15 @@ gulp.task('app:packagefile', ['app:statics'], function() {
       json.window.fullscreen = false;
       return json;
     })))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest('build'))
+    .pipe(gu_lr());
 });
 
 gulp.task('app:scripts', function() {
   return gulp.src(app.scripts)
     .pipe(gu_concat('app.js'))
-    .pipe(gulp.dest('build/js'));
+    .pipe(gulp.dest('build/js'))
+    .pipe(gu_lr());
 });
 
 gulp.task('app:styles', function() {
@@ -152,14 +155,16 @@ gulp.task('app:styles', function() {
       sourceMap: 'sass'
     }))
     .pipe(gu_concat('app.css'))
-    .pipe(gulp.dest('build/css'));
+    .pipe(gulp.dest('build/css'))
+    .pipe(gu_lr());
 });
 
 gulp.task('app:templates', function() {
   return gulp.src(app.templates)
     .pipe(gu_tpls({standalone: true}))
     .pipe(gu_concat('app.tpls.js'))
-    .pipe(gulp.dest('build/js'));
+    .pipe(gulp.dest('build/js'))
+    .pipe(gu_lr());
 });
 
 
@@ -272,12 +277,11 @@ gulp.task('release', ['release:zip']);
 /*********************************** Watch ***********************************/
 
 gulp.task('watch', ['default'], function() {
-  gu_lr.listen();
-  gulp.watch(app.statics,   ['app:statics']);
-  gulp.watch(app.styles,    ['app:styles']);
-  gulp.watch(app.scripts,   ['app:scripts']);
+  gulp.watch(app.statics, ['app:statics']);
+  gulp.watch(app.styles, ['app:styles']);
+  gulp.watch(app.scripts, ['app:scripts']);
   gulp.watch(app.templates, ['app:templates']);
-  gulp.watch('build/**/*.{js,html,scss,css}').on('change', gu_lr.changed);
+  gulp.watch('app_statics/package.json', ['app:packagefile']);
 });
 
 gulp.task('default', ['vendors', 'app', 'libraries']);
