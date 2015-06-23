@@ -63,12 +63,14 @@ var vendors = {
     'bower_components/gsap/src/uncompressed/jquery.gsap.js',
     'bower_components/json-formatter/dist/json-formatter.js',
     'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
+    'bower_components/videojs/dist/video.js',
   ],
   'styles': [
     'bower_components/skeleton/css/normalize.css',
     'bower_components/skeleton/css/skeleton.css',
     'bower_components/json-formatter/dist/json-formatter.css',
     'bower_components/angular-toastr/dist/angular-toastr.css',
+    'bower_components/videojs/dist/video-js.css',
   ],
   'fonts': [
 //    'bower_components/bootstrap/dist/fonts/*', // * preserve dir structure
@@ -101,6 +103,10 @@ gulp.task('vendors', ['vendors:scripts', 'vendors:styles' ,'vendors:fonts']);
 var app = {
   'statics': [
     'app_statics/**/*',
+    '!app_statics/package.json',
+    'bower_components/jquery/dist/jquery.js',
+    'bower_components/videojs/dist/video.js',
+    'bower_components/videojs/dist/video-js.swf',
   ],
   'scripts': [
     'app_sources/**/*.js',
