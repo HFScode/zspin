@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('zspin', ['fs', 'settings', '$http',
-  function (fs, settings, $http) {
+app.factory('zspin', ['fs', 'settings', '$http', 'fileServer',
+  function (fs, settings, $http, fileServer) {
     console.log('zspin - init');
 
     var gui = require('nw.gui');
@@ -51,7 +51,10 @@ app.factory('zspin', ['fs', 'settings', '$http',
       // Smooth user experience
       this.hide();
 
-      //running execOnExit app if present
+      // stop fileServer
+      fileServer.stopServer();
+
+      // running execOnExit app if present
       if (settings.$obj.execOnExit !== '') {
         var cmdLine = settings.$obj.execOnExit.split(' ');
         var params = cmdLine.slice(1);
