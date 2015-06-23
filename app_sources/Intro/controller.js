@@ -1,13 +1,21 @@
 'use strict';
 
-app.controller('IntroCtrl', ['$scope', '$location', 'fs', 'settings',
-  function($scope, $location, fs, settings) {
+app.controller('IntroCtrl', ['$scope', '$location', 'fs', 'settings', 'fileServer', '$timeout',
+  function($scope, $location, fs, settings, fileServer, $timeout) {
 
     // Prepend video file
     var path = settings.hsPath('Media', 'Frontend', 'Video');
 
-    // Flvplayer interface
-    $scope.player = {};
+    $scope.player = null;
+
+    // videojs options
+    $scope.vjsOptions = {
+      'flash': {
+        'swf': 'video-js.swf',
+      },
+      'autoplay': true,
+      'techOrder': ['flash'],
+    };
 
     // Prob for intro video file
     fs.readdir(path).then(function(files) {
@@ -16,21 +24,25 @@ app.controller('IntroCtrl', ['$scope', '$location', 'fs', 'settings',
       }).map(function(file) {
         return fs.join(path, file);
       });
-      if (videos.length !== 0)
-        $scope.video = videos[0];
+      if (videos.length !== 0) {
+        fileServer.serveFile(fs.filename(videos[0]), videos[0]);
+        $scope.videoExt = fs.extname(videos[0]);
+        $scope.videoUrl = fileServer.url+'/'+fs.filename(videos[0]);
+
+        $timeout(function() {
+          $scope.player = videojs('introvideo', $scope.vjsOptions, function() {});
+          $scope.player.on('ended', function () {
+            $location.path('/menus/Main Menu');
+          });
+        });
+
+      }
     });
 
     function stopVideo() {
-      // $scope.player.controls.stop();
-      // UGLY FIX (windows says cannot call method on NPObject):
+      // $scope.player.pause();
       $location.path('/menus/Main Menu');
     }
-
-    // Check for playback status change
-    $scope.$watch('player.status.isPlaying', function(isPlaying, wasPlaying) {
-      if (!isPlaying && wasPlaying)
-        $location.path('/menus/Main Menu');
-    });
 
     $scope.$on('input:enter', stopVideo);
     $scope.$on('input:back', stopVideo);

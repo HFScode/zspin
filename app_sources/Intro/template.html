@@ -1,3 +1,5 @@
 <div id="Intro" hotkey="{'esc': player.controls.stop}">
-  <flvplayer flv="file://{{video}}" ng-model="player" autoplay="true" width="100%" height="100%"></flvplayer>
+  <video id="introvideo">
+    <source src="{{videoUrl}}" type="video/{{videoExt}}"/>
+  </video>
 </div>
