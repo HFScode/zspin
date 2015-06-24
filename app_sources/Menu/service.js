@@ -1,13 +1,22 @@
 'use strict';
 
-app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml',
-  function($q, fs, settings, ini, xml) {
+app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml', 'zspin', 'themes', 'fileServer',
+  function($q, fs, settings, ini, xml, zspin, themes, fileServer) {
     console.log('menus - init');
 
     var service = function (name) {
       var obj = {
         name: name,
       };
+
+      // Play video on focus
+      zspin.guiWindow.on('focus', function() {
+        if (themes.curType === 'html') {
+          frames['themeframe'].postMessage('play', fileServer.url);
+        } else if (themes.curType === 'hs') {
+          videojs('artworkvideo').play();
+        }
+      });
 
       // Load database entries from $HS_PATH/Databases/$NAME/$NAME.xml
       var databasePath = settings.hsPath('Databases', name, name+'.xml');

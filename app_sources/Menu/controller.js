@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'menus', 'settings', 'inputs', 'zspin',
-  function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs, zspin) {
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'menus', 'settings', 'inputs', 'zspin', 'themes', 'fileServer',
+  function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs, zspin, themes, fileServer) {
 
     //  - requires
     var $fs = require('fs');
@@ -92,6 +92,12 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
 
         spawn(settings.$obj.launcherPath, params);
         inputs.isWindowFocused = false;
+
+        if (themes.curType === 'html') {
+          frames['themeframe'].postMessage('pause', fileServer.url);
+        } else if (themes.curType === 'hs') {
+          videojs('artworkvideo').pause();
+        }
       }
     };
 
