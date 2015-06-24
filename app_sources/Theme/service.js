@@ -1,11 +1,13 @@
 'use strict';
 
-app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml',
-  function($q, fs, settings, zip, xml) {
+app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
+  function($q, fs, settings, zip, xml, fileServer) {
     console.log('themes - init');
     var $fs = require('fs');
 
-  function registerFiles(path, files, dst) {
+    var service = {};
+
+    function registerFiles(path, files, dst) {
       var obj = dst || {};
       files.forEach(function(file) {
         var basename = fs.basename(file);
@@ -14,7 +16,9 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml',
       return obj;
     }
 
-    var service = function (path, menu, name) {
+    service.curType = null;
+
+    service = function (path, menu, name) {
       var obj = {
         menu: menu,
         path: path,
@@ -22,24 +26,40 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml',
         manifest: {},
         artworks: {},
         background: null,
-        html: null,
+        html: false,
         video: null,
       };
 
+      // memory freeing
+      if (frames['themeframe']) {
+        angular.element('#themeframe').src = "";
+        angular.element('#themeframe').remove();
+      }
+
+      // Check if this is a Html theme
       var htmlPath = fs.join(path, 'index.html');
       if ($fs.existsSync(htmlPath, $fs.F_OK)) {
-        obj.html = htmlPath;
+        fileServer.serveFolder(path);
+        fileServer.serveFile('themeframe.js', 'themeframe.js');
+        fileServer.serveFile('video.js', 'video.js');
+        fileServer.serveFile('jquery.js', 'jquery.js');
+        fileServer.serveFile('video-js.swf', 'video-js.swf');
 
         // Look for video in $HSROOT/Media/$MENU/Video/$NAME.*
-        var path = settings.hsPath('Media', obj.menu, 'Video');
-        fs.glob(obj.name+'.*', {cwd: path}).then(function(files) {
-          if (files && files.length !== 0)
-            obj.video = fs.join(path, files[0]);
-        });
+        var vidpath = settings.hsPath('Media', menu, 'Video');
 
+        fs.glob(name+'.*', {cwd: vidpath}).then(function(files) {
+          if (files && files.length !== 0) {
+            obj.video = fs.join(vidpath, files[0]);
+            fileServer.serveFile(files[0], fs.join(vidpath, files[0]));
+          }
+          obj.html = htmlPath;
+          service.curType = 'html';
+        });
         return obj;
       }
 
+      // Else this is a standard HS Theme
       var ownFiles = {};
       // Glob to list theme files
       fs.glob('*', {cwd: obj.path}).then(function(files) {
@@ -60,25 +80,29 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml',
           obj.artworks.artwork4 = ownFiles.Artwork4;
 
         // Find background file path
-        if (ownFiles.Background)
+        if (ownFiles.Background) {
           obj.background = ownFiles.Background;
+        }
 
         // Find overlay file path
         if (obj.manifest.video && ownFiles.Video) {
           obj.overlay = ownFiles.Video;
-          obj.video = service.defaultVideo;
         }
 
         // Look for video in $HSROOT/Media/$MENU/Video/$NAME.*
         if (obj.manifest.video) {
           var path = settings.hsPath('Media', obj.menu, 'Video');
           fs.glob(obj.name+'.*', {cwd: path}).then(function(files) {
-            if (files && files.length !== 0)
+            if (files && files.length !== 0) {
               obj.video = fs.join(path, files[0]);
+            } else {
+              obj.video = service.defaultVideo;
+            }
           });
         }
       });
 
+      service.curType = 'hs';
       return obj;
     };
 

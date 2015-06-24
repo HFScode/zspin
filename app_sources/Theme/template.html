@@ -1,6 +1,6 @@
 <div class="Theme Html" ng-if="theme.html">
-    <iframe ng-src="{{theme.html}}" />
-    <div class="no-click"></div>
+  <iframe ng-src="{{fileServerUrl}}" name="themeframe" id="themeframe" nwdisable></iframe>
+  <div class="no-click"></div>
 </div>
 
 <div class="Theme HSpin" ng-if="!theme.html">
@@ -17,4 +17,4 @@
   <artwork ng-if="theme.video" id="video" src="{{theme.video}}" config="theme.manifest.video"></artwork>
   <artwork ng-if="theme.overlay" id="overlay" src="{{theme.overlay}}" config="theme.manifest.video" overlay="true"></artwork>
 
- </div>
+</div>

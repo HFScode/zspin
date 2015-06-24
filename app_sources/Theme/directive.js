@@ -1,7 +1,7 @@
 'use strict'
 
-app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes',
-  function($q, settings, fs, zip, themes) {
+app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes', 'fileServer',
+  function($q, settings, fs, zip, themes, fileServer) {
 
     return {
       restrict: 'E',
@@ -13,6 +13,7 @@ app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes',
       link: function(scope, el, attrs) {
         scope.tmpRoot = settings.hsPath(settings.$obj.cachePath, 'Theme');
         scope.tmpPath = scope.tmpRoot;
+        scope.fileServerUrl = fileServer.url;
 
         // Update scope.theme when src attribute change
         scope.$watch('src', function(src) {
