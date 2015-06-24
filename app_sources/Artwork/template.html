@@ -7,10 +7,6 @@
     <param name="scale" value="exactfit">
   </object>
 
-  <flvplayer ng-if="artwork.type=='flv'" class="Artwork-item" flv="{{src}}" loop="true" autoplay="true">
-  </flvplayer>
-
-  <flvplayer ng-if="artwork.type=='mp4'" class="Artwork-item" flv="{{src}}" loop="true" autoplay="true">
-  </flvplayer>
-
+  <video ng-if="artwork.type=='mp4' || artwork.type=='flv'" class="Artwork-item" loop autoplay id="artworkvideo">
+  </video>
 </div>

@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('artworks', ['$q', 'qbind', 'fs',
-  function($q, qbind, fs) {
+app.factory('artworks', ['$q', 'qbind', 'fs', 'fileServer',
+  function($q, qbind, fs, fileServer) {
     console.log('artworks - init');
 
     var SWFReader = require('swf-reader');
@@ -25,27 +25,35 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
       });
     }
 
-
     var service = function(src) {
       var obj = {
         src: src,
         type: undefined,
         size: {},
+        filename: null,
       };
 
       // Extract type from extname
-      obj.type = fs.extname(obj.src||'');
+      obj.type = fs.extname(obj.src || '');
 
       // Natural size method differ base on the type
       var getSize = $q.when(null);
-      if (obj.type === 'png' || obj.type === 'jpg')
+      if (obj.type === 'png' || obj.type === 'jpg') {
         getSize = getImageNaturalSize(obj.src);
-      else if (obj.type === 'swf')
+      } else if (obj.type === 'swf') {
         getSize = getFlashNaturalSize(obj.src);
-      else if (obj.type === 'flv')
+      } else if (obj.type === 'flv') {
         getSize = $q.when({width: 200, height: 200});
-      else if (obj.type === 'mp4')
+      } else if (obj.type === 'mp4') {
         getSize = getVideoNaturalSize(obj.src);
+      }
+
+      if (obj.type === 'flv' || obj.type === 'mp4') {
+        obj.filename = fs.filename(obj.src);
+        fileServer.cleanRoutes();
+        fileServer.serveFile(obj.filename, obj.src);
+        obj.src = fileServer.url+'/'+obj.filename;
+      }
 
       getSize.then(function(size) {
         obj.size = size;
@@ -92,6 +100,8 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
       }
       return box;
     };
+
+    service.player = null;
 
     console.log('artworks - ready');
     return service;
