@@ -10,6 +10,7 @@ var gu_install = require('gulp-install');
 var gu_jedit   = require("gulp-json-editor");
 var gu_lr      = require('gulp-livereload');
 var gu_minify  = require('gulp-minify-css');
+var gu_rm      = require('gulp-rm');
 var gu_sass    = require('gulp-sass');
 var gu_tpls    = require('gulp-angular-templatecache');
 var gu_uglify  = require('gulp-uglify');
@@ -213,7 +214,12 @@ gulp.task('libraries:unzip', ['libraries:download'], function() {
 //     .pipe(gulp.dest(dest));
 // });
 
-gulp.task('libraries:flashplayer', ['libraries:unzip'], function() {
+gulp.task('libraries:clean', function() {
+  return gulp.src('build/plugins/**/*', {read: false})
+    .pipe(gu_rm());
+});
+
+gulp.task('libraries:flashplayer', ['libraries:unzip', 'libraries:clean'], function() {
   return gulp.src('libraries/'+platform+'/flashplayer/**')
     .pipe(gulp.dest('build/plugins'));
 });
@@ -259,7 +265,8 @@ gulp.task('release:build', ['release:check-platform', 'release:check-nwjs',
       version: nwVersion,
       cacheDir: 'node_modules/node-webkit-builder/cache',
       platforms: [platform],
-
+      winIco: 'assets/256.ico',
+      macIcns: 'assets/256.icns',
   });
 
   return nwb.build();
