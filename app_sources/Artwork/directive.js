@@ -61,9 +61,10 @@ app.directive('artwork', ['$q', 'artworks', '$timeout',
               }
 
               artworks.player = videojs('artworkvideo', vjsOptions, function() {
-                this.src({src: scope.artwork.src, type: "video/"+scope.artwork.type});
+                this.src({src: scope.artwork.url, type: "video/"+scope.artwork.type});
                 artworks.player = this;
               }).ready(function() {
+                this.stopTrackingCurrentTime();
                 // here we remove the videojs generated style, there is no other
                 // way to do this at this time FUUUUU
                 $('#video style').remove();
@@ -75,7 +76,7 @@ app.directive('artwork', ['$q', 'artworks', '$timeout',
         });
 
         // Update styles when config change
-        // or once the image size has fbeen found
+        // or once the image size has been found
         scope.$watch('config', computeBox);
         scope.$watch('artwork.size', computeBox);
 

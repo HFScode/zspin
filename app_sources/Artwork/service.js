@@ -28,6 +28,7 @@ app.factory('artworks', ['$q', 'qbind', 'fs', 'fileServer',
     var service = function(src) {
       var obj = {
         src: src,
+        url: null,
         type: undefined,
         size: {},
         filename: null,
@@ -52,7 +53,7 @@ app.factory('artworks', ['$q', 'qbind', 'fs', 'fileServer',
         obj.filename = fs.filename(obj.src);
         fileServer.cleanRoutes();
         fileServer.serveFile(obj.filename, obj.src);
-        obj.src = fileServer.url+'/'+obj.filename;
+        obj.url = fileServer.url+'/'+obj.filename;
       }
 
       getSize.then(function(size) {
