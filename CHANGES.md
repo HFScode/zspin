@@ -1,10 +1,14 @@
 ChangeLog
 =========
 
-0.0.3 (unreleased)
+0.0.3 (2015-06-24)
 ------------------
 
-* No entry.
+* Added icons \o/
+* Video stop/play when launching game / refocus window
+* Using videojs's swf player for all videos
+* HTML Theme support if index.html found in zipfile
+* Builtin web-server to serve medias for themes and videos
 
 0.0.2 (2015-06-15)
 ------------------
