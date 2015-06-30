@@ -27,7 +27,6 @@ release:
 
 clean:
 		rm -rf ./bower_components
-		rm -rf ./build
 		rm -rf ./node_modules
 
 fclean: clean
