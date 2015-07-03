@@ -1,10 +1,12 @@
 ChangeLog
 =========
 
-0.0.4 (unreleased)
+0.0.4 (2015-07-03)
 ------------------
 
-* No entry.
+* Edited icons
+* Replaced videojs with jPlayer
+* Removed old flvplayer
 
 0.0.3 (2015-06-24)
 ------------------
