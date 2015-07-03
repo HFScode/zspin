@@ -41,9 +41,9 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
       if ($fs.existsSync(htmlPath, $fs.F_OK)) {
         fileServer.serveFolder(path);
         fileServer.serveFile('themeframe.js', 'themeframe.js');
-        fileServer.serveFile('video.js', 'video.js');
-        fileServer.serveFile('jquery.js', 'jquery.js');
-        fileServer.serveFile('video-js.swf', 'video-js.swf');
+        fileServer.serveFile('jquery.js', fs.join('js', 'jquery.min.js'));
+        fileServer.serveFile('jquery.jplayer.js', fs.join('js', 'jquery.jplayer.min.js'));
+        fileServer.serveFile('jquery.jplayer.swf', fs.join('swf', 'jquery.jplayer.swf'));
 
         // Look for video in $HSROOT/Media/$MENU/Video/$NAME.*
         var vidpath = settings.hsPath('Media', menu, 'Video');

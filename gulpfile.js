@@ -26,8 +26,10 @@ var libUrl = 'http://zspin.vik.io/libraries/'+libFile;
 var platform = null;
 var task = argv._[0];
 var debug = argv.d;
+var watch = (task === 'watch');
 
-// platform detection
+/*************************** Platform detection ******************************/
+
 // if -p parameter undefined, platform = current platform
 // else platform = -p parameter value
 if (argv.p === undefined) {
@@ -44,6 +46,8 @@ if (argv.p === undefined) {
 } else {
   platform = argv.p;
 }
+
+var releaseBin = 'zspin-'+version+'-'+platform+'.zip';
 
 /************************************ Vendors ********************************/
 
@@ -64,14 +68,13 @@ var vendors = {
     'bower_components/gsap/src/uncompressed/jquery.gsap.js',
     'bower_components/json-formatter/dist/json-formatter.js',
     'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
-    'bower_components/videojs/dist/video.js',
+    'bower_components/jplayer/dist/jplayer/jquery.jplayer.js',
   ],
   'styles': [
     'bower_components/skeleton/css/normalize.css',
     'bower_components/skeleton/css/skeleton.css',
     'bower_components/json-formatter/dist/json-formatter.css',
     'bower_components/angular-toastr/dist/angular-toastr.css',
-    'bower_components/videojs/dist/video-js.css',
   ],
   'fonts': [
 //    'bower_components/bootstrap/dist/fonts/*', // * preserve dir structure
@@ -105,9 +108,7 @@ var app = {
   'statics': [
     'app_statics/**/*',
     '!app_statics/package.json',
-    'bower_components/jquery/dist/jquery.js',
-    'bower_components/videojs/dist/video.js',
-    'bower_components/videojs/dist/video-js.swf',
+    '!app_statics/themeframe.js',
   ],
   'scripts': [
     'app_sources/**/*.js',
@@ -116,17 +117,20 @@ var app = {
   'styles': [
     'app_sources/**/*.scss',
   ],
+  'flash': [
+    'bower_components/jplayer/dist/jplayer/jquery.jplayer.swf',
+  ],
   'templates': [
     'app_sources/templates/*.html',
     'app_sources/**/*.html',
-  ]
+  ],
 };
 
 gulp.task('app:statics', function() {
   return gulp.src(app.statics)
     .pipe(gulp.dest('build'))
     .pipe(gu_install())
-    .pipe(gu_lr());
+    .pipe(gu_if(watch, gu_lr()));
 });
 
 gulp.task('app:packagefile', ['app:statics'], function() {
@@ -138,14 +142,14 @@ gulp.task('app:packagefile', ['app:statics'], function() {
       return json;
     })))
     .pipe(gulp.dest('build'))
-    .pipe(gu_lr());
+    .pipe(gu_if(watch, gu_lr()));
 });
 
 gulp.task('app:scripts', function() {
   return gulp.src(app.scripts)
     .pipe(gu_concat('app.js'))
     .pipe(gulp.dest('build/js'))
-    .pipe(gu_lr());
+    .pipe(gu_if(watch, gu_lr()));
 });
 
 gulp.task('app:styles', function() {
@@ -157,7 +161,13 @@ gulp.task('app:styles', function() {
     }))
     .pipe(gu_concat('app.css'))
     .pipe(gulp.dest('build/css'))
-    .pipe(gu_lr());
+    .pipe(gu_if(watch, gu_lr()));
+});
+
+gulp.task('app:flash', function() {
+  return gulp.src(app.flash)
+    .pipe(gulp.dest('build/swf'))
+    .pipe(gu_if(watch, gu_lr()));
 });
 
 gulp.task('app:templates', function() {
@@ -165,11 +175,29 @@ gulp.task('app:templates', function() {
     .pipe(gu_tpls({standalone: true}))
     .pipe(gu_concat('app.tpls.js'))
     .pipe(gulp.dest('build/js'))
-    .pipe(gu_lr());
+    .pipe(gu_if(watch, gu_lr()));
 });
 
+gulp.task('app', ['app:statics', 'app:scripts', 'app:styles', 'app:flash',
+ 'app:templates', 'app:packagefile']);
 
-gulp.task('app', ['app:statics', 'app:scripts', 'app:styles', 'app:templates', 'app:packagefile']);
+/******************************* Theme Frame *********************************/
+
+var themeframe = {
+  'scripts': [
+    'bower_components/jquery/dist/jquery.min.js',
+    'bower_components/jplayer/dist/jplayer/jquery.jplayer.min.js',
+    'app_statics/themeframe.js',
+  ],
+};
+
+gulp.task('themeframe:scripts', function() {
+  return gulp.src(themeframe.scripts)
+    .pipe(gulp.dest('build/js'))
+    .pipe(gu_if(watch, gu_lr()));
+});
+
+gulp.task('themeframe', ['themeframe:scripts']);
 
 /******************************** Libraries **********************************/
 
@@ -219,7 +247,7 @@ gulp.task('libraries:clean', function() {
     .pipe(gu_rm());
 });
 
-gulp.task('libraries:flashplayer', ['libraries:unzip', 'libraries:clean'], function() {
+gulp.task('libraries:flashplayer', ['libraries:unzip', 'libraries:clean', 'release:check-nwjs'], function() {
   return gulp.src('libraries/'+platform+'/flashplayer/**')
     .pipe(gulp.dest('build/plugins'));
 });
@@ -238,7 +266,7 @@ gulp.task('release:check-platform', function() {
   }
 });
 
-gulp.task('release:check-nwjs', ['app:statics'], function() {
+gulp.task('release:check-nwjs', ['app:statics', 'app:packagefile'], function() {
   // check and downloads nwjs if not present.
   var nwb = new nw_builder({
     files: ['build/**'],
@@ -257,7 +285,7 @@ gulp.task('release:check-nwjs', ['app:statics'], function() {
 });
 
 gulp.task('release:build', ['release:check-platform', 'release:check-nwjs',
-  'vendors', 'app', 'libraries:flashplayer'], function() {
+  'vendors', 'app', 'themeframe', 'libraries:flashplayer'], function() {
 
   var nwb = new nw_builder({
       files: ['build/**'],
@@ -275,11 +303,13 @@ gulp.task('release:build', ['release:check-platform', 'release:check-nwjs',
 // gulp.task('release:zip', ['release:build', 'libraries:ffmpeg-release'], function() {
 gulp.task('release:zip', ['release:build'], function() {
   return gulp.src('releases/zspin/'+platform+'/**/*')
-    .pipe(gu_zip('zspin-'+version+'-'+platform+'.zip'))
+    .pipe(gu_zip(releaseBin))
     .pipe(gulp.dest('releases'));
 });
 
-gulp.task('release', ['release:zip']);
+gulp.task('release', ['release:zip'], function() {
+  gu_util.log(gu_util.colors.green("Build success ! releases/"+releaseBin));
+});
 
 /*********************************** Watch ***********************************/
 
@@ -289,7 +319,11 @@ gulp.task('watch', ['default'], function() {
   gulp.watch(app.scripts, ['app:scripts']);
   gulp.watch(app.templates, ['app:templates']);
   gulp.watch('app_statics/package.json', ['app:packagefile']);
+  gulp.watch(themeframe.scripts, ['themeframe:scripts']);
+  gu_util.log(gu_util.colors.green("Ready, execute 'make run' in another terminal"));
 });
 
-gulp.task('default', ['vendors', 'app', 'libraries']);
+/********************************** Default **********************************/
+
+gulp.task('default', ['vendors', 'app', 'themeframe', 'libraries']);
 

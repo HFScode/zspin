@@ -14,7 +14,7 @@ app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml', 'zspin', 'themes', '
         if (themes.curType === 'html') {
           frames['themeframe'].postMessage('play', fileServer.url);
         } else if (themes.curType === 'hs') {
-          videojs('artworkvideo').play();
+          angular.element('#artworkvideo').jPlayer('play');
         }
       });
 

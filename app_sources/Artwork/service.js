@@ -28,7 +28,6 @@ app.factory('artworks', ['$q', 'qbind', 'fs', 'fileServer',
     var service = function(src) {
       var obj = {
         src: src,
-        url: null,
         type: undefined,
         size: {},
         filename: null,
@@ -47,13 +46,6 @@ app.factory('artworks', ['$q', 'qbind', 'fs', 'fileServer',
         getSize = $q.when({width: 200, height: 200});
       } else if (obj.type === 'mp4') {
         getSize = getVideoNaturalSize(obj.src);
-      }
-
-      if (obj.type === 'flv' || obj.type === 'mp4') {
-        obj.filename = fs.filename(obj.src);
-        fileServer.cleanRoutes();
-        fileServer.serveFile(obj.filename, obj.src);
-        obj.url = fileServer.url+'/'+obj.filename;
       }
 
       getSize.then(function(size) {

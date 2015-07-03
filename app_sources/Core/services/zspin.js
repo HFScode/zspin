@@ -21,9 +21,8 @@ app.factory('zspin', ['fs', 'settings', '$http', 'fileServer',
     service.menuHistory = {};
 
     var root = process.cwd();
-    var introFile = fs.join(root, 'swf', 'player_flv_js.swf');
-    trustManager.add(introFile);
-    console.log('flash trust', trustManager.list());
+    trustManager.empty();
+    trustManager.add(fs.join(root, 'swf', 'jquery.jplayer.swf'));
 
     service.reloadApp = function() {
       guiWindow.reload(3);

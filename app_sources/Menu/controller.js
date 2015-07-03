@@ -96,7 +96,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
         if (themes.curType === 'html') {
           frames['themeframe'].postMessage('pause', fileServer.url);
         } else if (themes.curType === 'hs') {
-          videojs('artworkvideo').pause();
+          angular.element('#artworkvideo').jPlayer('pause');
         }
       }
     };

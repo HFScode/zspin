@@ -6,34 +6,35 @@ if (window.name === 'themeframe' && window.alreadyLoaded === undefined) {
 
     var videoElem;
 
-    vjsOptions = {
-      'autoplay': true,
-      'loop': true,
-      'flash': {
-        'swf': "video-js.swf"
-      },
-      'techOrder': ['flash'],
-    };
-
     function receiveMessage(event) {
       console.log("FRAME-EVENTMESSAGE:", event);
       if (event.data === 'pause') {
-        videoElem.pause();
+        videoElem.jPlayer('pause');
       } else if (event.data === 'play') {
-        videoElem.play();
+        videoElem.jPlayer('play');
       }
     };
 
-    function checkLoads() {
-      if (window.jQuery && window.videojs) {
+    function checkLoadPL() {
+      if ($.jPlayer) {
         loaded();
       } else {
-        window.setTimeout(checkLoads, 50);
+        window.setTimeout(checkLoadPL, 50);
+      }
+    }
+
+    function checkLoadJQ() {
+      if (window.jQuery && $) {
+        var script = document.createElement('script');
+        script.src = 'jquery.jplayer.js';
+        document.getElementsByTagName('head')[0].appendChild(script);
+        checkLoadPL();
+      } else {
+        window.setTimeout(checkLoadJQ, 50);
       }
     }
 
     function loaded() {
-      console.log('themeframe really loaded');
 
       var i = 0;
       $('video').each(function() {
@@ -41,31 +42,38 @@ if (window.name === 'themeframe' && window.alreadyLoaded === undefined) {
           this.id = 'video'+i;
         }
 
-        $(this).append(
-          '<source src="'+this.src+'" type="video/'+this.src.slice(-3)+'"/>'
+        $(this).replaceWith(
+          '<div id="'+$(this).attr('id')+'" class="'+$(this).attr('class')+'" style="'+$(this).attr('style')+'"></div>'
         );
 
-        videoElem = videojs(this.id, vjsOptions).ready(function() {
-          $('#video style').remove();
+        var videoExt = this.src.slice(-3);
+        var type = (videoExt == 'mp4' ? 'm4v': videoExt);
+        var param = {};
+        param[type] = this.src;
+
+        videoElem = $("#"+this.id).jPlayer('destroy').jPlayer({
+          ready: function () {
+            $(this).jPlayer("setMedia", param).jPlayer('play');
+          },
+          volume: 1,
+          size: {width: 'auto'},
+          wmode: 'opaque',
+          swfPath: "",
+          loop: true,
+          supplied: type,
+          solution: 'flash',
         });
+
       });
 
       // window.parent.postMessage('THEMEFRAME LOADED', 'file://');
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-      // adding deps
-      scripts = ['jquery.js', 'video.js'];
-      for (var i in scripts) {
-        var script = document.createElement('script');
-        script.src = scripts[i];
-        document.getElementsByTagName('head')[0].appendChild(script);
-      }
-
-      var style = document.createElement('style');
-      style.innerHTML = '.vjs-control-bar, .vjs-big-play-button, .vjs-caption-settings {display: none !important;}';
-      document.getElementsByTagName('head')[0].appendChild(style);
-      checkLoads();
+      var script = document.createElement('script');
+      script.src = 'jquery.js';
+      document.getElementsByTagName('head')[0].appendChild(script);
+      checkLoadJQ();
     });
 
     window.addEventListener("message", receiveMessage, false);

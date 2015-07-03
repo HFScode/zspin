@@ -15,15 +15,6 @@ app.directive('artwork', ['$q', 'artworks', '$timeout',
         /*---------------------- Set Artwork css Style ----------------------*/
         scope.style = {opacity: 0};
 
-        var vjsOptions = {
-          'flash': {
-            'swf': 'video-js.swf',
-          },
-          'autoplay': true,
-          'loop': true,
-          'techOrder': ['flash'],
-        };
-
         function computeBox() {
           if (!scope.config || !scope.artwork)
             return;
@@ -47,32 +38,6 @@ app.directive('artwork', ['$q', 'artworks', '$timeout',
         // Update artwork on source change
         scope.$watch('src', function(src) {
           scope.artwork = artworks(src);
-
-          if (scope.artwork.type == 'flv' || scope.artwork.type == 'mp4') {
-            // wait for rendering
-            $timeout(function() {
-
-              // I don't like this, but videojs you know...
-              // this kills existing videojs player, because we cannot change
-              // source directly (fails in current videojs build)
-              // so we dispose it and recreate it with the new video
-              if (artworks.player !== null && artworks.player.cache_ !== undefined) {
-                artworks.player.dispose();
-              }
-
-              artworks.player = videojs('artworkvideo', vjsOptions, function() {
-                this.src({src: scope.artwork.url, type: "video/"+scope.artwork.type});
-                artworks.player = this;
-              }).ready(function() {
-                this.stopTrackingCurrentTime();
-                // here we remove the videojs generated style, there is no other
-                // way to do this at this time FUUUUU
-                $('#video style').remove();
-              });
-
-            });
-          }
-
         });
 
         // Update styles when config change
