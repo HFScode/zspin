@@ -1,6 +1,6 @@
 {
   "name": "zspin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Multi OS emulator frontend",
   "main": "index.html",
   "window": {
