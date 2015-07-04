@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('zspin', ['fs', 'settings', '$http',
-  function (fs, settings, $http) {
+app.factory('zspin', ['fs', 'settings', '$http', 'fileServer',
+  function (fs, settings, $http, fileServer) {
     console.log('zspin - init');
 
     var gui = require('nw.gui');
@@ -52,7 +52,7 @@ app.factory('zspin', ['fs', 'settings', '$http',
 
       // stop fileServer
       if (global.fileServer !== undefined) {
-        global.fileServer.close();
+        fileServer.stopServer();
       }
 
       // running execOnExit app if present
