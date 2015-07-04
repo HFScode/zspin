@@ -8,7 +8,8 @@
     "width": 1024,
     "height": 768,
     "toolbar": false,
-    "fullscreen": true
+    "fullscreen": true,
+    "icon": "assets/256.png"
   },
   "webkit": {
     "plugin": true
