@@ -1,5 +1,5 @@
 <div id="Navbar">
-  <a href='#/menus/Main menu' ng-show="!settings.firstRun"><button>Back</button></a>
+  <a href='#/menus/Main menu' ng-show="!settings.firstRun"><button class="button-primary">Main menu</button></a>
   <div class='u-pull-right'>
     <button ng-click="reset()">Reset keys</button>
     <button class="button-primary" ng-click="save()" >Save</button>
@@ -106,11 +106,11 @@
   <hr/>
   <!-- FOLDERS -->
 
-  <h3>Folders</h3>
+  <h3>View folders</h3>
 
   <div class="row">
+    <button ng-class="{disabled: settings.firstRun}" ng-disabled="settings.firstRun" ng-click="openHS()">open hyperspin path</button>
     <button ng-click="openData()">open data path</button>
-    <button ng-click="openHS()">open hyperspin path</button>
     <button ng-click="openBinary()">open binary path</button>
   </div>
 

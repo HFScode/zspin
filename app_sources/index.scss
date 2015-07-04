@@ -82,3 +82,7 @@ input[type="button"].button-error:focus {
   color: $white;
   background-color: #EC5022;
   border-color: #EC5022; }
+
+button.disabled {
+  cursor: not-allowed;
+}
