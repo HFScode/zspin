@@ -47,7 +47,9 @@ app.directive('jplayer', ['fs',
             pause: function() {
             },
             ended: function() {
-              scope.onEnd();
+              if (scope.onEnd !== undefined) {
+                scope.onEnd();
+              }
             },
           });
         };
