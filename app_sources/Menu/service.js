@@ -9,6 +9,15 @@ app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml', 'zspin', 'themes', '
         name: name,
       };
 
+      // Stop video on lost blur
+      zspin.guiWindow.on('blur', function() {
+        if (themes.curType === 'html') {
+          frames['themeframe'].postMessage('pause', fileServer.url);
+        } else if (themes.curType === 'hs') {
+          angular.element('#artworkvideo').jPlayer('pause');
+        }
+      });
+
       // Play video on focus
       zspin.guiWindow.on('focus', function() {
         if (themes.curType === 'html') {

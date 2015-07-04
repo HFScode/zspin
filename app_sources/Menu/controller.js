@@ -95,12 +95,6 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
 
         spawn(settings.$obj.launcherPath, params);
         inputs.isWindowFocused = false;
-
-        if (themes.curType === 'html') {
-          frames['themeframe'].postMessage('pause', fileServer.url);
-        } else if (themes.curType === 'hs') {
-          angular.element('#artworkvideo').jPlayer('pause');
-        }
       }
     };
 
