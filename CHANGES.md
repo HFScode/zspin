@@ -1,10 +1,21 @@
 ChangeLog
 =========
 
-0.0.5 (unreleased)
+0.0.5 (2015-07-04)
 ------------------
 
-* no entry
+* Default themes type basic handling
+* Increased wait before unarchive themes from 200ms to 500ms
+* Fix blur/focus events creation
+* Icon in taskbar
+* Fix close fileserver on quit
+* Fix video loop on roms
+* Fix pause video on lost focus
+* Wheel is using percentage for position
+* Wheel auto-hide
+* Options page small UX improvements
+* Default theme handling
+* Updated readme + license
 
 0.0.4 (2015-07-03)
 ------------------
