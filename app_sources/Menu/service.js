@@ -4,28 +4,28 @@ app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml', 'zspin', 'themes', '
   function($q, fs, settings, ini, xml, zspin, themes, fileServer) {
     console.log('menus - init');
 
+    // Stop video on lost blur
+    zspin.guiWindow.on('blur', function() {
+      if (themes.curType === 'html') {
+        frames['themeframe'].postMessage('pause', fileServer.url);
+      } else if (themes.curType === 'hs') {
+        angular.element('#artworkvideo').jPlayer('pause');
+      }
+    });
+
+    // Play video on focus
+    zspin.guiWindow.on('focus', function() {
+      if (themes.curType === 'html') {
+        frames['themeframe'].postMessage('play', fileServer.url);
+      } else if (themes.curType === 'hs') {
+        angular.element('#artworkvideo').jPlayer('play');
+      }
+    });
+
     var service = function (name) {
       var obj = {
         name: name,
       };
-
-      // Stop video on lost blur
-      zspin.guiWindow.on('blur', function() {
-        if (themes.curType === 'html') {
-          frames['themeframe'].postMessage('pause', fileServer.url);
-        } else if (themes.curType === 'hs') {
-          angular.element('#artworkvideo').jPlayer('pause');
-        }
-      });
-
-      // Play video on focus
-      zspin.guiWindow.on('focus', function() {
-        if (themes.curType === 'html') {
-          frames['themeframe'].postMessage('play', fileServer.url);
-        } else if (themes.curType === 'hs') {
-          angular.element('#artworkvideo').jPlayer('play');
-        }
-      });
 
       // Load database entries from $HS_PATH/Databases/$NAME/$NAME.xml
       var databasePath = settings.hsPath('Databases', name, name+'.xml');
