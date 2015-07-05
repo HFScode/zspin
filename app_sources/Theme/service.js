@@ -18,7 +18,7 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
 
     service.curType = null;
 
-    service = function (path, menu, name) {
+    service = function (path, menu, name, nameDefault) {
       var obj = {
         menu: menu,
         path: path,
@@ -69,6 +69,28 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
       }).then(function(data) {
         obj.manifest = data.Theme;
 
+        // Find default theme artworks if exists (sorry for unrolling)
+        if (nameDefault !== undefined) {
+          var mediaPath = settings.hsPath('Media', obj.menu);
+          var tmpPath = fs.join(mediaPath, 'Images', 'Artwork');
+
+          fs.glob(nameDefault+'.*', {cwd: tmpPath+'1'}).then(function(files) {
+            if (files && files.length > 0) {obj.artworks.artwork1 = fs.join(tmpPath+'1', files[0]);}
+          });
+
+          fs.glob(nameDefault+'.*', {cwd: tmpPath+'2'}).then(function(files) {
+            if (files && files.length > 0) {obj.artworks.artwork2 = fs.join(tmpPath+'2', files[0]);}
+          });
+
+          fs.glob(nameDefault+'.*', {cwd: tmpPath+'3'}).then(function(files) {
+            if (files && files.length > 0) {obj.artworks.artwork3 = fs.join(tmpPath+'3', files[0]);}
+          });
+
+          fs.glob(nameDefault+'.*', {cwd: tmpPath+'4'}).then(function(files) {
+            if (files && files.length > 0) {obj.artworks.artwork4 = fs.join(tmpPath+'4', files[0]);}
+          });
+        }
+
         // Find artworks file paths
         if (obj.manifest.artwork1 && ownFiles.Artwork1)
           obj.artworks.artwork1 = ownFiles.Artwork1;
@@ -92,8 +114,15 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
         // Look for video in $HSROOT/Media/$MENU/Video/$NAME.*
         if (obj.manifest.video) {
           var path = settings.hsPath('Media', obj.menu, 'Video');
-          fs.glob(obj.name+'.*', {cwd: path}).then(function(files) {
-            if (files && files.length !== 0) {
+
+          var videoName = obj.name;
+          // if this is a default theme, change look path for video
+          if (nameDefault !== undefined) {
+            videoName = nameDefault;
+          }
+
+          fs.glob(videoName+'.*', {cwd: path}).then(function(files) {
+            if (files && files.length > 0) {
               obj.video = fs.join(path, files[0]);
             } else {
               obj.video = service.defaultVideo;

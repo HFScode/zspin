@@ -17,6 +17,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     var menu = $scope.menu = menus(name);
     $scope.curTheme = undefined;
     $scope.curVideo = undefined;
+    $scope.useDefault = false;
 
     //  -  Defining wheel parameters  -
     $scope.wheelOptions = {
@@ -45,10 +46,9 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     $scope.updateEntry = function() {
       $timeout.cancel(updatePromise);
       updatePromise = $timeout(function() {
-        var entryName = $scope.curEntry.name;
-        $scope.curTheme = $scope.themes[entryName] || $scope.themes['default'] || $scope.curTheme;
-      }, 200);
-      $scope.curEntry = $scope.wheelControl.select();
+        $scope.curEntry = $scope.wheelControl.select().name;
+        $scope.curTheme = $scope.themes[$scope.curEntry] || $scope.themes['Default'] || $scope.curTheme;
+      }, 500);
     };
 
     /***************************** Wheel Control *****************************/
@@ -136,6 +136,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       // Pre-Load available themes
       $scope.menu.getMedias('Themes', '*.zip').then(function(files) {
         $scope.themes = files;
+        $scope.isDefault = ($scope.themes['Default'] !== undefined);
       });
 
       // Load params for wheel if available
@@ -159,7 +160,12 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     // Force load first theme
     $scope.$watch('entries', function(entries) {
       if (!entries) return;
-      $scope.curTheme = $scope.themes[entries[0].name];
+      if ($scope.isDefault) {
+        $scope.curTheme = $scope.themes['Default'];
+      } else {
+        $scope.curTheme = $scope.themes[entries[0].name];
+      }
+      $scope.curEntry = entries[0].name;
     });
 
   }
