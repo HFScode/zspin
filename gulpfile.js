@@ -19,7 +19,7 @@ var gu_zip     = require('gulp-zip');
 var nw_builder = require('node-webkit-builder');
 var unzip      = require('unzip');
 
-var version = '0.0.5';
+var version = '0.0.6';
 var nwVersion = '0.12.1';
 var libFile = 'libs-'+nwVersion+'.zip';
 var libUrl = 'http://zspin.vik.io/libraries/'+libFile;

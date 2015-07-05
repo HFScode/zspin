@@ -1,6 +1,6 @@
 {
   "name": "zspin",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Multi OS emulator frontend",
   "dependencies": {
     "bower": "^1.3.12",
