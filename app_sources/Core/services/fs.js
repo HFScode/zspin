@@ -22,7 +22,7 @@ app.factory('fs', ['$q', 'qbind',
 
       basename: function (filename) {
         var str = path.basename(filename);
-        return str.replace(/\..*?$/, '');
+        return str.replace(/\.[^\.]+$/, '');
       },
 
       filename: function (filename) {
