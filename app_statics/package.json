@@ -15,12 +15,17 @@
     "plugin": true
   },
   "chromium-args": "",
+  "user-agent": "%name %ver %nwver %webkit_ver %osinfo",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "inject-js-start": "js/themeframe.js",
-  "author": "",
-  "license": "ISC",
+  "author": "Romain Gay <v@42.am>",
+  "maintainers": [{
+    "name": "Romain Gay",
+    "email": "v@42.am"
+  }],
+  "license": "CC-BY-NC-SA-4.0",
   "dependencies": {
     "express": "^4.12.4",
     "glob": "^5.0.3",

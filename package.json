@@ -35,6 +35,6 @@
     "make-watch": "npm run gulp -- watch",
     "make-run": "npm run nwbuild -- -r ./build"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Romain Gay <v@42.am>",
+  "license": "CC-BY-NC-SA-4.0"
 }
