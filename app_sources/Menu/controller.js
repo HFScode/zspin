@@ -160,12 +160,9 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     // Force load first theme
     $scope.$watch('entries', function(entries) {
       if (!entries) return;
-      if ($scope.isDefault) {
-        $scope.curTheme = $scope.themes['Default'];
-      } else {
-        $scope.curTheme = $scope.themes[entries[0].name];
-      }
-      $scope.curEntry = entries[0].name;
+
+      $scope.curEntry = zspin.menuHistory[menu.name] || entries[0].name;
+      $scope.curTheme = $scope.themes[$scope.curEntry] || $scope.themes['Default'] || $scope.curTheme;
     });
 
   }
