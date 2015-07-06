@@ -9,11 +9,11 @@ app.controller('IntroCtrl', ['$scope', '$location', 'fs', 'settings', 'fileServe
     // Prob for intro video file
     fs.readdir(path).then(function(files) {
       var videos = files.filter(function(file) {
-        return fs.basename(file) === 'Intro';
+        return fs.basename(file).toLowerCase() === 'intro';
       }).map(function(file) {
         return fs.join(path, file);
       });
-      if (videos.length !== 0) {
+      if (videos.length > 0) {
         $scope.videoSrc = videos[0];
       }
     });

@@ -47,7 +47,10 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       $timeout.cancel(updatePromise);
       updatePromise = $timeout(function() {
         $scope.curEntry = $scope.wheelControl.select().name;
-        $scope.curTheme = $scope.themes[$scope.curEntry] || $scope.themes['Default'] || $scope.curTheme;
+        $scope.curTheme = $scope.themes[$scope.curEntry] ||
+                          $scope.themes['Default'] ||
+                          $scope.themes['default'] ||
+                          $scope.curTheme;
       }, 500);
     };
 
@@ -136,7 +139,8 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       // Pre-Load available themes
       $scope.menu.getMedias('Themes', '*.zip').then(function(files) {
         $scope.themes = files;
-        $scope.isDefault = ($scope.themes['Default'] !== undefined);
+        $scope.isDefault = $scope.themes['Default'] !== undefined ||
+                           $scope.themes['default'] !== undefined;
       });
 
       // Load params for wheel if available
@@ -162,7 +166,10 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       if (!entries) return;
 
       $scope.curEntry = zspin.menuHistory[menu.name] || entries[0].name;
-      $scope.curTheme = $scope.themes[$scope.curEntry] || $scope.themes['Default'] || $scope.curTheme;
+      $scope.curTheme = $scope.themes[$scope.curEntry] ||
+                        $scope.themes['Default'] ||
+                        $scope.themes['default'] ||
+                        $scope.curTheme;
     });
 
   }
