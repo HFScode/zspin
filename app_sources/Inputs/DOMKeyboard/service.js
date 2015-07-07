@@ -18,6 +18,10 @@ app.factory('DOMKeyboard', ['$rootScope', '$window',
           combo.push(keyIdentifier);
         else if (codePoint == 127)
           combo.push('Delete');
+        else if (codePoint == 27)
+          combo.push('Escape');
+        else if (codePoint == 9)
+          combo.push('Tab');
         else if (codePoint == 8)
           combo.push('Backspace');
       } else {
