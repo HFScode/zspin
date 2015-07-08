@@ -4,6 +4,7 @@ var app = angular.module('app', [
   'ngLoad',
   'ngRoute',
   'ngResize',
+  'ngRaven',
   'cfp.hotkeys',
   'jsonFormatter',
   'templates',
@@ -32,6 +33,12 @@ app.config(function(toastrConfig) {
     tapToDismiss: true,
     timeOut: 1000,
   });
+});
+
+// =========== Raven-js (sentry) config
+app.value("RavenConfig", {
+  dsn: 'http://a0838271e36b48b5883a9d2b6909e3a5@sentry.vik.io/2',
+  config: {}
 });
 
 // =========== Preload services
