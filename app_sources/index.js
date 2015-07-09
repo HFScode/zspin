@@ -49,6 +49,10 @@ app.run(['settings', 'inputs', function(settings, inputs) {
 // =========== zspin core settings
 app.run(['zspin', function(zspin) {
 
+  // set Raven infos
+  Raven.setReleaseContext(zspin.gui.App.manifest.version);
+  Raven.setTagsContext({'nw.js': process.versions['node-webkit']});
+
   // initialize window menu
   var nativeMenuBar = new zspin.gui.Menu({type: "menubar"});
 

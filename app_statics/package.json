@@ -15,7 +15,6 @@
     "plugin": true
   },
   "chromium-args": "",
-  "user-agent": "%name %ver %nwver %webkit_ver %osinfo",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
