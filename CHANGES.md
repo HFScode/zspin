@@ -1,10 +1,10 @@
 ChangeLog
 =========
 
-0.0.7 (unreleased)
+0.1.0 (2015-07-11)
 ------------------
 
-* no entry
+* License info in settings
 
 0.0.6 (2015-07-11)
 ------------------
