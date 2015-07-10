@@ -1,10 +1,14 @@
 ChangeLog
 =========
 
-0.0.6 (unreleased)
+0.0.6 (2015-07-11)
 ------------------
 
-* no entry.
+* Added sentry and raven-js for debugging
+* Added escape and tab key handling
+* Case insensitive intro.mp4 and default.zip files detection
+* Fix: going in parent menu shows the correct last theme
+* Fix: some wheel images not displayed
 
 0.0.5 (2015-07-04)
 ------------------
