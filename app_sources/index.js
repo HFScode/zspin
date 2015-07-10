@@ -38,7 +38,17 @@ app.config(function(toastrConfig) {
 // =========== Raven-js (sentry) config
 app.value("RavenConfig", {
   dsn: 'http://a0838271e36b48b5883a9d2b6909e3a5@sentry.vik.io/2',
-  config: {}
+  config: {
+    dataCallback: function(data) {
+      // remove everything except filename
+      data.culprit = data.culprit.split('/').pop();
+      for (var i in data.stacktrace.frames) {
+        data.stacktrace.frames[i].filename =
+          data.stacktrace.frames[i].filename.split('/').pop();
+      }
+      return data;
+    }
+  }
 });
 
 // =========== Preload services

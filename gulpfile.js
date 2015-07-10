@@ -86,7 +86,7 @@ var vendors = {
 gulp.task('vendors:scripts', function() {
   return gulp.src(vendors.scripts)
     .pipe(gu_concat('vendors.js'))
-    .pipe(gu_if(!debug, gu_uglify()))
+    // .pipe(gu_if(!debug, gu_uglify()))
     .pipe(gulp.dest('build/js'));
 });
 
