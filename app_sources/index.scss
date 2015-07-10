@@ -27,6 +27,16 @@ $black: #000;
         margin-bottom: 0;
         color: $white;
     }
+
+    .release-info {
+        font-size: 12px;
+        position: absolute;
+        text-align: center;
+        width: 200px;
+        top: 5px;
+        left: 50%;
+        margin-left: -100px;
+    }
 }
 
 .container {

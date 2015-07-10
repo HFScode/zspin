@@ -1,5 +1,10 @@
 <div id="Navbar">
   <a href='#/menus/Main menu' ng-show="!settings.firstRun"><button class="button-primary">Main menu</button></a>
+  <div class='release-info'>
+    {{releaseInfo}}
+    <br/>
+    licensed under CC by-nc-sa 4.0
+  </div>
   <div class='u-pull-right'>
     <button ng-click="reset()">Reset keys</button>
     <button class="button-primary" ng-click="save()" >Save</button>

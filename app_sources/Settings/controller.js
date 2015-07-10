@@ -71,6 +71,8 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     $scope.settings = {};
     $scope.reset();
 
+    $scope.releaseInfo = 'zspin v'+zspin.gui.App.manifest.version;
+
     $scope.clear = function(input) {
       $scope.settings.binds[input] = {};
       inputs.loadSettings();
