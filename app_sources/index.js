@@ -42,6 +42,7 @@ app.value("RavenConfig", {
     dataCallback: function(data) {
       // remove everything except filename
       data.culprit = data.culprit.split('/').pop();
+      data.request.url = data.request.url.split('index.html#')[1];
       for (var i in data.stacktrace.frames) {
         data.stacktrace.frames[i].filename =
           data.stacktrace.frames[i].filename.split('/').pop();
