@@ -62,7 +62,7 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
       // Else this is a standard HS Theme
       var ownFiles = {};
       // Glob to list theme files
-      fs.glob('*', {cwd: obj.path}).then(function(files) {
+      fs.glob('**/*', {cwd: obj.path}).then(function(files) {
         registerFiles(obj.path, files, ownFiles);
         // Parse Theme.xml manifest
         return xml.parse(ownFiles.Theme);
