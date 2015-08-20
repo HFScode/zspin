@@ -95,7 +95,7 @@ app.factory('settings', [
 
     // Override settingsPath with binaryPath if it contains Settings.json
     try {
-      var _path = $path.join(binaryPath, 'Settings.json')
+      var _path = $path.join(binaryPath, 'Settings.json');
       $fs.accessSync(_path, $fs.F_OK | $fs.R_OR);
       settingsPath = _path;
     } catch (e) {}

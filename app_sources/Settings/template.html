@@ -63,12 +63,12 @@
       <h5>{{bind.name}}:</h5>
     </div>
     <div class="three columns">
+      <div class="input-val button" >{{bindinfo[bind.name] || settings.binds[bind.name][0].combo}}</div>
       <input  type="text"
               class="button"
               ng-click="setPress($event, bind.name)"
               ng-focus="focus(bind.name, 0)"
               ng-blur="blur()"
-              ng-value="settings.binds[bind.name][0].combo || '<none>'"
               ng-keydown="cancelInput($event)"
               >
       </input>

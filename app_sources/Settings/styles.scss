@@ -16,11 +16,24 @@
 
   .bind input[type='text'] {
     color: transparent;
+    width: 150px;
     text-shadow: 0 0 0 #000;
 
     &:focus {
       border-width: 2px;
     }
+  }
+
+  .bind .input-val {
+    position: absolute;
+    border: none;
+    margin: 2px;
+    padding: 0;
+    pointer-events: none;
+    width: 146px;
+    height: 34px;
+    line-height: 34px;
+    background-color: white;
   }
 
 }

@@ -16,7 +16,7 @@ app.factory('xml', ['$q', 'fs', 'qbind',
     var service = {
 
       parse: function(filepath) {
-        return fs.readFile(filepath, 'utf-8').then(function(data) {
+        return fs.readFile(filepath, 'utf8').then(function(data) {
           return service.parseString(data);
         });
       },

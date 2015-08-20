@@ -20,12 +20,14 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     ];
 
     var focus = undefined;
+    $scope.bindinfo = [];
 
     $scope.focus = function(bind, idx) {
       focus = {bind: bind, idx: idx};
     };
 
     $scope.blur = function() {
+      $scope.bindinfo[focus.bind] = false;
       focus = undefined;
     };
 
@@ -35,7 +37,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
       binds[focus.bind] = binds[focus.bind] || {};
       binds[focus.bind][focus.idx] = {source: 'gamepad', combo: input.combo};
       if (focus.bind === 'home')
-        binds[focus.bind][focus.idx].global = true
+        binds[focus.bind][focus.idx].global = true;
       inputs.loadSettings();
     }});
 
@@ -45,7 +47,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
       binds[focus.bind] = binds[focus.bind] || {};
       binds[focus.bind][focus.idx] = {source: 'keyboard', combo: input.combo};
       if (focus.bind === 'home')
-        binds[focus.bind][focus.idx].global = true
+        binds[focus.bind][focus.idx].global = true;
       inputs.loadSettings();
     }});
 
@@ -80,11 +82,12 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
 
     $scope.setPress = function(event) {
       inputs.unloadSettings();
-      // event.currentTarget.value = '<press a key>';
+      $scope.bindinfo[focus.bind] = '<press a key>';
     };
 
     $scope.cancelInput = function(event) {
       event.preventDefault();
+      $scope.bindinfo[focus.bind] = false;
     };
 
     $scope.updatePath = function() {
