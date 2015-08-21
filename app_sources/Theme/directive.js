@@ -61,3 +61,28 @@ app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes', 'fileServer',
     };
   }
 ]);
+
+app.directive('appendThemeScript', ['$q', 'fs',
+  function($q, fs) {
+
+    return {
+      restrict: 'A',
+      scope: {
+        src: '@',
+        name: '@',
+      },
+      link: function(scope, el, attrs) {
+        var webview = el[0];
+
+        webview.addEventListener('console-message', function(e) {
+          console.log('themeframe log:', e.message);
+        });
+
+        // dom-ready ?
+        webview.addEventListener('did-start-loading', function(e) {
+          webview.executeJavaScript(global.fileServer.themeFrameData);
+        });
+      }
+    };
+  }
+]);

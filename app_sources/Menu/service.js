@@ -5,19 +5,15 @@ app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml', 'zspin', 'themes', '
     console.log('menus - init');
 
     // Stop video on lost blur
-    zspin.guiWindow.on('blur', function() {
-      if (themes.curType === 'html') {
-        frames['themeframe'].postMessage('pause', fileServer.url);
-      } else if (themes.curType === 'hs') {
+    zspin.gui.on('browser-window-blur', function() {
+      if (themes.curType === 'hs') {
         angular.element('#artworkvideo').jPlayer('pause');
       }
     });
 
     // Play video on focus
-    zspin.guiWindow.on('focus', function() {
-      if (themes.curType === 'html') {
-        frames['themeframe'].postMessage('play', fileServer.url);
-      } else if (themes.curType === 'hs') {
+    zspin.gui.on('browser-window-focus', function() {
+      if (themes.curType === 'hs') {
         angular.element('#artworkvideo').jPlayer('play');
       }
     });
@@ -61,7 +57,7 @@ app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml', 'zspin', 'themes', '
         var path = settings.hsPath('Databases', name, 'wheel.json');
 
         return fs.access(path, fs.F_OK).then(function() {
-          return fs.readFile(path, 'utf-8').then(function(data) {
+          return fs.readFile(path, 'utf8').then(function(data) {
             return JSON.parse(data);
           });
         });

@@ -3,6 +3,8 @@
 app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings', 'inputs', 'toastr', 'zspin',
   function($scope, DOMKeyboard, gamepads, settings, inputs, toastr, zspin) {
 
+    var dialog = require('remote').require('dialog');
+
     var gpBinder = gamepads.bindTo($scope);
     var kbBinder = DOMKeyboard.bindTo($scope);
     // the purpose of this is to sort binds for displaying configuration fields
@@ -73,7 +75,25 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     $scope.settings = {};
     $scope.reset();
 
-    $scope.releaseInfo = 'zspin v'+zspin.gui.App.manifest.version;
+    $scope.releaseInfo = zspin.appName+' v'+zspin.gui.getVersion();
+
+    $scope.chooseDirectory = function(name) {
+      var folder = dialog.showOpenDialog({
+        properties: ['openDirectory']
+      });
+      if (folder) {
+        $scope.settings[name] = folder;
+      }
+    };
+
+    $scope.chooseFile = function(name) {
+      var file = dialog.showOpenDialog({
+        properties: ['openFile']
+      });
+      if (file) {
+        $scope.settings[name] = file;
+      }
+    };
 
     $scope.clear = function(input) {
       $scope.settings.binds[input] = {};

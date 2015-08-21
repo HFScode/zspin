@@ -6,7 +6,7 @@
     licensed under CC by-nc-sa 4.0
   </div>
   <div class='u-pull-right'>
-    <button ng-click="reset()">Reset keys</button>
+    <button ng-click="reset()">Reset settings</button>
     <button class="button-primary" ng-click="save()" >Save</button>
   </div>
 </div>
@@ -21,12 +21,11 @@
   <h3>Paths</h3>
   <div class="row">
     <div class="five columns">
-      <h5>HyperSpin.exe path</h5>
+      <h5>Data folder path</h5>
     </div>
     <div class="seven columns">
       <input type='text' readonly ng-model='settings.hsPath'/>
-      <input id='hsPath' accept='.exe' type='file' name='hsPath' custom-on-change='updatePath'/>
-      <button onclick="document.getElementById('hsPath').click();">browse</button>
+      <button ng-click="chooseDirectory('hsPath');">browse</button>
     </div>
   </div>
 
@@ -40,8 +39,7 @@
     </div>
     <div class="seven columns">
       <input type='text' ng-model='settings.launcherPath'/>
-      <input id='launcherPath' type='file' name='launcherPath' custom-on-change='updatePath'/>
-      <button onclick="document.getElementById('launcherPath').click();">browse</button>
+      <button ng-click="chooseFile('launcherPath');">browse</button>
     </div>
   </div>
   <div class="row">
@@ -93,8 +91,7 @@
     </div>
     <div class="seven columns">
       <input type='text' ng-model='settings.execOnStart'/>
-      <input id='execOnStart' type='file' name='execOnStart' custom-on-change='updatePath'/>
-      <button onclick="document.getElementById('execOnStart').click();">browse</button>
+      <button ng-click="chooseFile('execOnStart');">browse</button>
     </div>
   </div>
   <div class="row">
@@ -103,8 +100,7 @@
     </div>
     <div class="seven columns">
       <input type='text' ng-model='settings.execOnExit'/>
-      <input id='execOnExit' type='file' name='execOnExit' custom-on-change='updatePath'/>
-      <button onclick="document.getElementById('execOnExit').click();">browse</button>
+      <button ng-click="chooseFile('execOnExit');">browse</button>
     </div>
   </div>
 

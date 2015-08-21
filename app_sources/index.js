@@ -4,7 +4,7 @@ var app = angular.module('app', [
   'ngLoad',
   'ngRoute',
   'ngResize',
-  'ngRaven',
+  // 'ngRaven',
   'cfp.hotkeys',
   'jsonFormatter',
   'templates',
@@ -36,21 +36,21 @@ app.config(function(toastrConfig) {
 });
 
 // =========== Raven-js (sentry) config
-app.value("RavenConfig", {
-  dsn: 'http://a0838271e36b48b5883a9d2b6909e3a5@sentry.vik.io/2',
-  config: {
-    dataCallback: function(data) {
-      // remove everything except filename
-      data.culprit = data.culprit.split('/').pop();
-      data.request.url = data.request.url.split('index.html#')[1];
-      for (var i in data.stacktrace.frames) {
-        data.stacktrace.frames[i].filename =
-          data.stacktrace.frames[i].filename.split('/').pop();
-      }
-      return data;
-    }
-  }
-});
+// app.value("RavenConfig", {
+//   dsn: 'http://a0838271e36b48b5883a9d2b6909e3a5@sentry.vik.io/2',
+//   config: {
+//     dataCallback: function(data) {
+//       // remove everything except filename
+//       data.culprit = data.culprit.split('/').pop();
+//       data.request.url = data.request.url.split('index.html#')[1];
+//       for (var i in data.stacktrace.frames) {
+//         data.stacktrace.frames[i].filename =
+//           data.stacktrace.frames[i].filename.split('/').pop();
+//       }
+//       return data;
+//     }
+//   }
+// });
 
 // =========== Preload services
 app.run(['settings', 'inputs', function(settings, inputs) {
@@ -61,19 +61,8 @@ app.run(['settings', 'inputs', function(settings, inputs) {
 app.run(['zspin', function(zspin) {
 
   // set Raven infos
-  Raven.setReleaseContext(zspin.gui.App.manifest.version);
-  Raven.setTagsContext({'nw.js': process.versions['node-webkit']});
-
-  // initialize window menu
-  var nativeMenuBar = new zspin.gui.Menu({type: "menubar"});
-
-  // check operating system and add menu if osx
-  if (process.platform === "darwin") {
-    nativeMenuBar.createMacBuiltin(zspin.appName);
-  }
-
-  // actually assign menu to window
-  zspin.guiWindow.menu = nativeMenuBar;
+  // Raven.setReleaseContext(zspin.gui.App.manifest.version);
+  // Raven.setTagsContext({'nw.js': process.versions['node-webkit']});
 }]);
 
 // =========== config shortcuts
@@ -81,7 +70,7 @@ app.run(['$rootScope', 'zspin', '$location', function($rootScope, zspin, $locati
 
   // Create global home shortcut
   $rootScope.$on('input:home', function () {
-    zspin.guiWindow.focus(); //use when quitting game
+    zspin.focus(); //use when quitting game
   });
 
   // Create settings shortcut
@@ -96,7 +85,7 @@ app.run(['$rootScope', 'zspin', '$location', function($rootScope, zspin, $locati
 
   // Create devtools shortcut
   $rootScope.$on('input:devtools', function () {
-    zspin.guiWindow.showDevTools();
+    zspin.guiWindow.toggleDevTools();
   });
 
   // Create devmenu shortcut

@@ -1,10 +1,13 @@
 'use strict';
 
 var argv       = require('yargs').argv;
+var cp         = require('child_process');
+var electron   = require('electron-prebuilt');
 var fs         = require('fs');
 var gulp       = require('gulp');
 var gu_concat  = require('gulp-concat');
 var gu_dl      = require('gulp-download');
+var gu_electron = require('gulp-atom-electron');
 var gu_if      = require('gulp-if');
 var gu_install = require('gulp-install');
 var gu_jedit   = require("gulp-json-editor");
@@ -16,12 +19,13 @@ var gu_tpls    = require('gulp-angular-templatecache');
 var gu_uglify  = require('gulp-uglify');
 var gu_util    = require('gulp-util');
 var gu_zip     = require('gulp-zip');
-var nw_builder = require('node-webkit-builder');
 var unzip      = require('unzip');
 
-var version = '0.1.1';
+var appName = 'zspin';
+var appCc = 'CC-BY-NC-SA-4.0';
+var version = '0.2.0';
 var nwVersion = '0.12.1';
-var libFile = 'libs-'+nwVersion+'.zip';
+var libFile = 'libs-'+version+'.zip';
 var libUrl = 'http://zspin.vik.io/libraries/'+libFile;
 var platform = null;
 var task = argv._[0];
@@ -47,7 +51,7 @@ if (argv.p === undefined) {
   platform = argv.p;
 }
 
-var releaseBin = 'zspin-'+version+'-'+platform+'.zip';
+var releaseBin = appName+'-'+version+'-'+platform+'.zip';
 
 /************************************ Vendors ********************************/
 
@@ -136,11 +140,10 @@ gulp.task('app:statics', function() {
 });
 
 gulp.task('app:packagefile', ['app:statics'], function() {
-  // if param -d (debug), show toolbar and set windowed
+  // if param -d (debug) update json accordingly
   return gulp.src('app_statics/package.json')
     .pipe(gu_if(debug, gu_jedit(function (json) {
-      json.window.toolbar = true;
-      json.window.fullscreen = false;
+      json.debug = true;
       return json;
     })))
     .pipe(gulp.dest('build'))
@@ -213,6 +216,7 @@ gulp.task('libraries:download', function() {
 });
 
 gulp.task('libraries:unzip', ['libraries:download'], function() {
+  // FIXME
   if (fs.existsSync('libraries/win64')) {
     return;
   } else {
@@ -249,7 +253,7 @@ gulp.task('libraries:clean', function() {
     .pipe(gu_rm());
 });
 
-gulp.task('libraries:flashplayer', ['libraries:unzip', 'libraries:clean', 'release:check-nwjs'], function() {
+gulp.task('libraries:flashplayer', ['libraries:unzip', 'libraries:clean'], function() {
   return gulp.src('libraries/'+platform+'/flashplayer/**')
     .pipe(gulp.dest('build/plugins'));
 });
@@ -268,49 +272,32 @@ gulp.task('release:check-platform', function() {
   }
 });
 
-gulp.task('release:check-nwjs', ['app:statics', 'app:packagefile'], function() {
-  // check and downloads nwjs if not present.
-  var nwb = new nw_builder({
-    files: ['build/**'],
-    buildDir: 'releases/',
-    version: nwVersion,
-    cacheDir: 'node_modules/node-webkit-builder/cache',
-    platforms: [platform],
-  });
+gulp.task('release', ['release:check-platform', 'vendors', 'app', 'themeframe',
+  'libraries:flashplayer'], function() {
+    // replace argv.p with platform variable ?
+  var targetArch = argv.p.slice(-2) === '32' ? 'ia32' : 'x64';
+  var targetPlatform = null;
+  var tmpP = argv.p.slice(0, 3);
+  if (tmpP === 'win') {
+    targetPlatform = 'win32';
+  } else if (tmpP === 'lin') {
+    targetPlatform = 'linux';
+  } else if (tmpP === 'osx') {
+    targetPlatform = 'darwin';
+  }
 
-  // see https://github.com/mllrsohn/node-webkit-builder/blob/master/lib/index.js#L89
-  return nwb.checkFiles().bind(nwb)
-    .then(nwb.resolveLatestVersion)
-    .then(nwb.checkVersion)
-    .then(nwb.platformFilesForVersion)
-    .then(nwb.downloadNodeWebkit);
-});
-
-gulp.task('release:build', ['release:check-platform', 'release:check-nwjs',
-  'vendors', 'app', 'themeframe', 'libraries:flashplayer'], function() {
-
-  var nwb = new nw_builder({
-      files: ['build/**'],
-      buildDir: 'releases/',
-      version: nwVersion,
-      cacheDir: 'node_modules/node-webkit-builder/cache',
-      platforms: [platform],
-      winIco: 'assets/256.ico',
-      macIcns: 'assets/256.icns',
-  });
-
-  return nwb.build();
-});
-
-// gulp.task('release:zip', ['release:build', 'libraries:ffmpeg-release'], function() {
-gulp.task('release:zip', ['release:build'], function() {
-  return gulp.src('releases/zspin/'+platform+'/**/*')
-    .pipe(gu_zip(releaseBin))
-    .pipe(gulp.dest('releases'));
-});
-
-gulp.task('release', ['release:zip'], function() {
-  gu_util.log(gu_util.colors.green("Build success ! releases/"+releaseBin));
+  gu_util.log(gu_util.colors.yellow("Releasing Zspin ("+releaseBin+") ..."));
+  return gulp.src('build/**')
+        .pipe(gu_electron({
+          version: '0.30.4',
+          platform: targetPlatform,
+          arch: targetArch,
+          winIcon: 'assets/256.ico',
+          companyName: appName,
+          copyright: appCc,
+          darwinIcon: 'assets/256.icns'
+        }))
+        .pipe(gu_electron.zfsdest('releases/'+releaseBin));
 });
 
 /*********************************** Watch ***********************************/
@@ -323,6 +310,13 @@ gulp.task('watch', ['default'], function() {
   gulp.watch('app_statics/package.json', ['app:packagefile']);
   gulp.watch(themeframe.scripts, ['themeframe:scripts']);
   gu_util.log(gu_util.colors.green("Ready, execute 'make run' in another terminal"));
+});
+
+/************************************ Run ************************************/
+
+gulp.task('run', function() {
+  gu_util.log(gu_util.colors.green("Running Zspin..."));
+  return cp.spawn(electron, ['build'], {stdio: 'inherit'});
 });
 
 /********************************** Default **********************************/

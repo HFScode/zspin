@@ -1,7 +1,7 @@
 {
   "name": "zspin",
   "main": "index.js",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "authors": [
     "godric <godric@0x3f.fr>",
     "vik <v@42.am>"

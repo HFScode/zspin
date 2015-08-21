@@ -1,29 +1,21 @@
 {
   "name": "zspin",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Multi OS emulator frontend",
-  "main": "index.html",
-  "window": {
-    "title": "zspin",
-    "width": 1024,
-    "height": 768,
-    "toolbar": false,
-    "fullscreen": true,
-    "icon": "assets/256.png"
-  },
-  "webkit": {
-    "plugin": true
-  },
-  "chromium-args": "",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "inject-js-start": "js/themeframe.js",
+  "main": "main.js",
   "author": "Romain Gay <v@42.am>",
+  "debug": true,
   "maintainers": [{
     "name": "Romain Gay",
     "email": "v@42.am"
   }],
+  "window": {
+    "title": "zspin",
+    "width": 1024,
+    "height": 768,
+    "fullscreen": true,
+    "icon": "assets/256.png"
+  },
   "license": "CC-BY-NC-SA-4.0",
   "dependencies": {
     "express": "^4.12.4",

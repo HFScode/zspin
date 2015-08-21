@@ -7,6 +7,7 @@ app.factory('fileServer', ['$q', 'fs', 'settings', 'zip', 'xml',
     var serverObj = null;
 
     var express = require('express');
+    var remote = require('remote');
 
     service.port = 9666;
     service.url = 'http://localhost:'+service.port;
@@ -41,30 +42,55 @@ app.factory('fileServer', ['$q', 'fs', 'settings', 'zip', 'xml',
       }
     }
 
-    // remove registered routes on current server instance
-    service.cleanRoutes = function () {
-      // console.log('::: Cleaning routes');
-      delete global.fileServer._router.stack;
-      global.fileServer._router.stack = [];
+    // Route handling (because we need dynamic routing)
+    function handler(req, res, next) {
+      // removing first '/' and decoding url
+      var q = decodeURIComponent(req.url.slice(1));
+
+      if (q === "") {
+        res.sendFile(fs.join(service.serveFolder, 'index.html'));
+
+      } else if (q === "api/infos") {
+        res.send({focus: remote.getCurrentWindow().isFocused()});
+
+      } else if (service.serveFile[q] !== undefined) { // injected scripts
+        res.sendFile(service.serveFile[q]);
+
+      } else { // theme files, assets and etc
+        res.sendFile(fs.join(service.serveFolder, q), {}, function(err) {
+          if (err) {
+            console.log(err);
+            res.status(err.status).end();
+          }
+        });
+      }
     }
 
-    // serve a path, if no server, serve, else, clean routes before
-    service.serveFolder = function (path) {
-      // console.log('::: Serve folder '+path);
+    service.init = function() {
+      // console.log('::: Init local server ');
       startServer(function() {
-        global.fileServer.use('/', express.static(path));
+        // loading themeframe data
+        fs.readFile(fs.join(__dirname, 'js', 'themeframe.js'), 'utf8').then(function(data) {
+          global.fileServer.themeFrameData = data;
+        });
+
+        // all routes to handler function
+        global.fileServer.get('/*', function(req, res, next) {
+          handler(req, res, next);
+        });
       }, function() {
-        service.cleanRoutes();
-        global.fileServer.use('/', express.static(path));
+        // console.log('::: Init local server failed');
       });
     };
 
-    // serve only one file on a specific route
-    service.serveFile = function (file, path) {
-      startServer(function () {
-        // console.log('::: Adding file', file);
-        global.fileServer.use('/'+encodeURI(file), express.static(path));
-      });
+    // path to serve for fallback files
+    service.serveFolder = null;
+
+    service.serveFile = {
+      'themeframe.js': fs.join(__dirname, 'js', 'themeframe.js'),
+      'jquery.js': fs.join(__dirname, 'js', 'jquery.min.js'),
+      'jquery.jplayer.js': fs.join(__dirname, 'js', 'jquery.jplayer.min.js'),
+      'jquery.jplayer.swf': fs.join(__dirname, 'swf', 'jquery.jplayer.swf'),
     };
 
     service.stopServer = function() {
