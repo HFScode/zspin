@@ -8,6 +8,7 @@ var gulp       = require('gulp');
 var gu_concat  = require('gulp-concat');
 var gu_dl      = require('gulp-download');
 var gu_electron = require('gulp-atom-electron');
+var packager   = require('electron-packager');
 var gu_if      = require('gulp-if');
 var gu_install = require('gulp-install');
 var gu_jedit   = require("gulp-json-editor");
@@ -21,13 +22,14 @@ var gu_util    = require('gulp-util');
 var gu_zip     = require('gulp-zip');
 var unzip      = require('unzip');
 
-var appName = 'zspin';
-var appCc = 'CC-BY-NC-SA-4.0';
-var version = '0.2.0';
-var nwVersion = '0.12.1';
-var libFile = 'libs-'+version+'.zip';
+var pjson      = require('./package.json');
+
+var appName = pjson.name;
+var appCc = pjson.license;
+var appVersion = pjson.version;
+var libFile = 'libs-'+appVersion+'.zip';
 var libUrl = 'http://zspin.vik.io/libraries/'+libFile;
-var platform = null;
+var platform, electronPlatform, targetArch = null;
 var task = argv._[0];
 var debug = argv.d;
 var watch = (task === 'watch');
@@ -36,7 +38,10 @@ var watch = (task === 'watch');
 
 // if -p parameter undefined, platform = current platform
 // else platform = -p parameter value
+// same for architecture
 if (argv.p === undefined) {
+  electronPlatform = process.platform;
+  targetArch = process.arch;
   if (process.platform === 'darwin') {
     platform = process.arch === 'x64' ? 'osx64' : 'osx32';
   } else if (process.platform === 'win32') {
@@ -49,9 +54,18 @@ if (argv.p === undefined) {
   }
 } else {
   platform = argv.p;
+  targetArch = platform.slice(-2) === '32' ? 'ia32' : 'x64';
+  var tmpP = platform.slice(0, 3);
+  if (tmpP === 'win') {
+    electronPlatform = 'win32';
+  } else if (tmpP === 'lin') {
+    electronPlatform = 'linux';
+  } else if (tmpP === 'osx') {
+    electronPlatform = 'darwin';
+  }
 }
 
-var releaseBin = appName+'-'+version+'-'+platform+'.zip';
+var releaseBin = appName+'-'+appVersion+'-'+platform+'.zip';
 
 /************************************ Vendors ********************************/
 
@@ -266,39 +280,60 @@ gulp.task('libraries', ['libraries:flashplayer']);
 gulp.task('release:check-platform', function() {
   if (argv.p === undefined) {
     throw new gu_util.PluginError(
-      'task release',
+      'release',
       'Undefined platform !\nUse -p [win32,win64,osx32,osx64,linux32,linux64]\n'
     );
   }
 });
 
-gulp.task('release', ['release:check-platform', 'vendors', 'app', 'themeframe',
-  'libraries:flashplayer'], function() {
-    // replace argv.p with platform variable ?
-  var targetArch = argv.p.slice(-2) === '32' ? 'ia32' : 'x64';
-  var targetPlatform = null;
-  var tmpP = argv.p.slice(0, 3);
-  if (tmpP === 'win') {
-    targetPlatform = 'win32';
-  } else if (tmpP === 'lin') {
-    targetPlatform = 'linux';
-  } else if (tmpP === 'osx') {
-    targetPlatform = 'darwin';
-  }
+gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'themeframe',
+  'libraries:flashplayer'], function(cb) {
 
   gu_util.log(gu_util.colors.yellow("Releasing Zspin ("+releaseBin+") ..."));
-  return gulp.src('build/**')
-        .pipe(gu_electron({
-          version: '0.30.4',
-          platform: targetPlatform,
-          arch: targetArch,
-          winIcon: 'assets/256.ico',
-          companyName: appName,
-          copyright: appCc,
-          darwinIcon: 'assets/256.icns'
-        }))
-        .pipe(gu_electron.zfsdest('releases/'+releaseBin));
+  return packager({
+    dir: "build/",
+    name: appName,
+    platform: electronPlatform,
+    arch: targetArch,
+    version: pjson.devDependencies['electron-prebuilt'],
+    icon: 'assets/256.ico',
+    out: 'releases/',
+    overwrite: true,
+    asar: false,
+    'version-string': {
+      CompanyName: appName,
+      LegalCopyright: appCc,
+      FileDescription: appName,
+      OriginalFilename: appName,
+      FileVersion: appVersion,
+      ProductVersion: appVersion,
+      ProductName: appName,
+      InternalName: appName,
+    }
+  }, function done(err, appPath) {
+    cb(err);
+  });
 });
+
+gulp.task('release:rm-license', ['release:package'], function() {
+  return gulp.src([
+      'releases/'+appName+'-'+electronPlatform+'-'+targetArch+'/LICENSE',
+      'releases/'+appName+'-'+electronPlatform+'-'+targetArch+'/version'
+    ]).pipe(gu_rm());
+});
+
+gulp.task('release:copy-license', ['release:package', 'release:rm-license'], function() {
+  return gulp.src('LICENSE.txt')
+    .pipe(gulp.dest('releases/'+appName+'-'+electronPlatform+'-'+targetArch));
+});
+
+gulp.task('release:zip', ['release:package', 'release:copy-license'], function() {
+  return gulp.src('releases/'+appName+'-'+electronPlatform+'-'+targetArch+'/**/*')
+    .pipe(gu_zip(releaseBin))
+    .pipe(gulp.dest('releases'));
+});
+
+gulp.task('release', ['release:package', 'release:copy-license', 'release:zip']);
 
 /*********************************** Watch ***********************************/
 

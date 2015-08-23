@@ -5,17 +5,16 @@ var pjson = require('./package.json');
 var mainWindow = null;
 
 // Flash PPAPI plugin
+var ppapiPath = null;
 if (process.platform == 'win32') {
-  gui.commandLine.appendSwitch(
-    'ppapi-flash-path', __dirname+'\\plugins\\pepflashplayer.dll');
+  ppapiPath = __dirname+'\\plugins\\pepflashplayer.dll';
 } else if (process.platform == 'darwin') {
-  gui.commandLine.appendSwitch(
-    'ppapi-flash-path', __dirname+'/plugins/PepperFlashPlayer.plugin');
+  ppapiPath = __dirname+'/plugins/PepperFlashPlayer.plugin';
 } else if (process.platform == 'linux') {
-  gui.commandLine.appendSwitch(
-    'ppapi-flash-path', __dirname+'/plugins/pepflashplayer.so');
+  ppapiPath = __dirname+'/plugins/pepflashplayer.so';
 }
 
+gui.commandLine.appendSwitch('ppapi-flash-path', ppapiPath);
 // seems useless
 //gui.commandLine.appendSwitch('ppapi-flash-version', '18.0.0.209');
 
@@ -25,6 +24,7 @@ gui.on('window-all-closed', function() {
 
 gui.on('ready', function() {
   // Disable fullscreen if we are in debug.
+
   if (pjson.debug) {
     pjson.window.fullscreen = false;
   }
