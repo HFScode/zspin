@@ -4,6 +4,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
   function($scope, DOMKeyboard, gamepads, settings, inputs, toastr, zspin) {
 
     var dialog = require('remote').require('dialog');
+    var shell = require('shell');
 
     var gpBinder = gamepads.bindTo($scope);
     var kbBinder = DOMKeyboard.bindTo($scope);
@@ -116,15 +117,15 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     };
 
     $scope.openData = function() {
-      zspin.gui.Shell.openItem(settings.dataPath());
+      shell.openItem(settings.dataPath());
     };
 
     $scope.openHS = function() {
-      zspin.gui.Shell.openItem(settings.hsPath());
+      shell.openItem(settings.hsPath());
     };
 
     $scope.openBinary = function() {
-      zspin.gui.Shell.openItem(settings.binaryPath());
+      shell.openItem(settings.binaryPath());
     };
 
     $scope.factoryReset = function() {
