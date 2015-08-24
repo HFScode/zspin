@@ -7,8 +7,6 @@ var fs         = require('fs');
 var gulp       = require('gulp');
 var gu_concat  = require('gulp-concat');
 var gu_dl      = require('gulp-download');
-var gu_electron = require('gulp-atom-electron');
-var packager   = require('electron-packager');
 var gu_if      = require('gulp-if');
 var gu_install = require('gulp-install');
 var gu_jedit   = require("gulp-json-editor");
@@ -20,6 +18,7 @@ var gu_tpls    = require('gulp-angular-templatecache');
 var gu_uglify  = require('gulp-uglify');
 var gu_util    = require('gulp-util');
 var gu_zip     = require('gulp-zip');
+var packager   = require('electron-packager');
 var unzip      = require('unzip');
 
 var pjson      = require('./package.json');
@@ -66,6 +65,7 @@ if (argv.p === undefined) {
 }
 
 var releaseBin = appName+'-'+appVersion+'-'+platform+'.zip';
+var releaseFolder = 'releases/'+appName+'-'+electronPlatform+'-'+targetArch;
 
 /************************************ Vendors ********************************/
 
@@ -286,8 +286,7 @@ gulp.task('release:check-platform', function() {
   }
 });
 
-gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'themeframe',
-  'libraries:flashplayer'], function(cb) {
+gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'themeframe'], function(cb) {
 
   gu_util.log(gu_util.colors.yellow("Releasing Zspin ("+releaseBin+") ..."));
   return packager({
@@ -299,7 +298,7 @@ gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'theme
     icon: 'assets/256.ico',
     out: 'releases/',
     overwrite: true,
-    asar: false,
+    asar: true,
     'version-string': {
       CompanyName: appName,
       LegalCopyright: appCc,
@@ -315,25 +314,35 @@ gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'theme
   });
 });
 
-gulp.task('release:rm-license', ['release:package'], function() {
+gulp.task('release:clean', ['release:package'], function() {
   return gulp.src([
-      'releases/'+appName+'-'+electronPlatform+'-'+targetArch+'/LICENSE',
-      'releases/'+appName+'-'+electronPlatform+'-'+targetArch+'/version'
-    ]).pipe(gu_rm());
+      releaseFolder+'/LICENSE',
+      releaseFolder+'/version',
+      releaseFolder+'/pdf.dll',
+      releaseFolder+'/pdf.so',
+    ])
+    .pipe(gu_rm());
 });
 
-gulp.task('release:copy-license', ['release:package', 'release:rm-license'], function() {
+gulp.task('release:copy-license', ['release:package', 'release:clean'], function() {
   return gulp.src('LICENSE.txt')
-    .pipe(gulp.dest('releases/'+appName+'-'+electronPlatform+'-'+targetArch));
+    .pipe(gulp.dest(releaseFolder));
 });
 
-gulp.task('release:zip', ['release:package', 'release:copy-license'], function() {
-  return gulp.src('releases/'+appName+'-'+electronPlatform+'-'+targetArch+'/**/*')
+// special task because we don't want to put the file in asar package
+gulp.task('release:flashlib', ['libraries:unzip', 'libraries:clean', 'release:package'], function() {
+  return gulp.src('libraries/'+platform+'/flashplayer/**')
+    .pipe(gu_if(electronPlatform == 'darwin', gulp.dest(releaseFolder+'/'+appName+'.app/Contents/Resources/')))
+    .pipe(gu_if(electronPlatform != 'darwin', gulp.dest(releaseFolder+'/resources/')));
+});
+
+gulp.task('release:zip', ['release:package', 'release:copy-license', 'release:flashlib'], function() {
+  return gulp.src(releaseFolder+'/**/*')
     .pipe(gu_zip(releaseBin))
     .pipe(gulp.dest('releases'));
 });
 
-gulp.task('release', ['release:package', 'release:copy-license', 'release:zip']);
+gulp.task('release', ['release:zip']);
 
 /*********************************** Watch ***********************************/
 
