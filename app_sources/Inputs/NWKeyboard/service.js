@@ -3,7 +3,7 @@
 app.factory('NWKeyboard', ['$rootScope', '$window',
   function ($rootScope, $window) {
     console.log('NWKeyboard - init');
-    var gui = require('nw.gui');
+    var globalShortcut = require('remote').require('global-shortcut');
 
     var SCOPES = {};
     var BINDS  = {};
@@ -68,13 +68,11 @@ app.factory('NWKeyboard', ['$rootScope', '$window',
 
       if (HOTKEYS[combo]) return;
       // Actually register hotkey of needed
-      var hotkey = new gui.Shortcut({
-        key: combo,
-        active: _processInput.bind(null, {combo: bind.combo}),
-        failed: this.del.bind(this, bind.combo),
-      });
-      gui.App.registerGlobalHotKey(hotkey);
-      HOTKEYS[combo] = hotkey;
+      var hotkey = globalShortcut.register(
+        combo,
+        _processInput.bind(null, {combo: bind.combo})
+      );
+      HOTKEYS[combo] = combo;
 
       // Add in history
       HISTORY[combo] = true;
@@ -101,7 +99,7 @@ app.factory('NWKeyboard', ['$rootScope', '$window',
       }
       // Delete hotkey and history if needed
       if (HOTKEYS[combo] && !COMBOS[combo]) {
-        gui.App.unregisterGlobalHotKey(HOTKEYS[combo]);
+        globalShortcut.unregister(HOTKEYS[combo]);
         delete HOTKEYS[combo];
         delete HISTORY[combo];
         write_history();
@@ -113,8 +111,7 @@ app.factory('NWKeyboard', ['$rootScope', '$window',
     // Necessary cleanup
     read_history();
     for (var combo in HISTORY) {
-      var hotkey = new gui.Shortcut({key: combo});
-      gui.App.unregisterGlobalHotKey(hotkey);
+      globalShortcut.unregister(combo);
       delete HISTORY[combo];
     }
     write_history();

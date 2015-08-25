@@ -1,9 +1,12 @@
 {
   "name": "zspin",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Multi OS emulator frontend",
-  "dependencies": {
+  "devDependencies": {
     "bower": "^1.3.12",
+    "electron-packager": "^5.0.2",
+    "electron-prebuilt": "0.31.0",
+    "electron-rebuild": "0.2.5",
     "gulp": "^3.8.10",
     "gulp-angular-templatecache": "^1.4.2",
     "gulp-concat": "^2.4.2",
@@ -15,21 +18,19 @@
     "gulp-minify-css": "^0.3.11",
     "gulp-rm": "^1.0.0",
     "gulp-sass": "^1.2.4",
+    "gulp-symdest": "^1.0.0",
     "gulp-uglify": "^1.0.2",
     "gulp-util": "^3.0.4",
     "gulp-zip": "^3.0.2",
-    "node-webkit-builder": "^1.0.7",
     "rimraf": "^2.2.8",
     "swf-reader": "^0.0.3",
     "unzip": "^0.1.11",
     "yargs": "^3.9.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "gulp": "node ./node_modules/.bin/gulp",
     "bower": "node ./node_modules/.bin/bower",
-    "nwbuild": "node ./node_modules/.bin/nwbuild",
     "make-install": "npm install && npm run bower -- install",
     "make-build": "npm run gulp",
     "make-watch": "npm run gulp -- watch",

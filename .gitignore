@@ -8,3 +8,4 @@ releases/
 !public/package.json
 node-webkit
 **/.DS_Store
+TODO.md

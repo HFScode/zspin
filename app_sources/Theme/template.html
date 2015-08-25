@@ -1,5 +1,5 @@
 <div class="Theme Html" ng-if="theme.html">
-  <iframe ng-src="{{fileServerUrl}}" name="themeframe" id="themeframe" nwdisable></iframe>
+  <webview ng-src="{{fileServerUrl}}" name="{{name}}" id="themeframe" plugins append-theme-script></webview>
   <div class="no-click"></div>
 </div>
 

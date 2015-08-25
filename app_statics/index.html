@@ -5,9 +5,19 @@
     <title>Z-Spin</title>
     <link rel="stylesheet" type="text/css" href="css/vendors.css">
     <link rel="stylesheet" type="text/css" href="css/app.css">
+    <script type="text/javascript">
+      // atom-electron defines this variable, but we need it too
+      // https://github.com/atom/electron/issues/254
+      // at least for: jquery, gsap, jsonFormatter, toastr
+      var _module = module;
+      module = {};
+    </script>
     <script type="text/javascript" src="js/vendors.js"></script>
     <script type="text/javascript" src="js/app.tpls.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript">
+      module = _module;
+    </script>
   </head>
   <body>
     <div ng-view></div>

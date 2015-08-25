@@ -13,12 +13,12 @@ app.factory('inputs', ['$rootScope', 'NWKeyboard', 'DOMKeyboard', 'gamepads', 'z
     var BINDS = [];
 
     var isWindowFocused = true;
-    zspin.guiWindow.removeAllListeners('focus');
-    zspin.guiWindow.on('focus', function() {
+    zspin.gui.removeAllListeners('browser-window-focus');
+    zspin.gui.on('browser-window-focus', function() {
       isWindowFocused = true;
     });
-    zspin.guiWindow.removeAllListeners('blur');
-    zspin.guiWindow.on('blur', function() {
+    zspin.gui.removeAllListeners('browser-window-blur');
+    zspin.gui.on('browser-window-blur', function() {
       isWindowFocused = false;
     });
 

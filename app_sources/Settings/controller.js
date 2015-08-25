@@ -3,6 +3,9 @@
 app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings', 'inputs', 'toastr', 'zspin',
   function($scope, DOMKeyboard, gamepads, settings, inputs, toastr, zspin) {
 
+    var dialog = require('remote').require('dialog');
+    var shell = require('shell');
+
     var gpBinder = gamepads.bindTo($scope);
     var kbBinder = DOMKeyboard.bindTo($scope);
     // the purpose of this is to sort binds for displaying configuration fields
@@ -20,12 +23,14 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     ];
 
     var focus = undefined;
+    $scope.bindinfo = [];
 
     $scope.focus = function(bind, idx) {
       focus = {bind: bind, idx: idx};
     };
 
     $scope.blur = function() {
+      $scope.bindinfo[focus.bind] = false;
       focus = undefined;
     };
 
@@ -35,7 +40,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
       binds[focus.bind] = binds[focus.bind] || {};
       binds[focus.bind][focus.idx] = {source: 'gamepad', combo: input.combo};
       if (focus.bind === 'home')
-        binds[focus.bind][focus.idx].global = true
+        binds[focus.bind][focus.idx].global = true;
       inputs.loadSettings();
     }});
 
@@ -45,7 +50,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
       binds[focus.bind] = binds[focus.bind] || {};
       binds[focus.bind][focus.idx] = {source: 'keyboard', combo: input.combo};
       if (focus.bind === 'home')
-        binds[focus.bind][focus.idx].global = true
+        binds[focus.bind][focus.idx].global = true;
       inputs.loadSettings();
     }});
 
@@ -71,7 +76,25 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     $scope.settings = {};
     $scope.reset();
 
-    $scope.releaseInfo = 'zspin v'+zspin.gui.App.manifest.version;
+    $scope.releaseInfo = zspin.appName+' v'+zspin.gui.getVersion();
+
+    $scope.chooseDirectory = function(name) {
+      var folder = dialog.showOpenDialog({
+        properties: ['openDirectory']
+      });
+      if (folder) {
+        $scope.settings[name] = folder;
+      }
+    };
+
+    $scope.chooseFile = function(name) {
+      var file = dialog.showOpenDialog({
+        properties: ['openFile']
+      });
+      if (file) {
+        $scope.settings[name] = file;
+      }
+    };
 
     $scope.clear = function(input) {
       $scope.settings.binds[input] = {};
@@ -80,11 +103,12 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
 
     $scope.setPress = function(event) {
       inputs.unloadSettings();
-      // event.currentTarget.value = '<press a key>';
+      $scope.bindinfo[focus.bind] = '<press a key>';
     };
 
     $scope.cancelInput = function(event) {
       event.preventDefault();
+      $scope.bindinfo[focus.bind] = false;
     };
 
     $scope.updatePath = function() {
@@ -93,15 +117,15 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     };
 
     $scope.openData = function() {
-      zspin.gui.Shell.openItem(settings.dataPath());
+      shell.openItem(settings.dataPath());
     };
 
     $scope.openHS = function() {
-      zspin.gui.Shell.openItem(settings.hsPath());
+      shell.openItem(settings.hsPath());
     };
 
     $scope.openBinary = function() {
-      zspin.gui.Shell.openItem(settings.binaryPath());
+      shell.openItem(settings.binaryPath());
     };
 
     $scope.factoryReset = function() {

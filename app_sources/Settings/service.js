@@ -7,11 +7,11 @@ app.factory('settings', [
 
     var $fs = require('fs');
     var $path = require('path');
-    var gui = require('nw.gui');
+    var gui = require('remote').require('app');
 
     // Path for the app datas
     // for example in osx: ~/Library/Application Support/zspin/
-    var dataPath = gui.App.dataPath;
+    var dataPath = gui.getPath('userData');
     var settingsPath = $path.join(dataPath, 'Settings.json');
 
     // info: when adding a bind, be sure to also add it in settings/controller.js
@@ -39,23 +39,24 @@ app.factory('settings', [
       firstRun: true,
     };
 
-    // Generates a path relative to the 'hsPath' path setting
+    // Generates a path relative to the binary executable
     service.binaryPath = function() {
       var args = [].slice.call(arguments, 0);
       return $path.join.apply(null, [binaryPath].concat(args));
     };
 
-    // Generates a path relative to the 'hsPath' path setting
+    // Generates a path relative to the os application data folder
     service.dataPath = function() {
       var args = [].slice.call(arguments, 0);
       return $path.join.apply(null, [dataPath].concat(args));
     };
 
-    // Generates a path relative to the hyperspin.exe path (user-settable)
+    // Generates a path relative to the data folder path
+    // (user-settable, folder that contains Media, Databases & etc)
     service.hsPath = function() {
       var hsPath = service.$obj.hsPath;
       var args = [].slice.call(arguments, 0);
-      return $path.join.apply(null, [$path.dirname(service.$obj.hsPath)].concat(args));
+      return $path.join.apply(null, service.$obj.hsPath.concat(args));
     };
 
 
@@ -95,7 +96,7 @@ app.factory('settings', [
 
     // Override settingsPath with binaryPath if it contains Settings.json
     try {
-      var _path = $path.join(binaryPath, 'Settings.json')
+      var _path = $path.join(binaryPath, 'Settings.json');
       $fs.accessSync(_path, $fs.F_OK | $fs.R_OR);
       settingsPath = _path;
     } catch (e) {}

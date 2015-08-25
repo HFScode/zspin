@@ -9,7 +9,7 @@ app.factory('ini', ['zspin', 'fs',
     var service = {
 
       parse: function(filepath) {
-        return fs.readFile(filepath, 'utf-8').then(function(data) {
+        return fs.readFile(filepath, 'utf8').then(function(data) {
           return ini.parse(data);
         });
       },

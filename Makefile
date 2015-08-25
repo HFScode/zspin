@@ -3,9 +3,7 @@ BUILD   	=   ./build/
 RELEASE 	=   ./releases/
 GULP    	=   ./node_modules/.bin/gulp
 BOWER   	=   ./node_modules/.bin/bower
-NWBUILD 	=   node ./node_modules/.bin/nwbuild
 PLATFORM	?=  win64
-NWVER		?=  0.12.1
 
 all: install build
 
@@ -17,7 +15,7 @@ build:
 		$(GULP)
 
 run:
-		$(NWBUILD) -v $(NWVER) -r $(BUILD)
+		$(GULP) run
 
 watch:
 		$(GULP) watch -d

@@ -4,51 +4,65 @@ app.factory('zspin', ['fs', 'settings', '$http', 'fileServer',
   function (fs, settings, $http, fileServer) {
     console.log('zspin - init');
 
-    var gui = require('nw.gui');
+    var remote = require('remote');
+    var gui = remote.require('app');
+
     var flashTrust = require('nw-flash-trust');
     var spawn = require('child_process').spawn;
 
-    var appName = 'zspin';
-    var trustManager = flashTrust.initSync(appName);
-    var guiWindow = gui.Window.get();
+    var appName = remote.require('./package.json').name;
+    var trustManager = flashTrust.initSync(
+      appName,
+      settings.dataPath('Pepper Data', 'Shockwave Flash', 'WritableRoot')
+    );
 
     var service = {};
 
-    // Register global requires
+    // Register service data
     service.gui = gui;
-    service.guiWindow = guiWindow;
+    service.guiWindow = remote.getCurrentWindow();
     service.haveInternet = false;
     service.menuHistory = {};
+    service.appName = appName;
 
-    var root = process.cwd();
+    // starting local file & api server
+    fileServer.init();
+
     trustManager.empty();
-    trustManager.add(fs.join(root, 'swf', 'jquery.jplayer.swf'));
+    trustManager.add(fs.join(__dirname, 'swf', 'jquery.jplayer.swf'));
 
     service.reloadApp = function() {
-      guiWindow.reload(3);
+      service.guiWindow.reload();
     };
 
     service.toggleFullscreen = function() {
-      guiWindow.toggleFullscreen();
-      guiWindow.focus();
+      // worked once
+      // does weird stuff when replaced with "setKiosk"
+      if (service.guiWindow.isFullScreen()) {
+        service.guiWindow.setFullScreen(false);
+      } else {
+        service.guiWindow.setFullScreen(true);
+      }
     };
 
     service.focus = function() {
-      guiWindow.focus();
+      service.guiWindow.focus();
     };
 
     service.quit = function() {
-      gui.App.quit();
+      service.guiWindow.close();
     };
 
     // check if we have internet
     $http.get('http://stats.vik.io/ping?'+Math.random(), {timeout: 1000})
       .success(function () {service.haveInternet = true;});
 
-    guiWindow.on('close', function() {
+    // /!\ Mem leak if reload
+    // https://github.com/atom/electron/blob/master/docs/api/browser-window.md#event-close
+    service.guiWindow.on('close', function() {
       console.log("Exiting...");
       // Smooth user experience
-      this.hide();
+      // service.guiWindow.hide();
 
       // stop fileServer
       if (global.fileServer !== undefined) {
@@ -66,8 +80,7 @@ app.factory('zspin', ['fs', 'settings', '$http', 'fileServer',
       // Cleaning theme cache dir
       fs.rmrf(settings.hsPath(settings.$obj.cachePath, 'Theme'));
 
-      // Closing app
-      this.close(true);
+      return false;
     });
 
     // Loads any startup command

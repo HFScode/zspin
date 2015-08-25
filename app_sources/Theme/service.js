@@ -30,20 +30,10 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
         video: null,
       };
 
-      // memory freeing
-      if (frames['themeframe']) {
-        angular.element('#themeframe').src = "";
-        angular.element('#themeframe').remove();
-      }
-
       // Check if this is a Html theme
       var htmlPath = fs.join(path, 'index.html');
       if ($fs.existsSync(htmlPath, $fs.F_OK)) {
-        fileServer.serveFolder(path);
-        fileServer.serveFile('themeframe.js', 'themeframe.js');
-        fileServer.serveFile('jquery.js', fs.join('js', 'jquery.min.js'));
-        fileServer.serveFile('jquery.jplayer.js', fs.join('js', 'jquery.jplayer.min.js'));
-        fileServer.serveFile('jquery.jplayer.swf', fs.join('swf', 'jquery.jplayer.swf'));
+        fileServer.serveFolder = path;
 
         // Look for video in $HSROOT/Media/$MENU/Video/$NAME.*
         var vidpath = settings.hsPath('Media', menu, 'Video');
@@ -51,11 +41,11 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
         fs.glob(name+'.*', {cwd: vidpath}).then(function(files) {
           if (files && files.length !== 0) {
             obj.video = fs.join(vidpath, files[0]);
-            fileServer.serveFile(files[0], fs.join(vidpath, files[0]));
+            fileServer.serveFile[files[0]] = fs.join(vidpath, files[0]);
           }
           obj.html = htmlPath;
-          service.curType = 'html';
         });
+        service.curType = 'html';
         return obj;
       }
 

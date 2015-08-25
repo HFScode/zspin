@@ -17,7 +17,6 @@ app.directive('gamepad', ['gamepads', function (gamepads) {
             action    : attrs.keyboardaction,
           });
       });
-
     }
   };
 }]);

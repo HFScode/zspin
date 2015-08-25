@@ -1,10 +1,18 @@
 ChangeLog
 =========
 
-0.1.1 (unreleased)
+0.2.0 (unreleased)
 ------------------
 
-* no entry
+* Replaced nw.js with atom-electron
+* Replaced iframe with webview (many modifications to fileserver)
+* Deactivated ravenjs temporarly
+* Changed interaction between html theme and zspin (added api in fileserver)
+* Replaced hs.exe file selection with a data folder selection
+* Now using flash ppapi
+* Refactored themeframe.js
+* gulpfile.js handles atom-electron building and running
+
 
 0.1.0 (2015-07-11)
 ------------------
