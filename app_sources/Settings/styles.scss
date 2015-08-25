@@ -14,6 +14,14 @@
     }
   }
 
+  .keydesc {
+    margin-top: 7px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
   .bind input[type='text'] {
     color: transparent;
     width: 150px;

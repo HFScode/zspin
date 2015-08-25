@@ -1,50 +1,68 @@
 <div id="Navbar">
-  <a href='#/menus/Main menu' ng-show="!settings.firstRun"><button class="button-primary">Main menu</button></a>
+  <a href='#/menus/Main menu' ng-show="!settings.firstRun"><button class="button-primary" translate>Main menu</button></a>
   <div class='release-info'>
     {{releaseInfo}}
     <br/>
-    licensed under CC by-nc-sa 4.0
+    {{licenseInfo | translate}}
   </div>
   <div class='u-pull-right'>
-    <button ng-click="reset()">Reset settings</button>
-    <button class="button-primary" ng-click="save()" >Save</button>
+    <button ng-click="reset()" translate>Reset settings</button>
+    <button class="button-primary" ng-click="save()" translate>Save</button>
   </div>
 </div>
 <div id="Settings" class="container">
-  <h1>Options</h1>
+  <h1 translate>Options</h1>
 
   <!-- SAVE RESET -->
 
   <hr/>
-  <!-- PATHS -->
 
-  <h3>Paths</h3>
+  <!-- LANGUAGE -->
+
+  <h3 translate>Language</h3>
   <div class="row">
     <div class="five columns">
-      <h5>Data folder path</h5>
+      <h5 translate>Application language</h5>
+    </div>
+    <div class="seven columns">
+      <select ng-model="settings.language" ng-change="save()">
+        <option value="en_US" translate>English</option>
+        <option value="fr_FR" translate>French</option>
+      </select>
+    </div>
+  </div>
+
+  <hr/>
+
+  <!-- PATHS -->
+
+  <h3 translate>Paths</h3>
+  <div class="row">
+    <div class="five columns">
+      <h5 translate>Data folder path</h5>
     </div>
     <div class="seven columns">
       <input type='text' readonly ng-model='settings.hsPath'/>
-      <button ng-click="chooseDirectory('hsPath');">browse</button>
+      <button ng-click="chooseDirectory('hsPath');" translate>browse</button>
     </div>
   </div>
 
   <hr/>
   <!-- LAUNCHER -->
 
-  <h3>Launcher</h3>
+  <h3 translate>Launcher</h3>
   <div class="row">
     <div class="five columns">
-      <h5>Launcher binary</h5>
+      <h5 translate>Launcher binary</h5>
     </div>
     <div class="seven columns">
       <input type='text' ng-model='settings.launcherPath'/>
-      <button ng-click="chooseFile('launcherPath');">browse</button>
+      <button ng-click="chooseFile('launcherPath');" translate>browse</button>
     </div>
   </div>
   <div class="row">
     <div class="five columns">
-      <h5>Launcher parameters</h5>
+      <h5 translate>Launcher parameters</h5>
     </div>
     <div class="seven columns">
       <input type='text' ng-model='settings.launcherParams' placeholder='ex: -rom {rom} -system {system}'/>
@@ -54,14 +72,14 @@
   <hr/>
   <!-- KEYS -->
 
-  <h3>Keys</h3>
+  <h3 translate>Keys</h3>
 
    <div class="bind row" ng-repeat="(idx, bind) in sortedBinds">
-    <div class="two columns">
-      <h5>{{bind.name}}:</h5>
+    <div class="three columns keydesc">
+      {{bind.name | translate}}:
     </div>
     <div class="three columns">
-      <div class="input-val button" >{{bindinfo[bind.name] || settings.binds[bind.name][0].combo}}</div>
+      <div class="input-val button">{{bindinfo[bind.name] || settings.binds[bind.name][0].combo}}</div>
       <input  type="text"
               class="button"
               ng-click="setPress($event, bind.name)"
@@ -72,57 +90,57 @@
       </input>
     </div>
     <div class="two columns">
-      <button type="text" class="" ng-click="clear(bind.name)">
+      <button type="text" class="" ng-click="clear(bind.name)" translate>
         clear
       </button>
     </div>
     <div class="four columns">
-      <span>{{bind.desc}}</span>
+      <span translate>{{bind.desc}}</span>
     </div>
   </div>
 
   <hr/>
   <!-- EXECUTION -->
 
-  <h3>Execute app</h3>
+  <h3 translate>Execute app</h3>
   <div class="row">
     <div class="five columns">
-      <h5>On zspin start</h5>
+      <h5 translate>On zspin start</h5>
     </div>
     <div class="seven columns">
       <input type='text' ng-model='settings.execOnStart'/>
-      <button ng-click="chooseFile('execOnStart');">browse</button>
+      <button ng-click="chooseFile('execOnStart');" translate>browse</button>
     </div>
   </div>
   <div class="row">
     <div class="five columns">
-      <h5>On zspin exit</h5>
+      <h5 translate>On zspin exit</h5>
     </div>
     <div class="seven columns">
       <input type='text' ng-model='settings.execOnExit'/>
-      <button ng-click="chooseFile('execOnExit');">browse</button>
+      <button ng-click="chooseFile('execOnExit');" translate>browse</button>
     </div>
   </div>
 
   <hr/>
   <!-- FOLDERS -->
 
-  <h3>View folders</h3>
+  <h3 translate>View folders</h3>
 
   <div class="row">
-    <button ng-class="{disabled: settings.firstRun}" ng-disabled="settings.firstRun" ng-click="openHS()">open data folder</button>
-    <button ng-click="openData()">open application data folder</button>
-    <button ng-click="openBinary()">open binary folder</button>
+    <button ng-class="{disabled: settings.firstRun}" ng-disabled="settings.firstRun" ng-click="openHS()" translate>open data folder</button>
+    <button ng-click="openData()" translate>open zspin data folder</button>
+    <button ng-click="openBinary()" translate>open binary folder</button>
   </div>
 
   <hr/>
   <!-- FACTORY RESET -->
 
-  <h3>Factory Reset</h3>
+  <h3 translate>Factory Reset</h3>
 
-  <div ng-init='showReset=false'>
-    <button ng-click="showReset=!showReset">Reset all settings</button>
-    <button class='button-error' ng-click='factoryReset()' ng-show='showReset'>I'm sure. Do it.</button>
+  <div ng-init="showReset = false">
+    <button ng-click="showReset = !showReset">{{'Reset all settings' | translate}}</button>
+    <button class='button-error' ng-click='factoryReset()' ng-show='showReset' translate>I'm sure. Do it.</button>
   </div>
 
 </div>

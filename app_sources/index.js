@@ -10,6 +10,7 @@ var app = angular.module('app', [
   'templates',
   'toastr',
   'ngAnimate',
+  'pascalprecht.translate',
   'piwik',
 ]);
 
@@ -35,6 +36,17 @@ app.config(function(toastrConfig) {
   });
 });
 
+// =========== translate provider
+app.config(['$translateProvider', function($translateProvider) {
+  $translateProvider.useStaticFilesLoader({
+    prefix: 'lang/',
+    suffix: '.json'
+  });
+
+  $translateProvider.preferredLanguage('en_US');
+  $translateProvider.fallbackLanguage('en_US');
+}]);
+
 // =========== Raven-js (sentry) config
 // app.value("RavenConfig", {
 //   dsn: 'http://a0838271e36b48b5883a9d2b6909e3a5@sentry.vik.io/2',
@@ -52,9 +64,11 @@ app.config(function(toastrConfig) {
 //   }
 // });
 
-// =========== Preload services
-app.run(['settings', 'inputs', function(settings, inputs) {
+// =========== Preload services and language
+app.run(['$translate', 'settings', 'inputs', function($translate, settings, inputs) {
   // Force the settings service to be instanciated early
+  // Apply language
+  $translate.use(settings.$obj.language);
 }]);
 
 // =========== zspin core settings

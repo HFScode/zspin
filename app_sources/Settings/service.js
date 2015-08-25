@@ -37,6 +37,7 @@ app.factory('settings', [
       execOnStart: '',
       execOnExit: '',
       firstRun: true,
+      language: 'en_US',
     };
 
     // Generates a path relative to the binary executable

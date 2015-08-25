@@ -5,6 +5,7 @@
   "main": "main.js",
   "author": "Romain Gay <v@42.am>",
   "debug": false,
+  "license": "CC-BY-NC-SA-4.0",
   "maintainers": [{
     "name": "Romain Gay",
     "email": "v@42.am"

@@ -12,7 +12,7 @@ ChangeLog
 * Now using flash ppapi
 * Refactored themeframe.js
 * gulpfile.js handles atom-electron building and running
-
+* Multilanguage support
 
 0.1.0 (2015-07-11)
 ------------------

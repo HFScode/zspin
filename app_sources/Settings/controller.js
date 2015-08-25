@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings', 'inputs', 'toastr', 'zspin',
-  function($scope, DOMKeyboard, gamepads, settings, inputs, toastr, zspin) {
+app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads', 'settings', 'inputs', 'toastr', 'zspin',
+  function($scope, $tr, DOMKeyboard, gamepads, settings, inputs, toastr, zspin) {
 
     var dialog = require('remote').require('dialog');
     var shell = require('shell');
@@ -61,15 +61,16 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
 
     // Update global settings and persist to disk
     $scope.save = function() {
+      $tr.use($scope.settings.language);
       if ($scope.settings.hsPath === '') {
-        toastr.warning("You must configure HyperSpin.exe path !");
+        toastr.warning($tr.instant("You must configure data folder path !"));
         return;
       }
       $scope.settings.firstRun = false;
 
       angular.copy($scope.settings, settings.$obj);
       settings.write();
-      toastr.success('Settings saved !');
+      toastr.success($tr.instant('Settings saved !'));
       inputs.loadSettings();
     };
 
@@ -77,6 +78,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     $scope.reset();
 
     $scope.releaseInfo = zspin.appName+' v'+zspin.gui.getVersion();
+    $scope.licenseInfo = '' + zspin.appLicense;
 
     $scope.chooseDirectory = function(name) {
       var folder = dialog.showOpenDialog({
@@ -103,7 +105,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
 
     $scope.setPress = function(event) {
       inputs.unloadSettings();
-      $scope.bindinfo[focus.bind] = '<press a key>';
+      $scope.bindinfo[focus.bind] = $tr.instant('<press a key>');
     };
 
     $scope.cancelInput = function(event) {
@@ -134,7 +136,7 @@ app.controller('SettingsCtrl', ['$scope', 'DOMKeyboard', 'gamepads', 'settings',
     };
 
     if ($scope.settings.firstRun) {
-      toastr.info("Welcome to Zspin !<br/>Please configure me !", {
+      toastr.info($tr.instant("Welcome to Zspin !<br/>Please configure me !"), {
         allowHtml: true,
         timeOut: 5000,
         extendedTimeOut: 5000,

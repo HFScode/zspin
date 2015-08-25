@@ -9,10 +9,10 @@ app.factory('zspin', ['fs', 'settings', '$http', 'fileServer',
 
     var flashTrust = require('nw-flash-trust');
     var spawn = require('child_process').spawn;
+    var pjson = remote.require('./package.json');
 
-    var appName = remote.require('./package.json').name;
     var trustManager = flashTrust.initSync(
-      appName,
+      pjson.name,
       settings.dataPath('Pepper Data', 'Shockwave Flash', 'WritableRoot')
     );
 
@@ -23,7 +23,8 @@ app.factory('zspin', ['fs', 'settings', '$http', 'fileServer',
     service.guiWindow = remote.getCurrentWindow();
     service.haveInternet = false;
     service.menuHistory = {};
-    service.appName = appName;
+    service.appName = pjson.name;
+    service.appLicense = pjson.license;
 
     // starting local file & api server
     fileServer.init();
