@@ -33,15 +33,31 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
       // Check if this is a Html theme
       var htmlPath = fs.join(path, 'index.html');
       if ($fs.existsSync(htmlPath, $fs.F_OK)) {
+        fileServer.initServe();
         fileServer.serveFolder = path;
 
-        // Look for video in $HSROOT/Media/$MENU/Video/$NAME.*
-        var vidpath = settings.hsPath('Media', menu, 'Video');
+        // Default theme handling
+        if (nameDefault !== undefined) {
+          var mediaPath = settings.hsPath('Media', obj.menu, 'Images', 'Artwork');
 
-        fs.glob(name+'.*', {cwd: vidpath}).then(function(files) {
+          // for each artwork folder (1,2,3,4)
+          for (var i = 1; i <= 4; i++) { (function (i) {
+            fs.glob(nameDefault+'.*', {cwd: mediaPath+i}).then(function(files) {
+              if (files && files.length > 0) {
+                obj.artworks['artwork'+i] = fs.join(mediaPath+i, files[0]);
+                fileServer.serveFile['Artwork'+i+'.'+fs.extname(files[0])] = obj.artworks['artwork'+i];
+              }
+            });
+          })(i);}
+        }
+
+        // Look for video in $HSROOT/Media/$MENU/Video/$NAME.*
+        var vidPath = settings.hsPath('Media', menu, 'Video');
+
+        fs.glob(name+'.*', {cwd: vidPath}).then(function(files) {
           if (files && files.length !== 0) {
-            obj.video = fs.join(vidpath, files[0]);
-            fileServer.serveFile[files[0]] = fs.join(vidpath, files[0]);
+            obj.video = fs.join(vidPath, files[0]);
+            fileServer.serveFile[files[0]] = obj.video;
           }
           obj.html = htmlPath;
         });
@@ -59,26 +75,18 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
       }).then(function(data) {
         obj.manifest = data.Theme;
 
-        // Find default theme artworks if exists (sorry for unrolling)
+        // Find default theme artworks if exists
         if (nameDefault !== undefined) {
-          var mediaPath = settings.hsPath('Media', obj.menu);
-          var tmpPath = fs.join(mediaPath, 'Images', 'Artwork');
+          var mediaPath = settings.hsPath('Media', obj.menu, 'Images', 'Artwork');
 
-          fs.glob(nameDefault+'.*', {cwd: tmpPath+'1'}).then(function(files) {
-            if (files && files.length > 0) {obj.artworks.artwork1 = fs.join(tmpPath+'1', files[0]);}
-          });
-
-          fs.glob(nameDefault+'.*', {cwd: tmpPath+'2'}).then(function(files) {
-            if (files && files.length > 0) {obj.artworks.artwork2 = fs.join(tmpPath+'2', files[0]);}
-          });
-
-          fs.glob(nameDefault+'.*', {cwd: tmpPath+'3'}).then(function(files) {
-            if (files && files.length > 0) {obj.artworks.artwork3 = fs.join(tmpPath+'3', files[0]);}
-          });
-
-          fs.glob(nameDefault+'.*', {cwd: tmpPath+'4'}).then(function(files) {
-            if (files && files.length > 0) {obj.artworks.artwork4 = fs.join(tmpPath+'4', files[0]);}
-          });
+          // for each artwork folder (1,2,3,4)
+          for (var i = 1; i <= 4; i++) { (function (i) {
+            fs.glob(nameDefault+'.*', {cwd: mediaPath+i}).then(function(files) {
+              if (files && files.length > 0) {
+                obj.artworks['artwork'+i] = fs.join(mediaPath+i, files[0]);
+              }
+            });
+          })(i);}
         }
 
         // Find artworks file paths

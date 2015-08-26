@@ -66,6 +66,15 @@ app.factory('fileServer', ['$q', 'fs', 'settings', 'zip', 'xml',
       }
     }
 
+    service.initServe = function() {
+      service.serveFile = {
+        'themeframe.js': fs.join(__dirname, 'js', 'themeframe.js'),
+        'jquery.js': fs.join(__dirname, 'js', 'jquery.min.js'),
+        'jquery.jplayer.js': fs.join(__dirname, 'js', 'jquery.jplayer.min.js'),
+        'jquery.jplayer.swf': fs.join(__dirname, 'swf', 'jquery.jplayer.swf'),
+      };
+    };
+
     service.init = function() {
       // console.log('::: Init local server ');
       startServer(function() {
@@ -85,13 +94,8 @@ app.factory('fileServer', ['$q', 'fs', 'settings', 'zip', 'xml',
 
     // path to serve for fallback files
     service.serveFolder = null;
-
-    service.serveFile = {
-      'themeframe.js': fs.join(__dirname, 'js', 'themeframe.js'),
-      'jquery.js': fs.join(__dirname, 'js', 'jquery.min.js'),
-      'jquery.jplayer.js': fs.join(__dirname, 'js', 'jquery.jplayer.min.js'),
-      'jquery.jplayer.swf': fs.join(__dirname, 'swf', 'jquery.jplayer.swf'),
-    };
+    service.serveFile = null;
+    service.initServe();
 
     service.stopServer = function() {
       serverObj.close();

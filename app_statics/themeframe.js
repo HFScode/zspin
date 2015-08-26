@@ -66,8 +66,9 @@ function loaded() {
     });
 
   });
-
-  checkPause();
+  if ($('video').length) {
+    checkPause();
+  }
 }
 
 function checkForHead() {

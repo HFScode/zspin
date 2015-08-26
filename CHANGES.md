@@ -13,6 +13,7 @@ ChangeLog
 * Refactored themeframe.js
 * gulpfile.js handles atom-electron building and running
 * Multilanguage support
+* Html default theme support
 
 0.1.0 (2015-07-11)
 ------------------
