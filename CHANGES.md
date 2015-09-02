@@ -14,6 +14,9 @@ ChangeLog
 * gulpfile.js handles atom-electron building and running
 * Multilanguage support
 * Html default theme support
+* Removed FLV support for html themes (use MP4 or OGV)
+* Support muted attribute on html themes videos
+* Fix: correct html video resizing
 
 0.1.0 (2015-07-11)
 ------------------

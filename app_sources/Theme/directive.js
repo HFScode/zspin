@@ -81,6 +81,8 @@ app.directive('appendThemeScript', ['$q', 'fs',
         // dom-ready ?
         webview.addEventListener('did-start-loading', function(e) {
           webview.executeJavaScript(global.fileServer.themeFrameData);
+          // debug webview
+          // webview.openDevTools();
         });
       }
     };

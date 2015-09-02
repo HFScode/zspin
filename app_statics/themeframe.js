@@ -6,6 +6,13 @@ var videoElem;
 
 function checkLoadPL() {
   if ($.jPlayer) {
+    // override width settings for initialisation
+    $.jPlayer.prototype._setSize = function() {
+      this.status.width = '100%';
+      this.status.height = '';
+      this.status.cssClass = this.options.size.cssClass;
+    };
+
     loaded();
   } else {
     window.setTimeout(checkLoadPL, 50);
@@ -41,6 +48,7 @@ function loaded() {
     if (this.id === undefined || this.id === '') {
       this.id = 'video'+i;
     }
+    var volume = $(this).prop('muted') ? 0 : 100;
 
     $(this).replaceWith(
       '<div id="'+$(this).attr('id')+'" class="'+
@@ -56,17 +64,17 @@ function loaded() {
       ready: function () {
         $(this).jPlayer("setMedia", param).jPlayer('play');
       },
-      volume: 0,
-      size: {width: 'auto'},
+      volume: volume,
+      size: {width: '100%', height: ''},
       wmode: 'opaque',
       swfPath: "",
       loop: true,
       supplied: type,
-      solution: 'flash',
+      solution: 'html',
     });
-
+    i++;
   });
-  if ($('video').length) {
+  if (i > 0) {
     checkPause();
   }
 }
