@@ -10,6 +10,9 @@ all: install build
 install:
 		$(NPM) install
 		$(BOWER) install
+		$(GULP)
+		$(NPM) --prefix $(BUILD) install $(BUILD)
+		# $(NPM) --prefix $(BUILD) install ./app_statics/package.json
 
 build:
 		$(GULP)
@@ -24,10 +27,9 @@ release:
 		$(GULP) release -p $(PLATFORM)
 
 clean:
-		rm -rf ./bower_components
-		rm -rf ./node_modules
+		$(GULP) clean
 
 fclean: clean
-		rm -rf $(BUILD)
+		$(GULP) fclean
 
 .PHONY: all install build run watch release clean fclean

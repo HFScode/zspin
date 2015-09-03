@@ -29,6 +29,7 @@ var appVersion = pjson.version;
 var libFile = 'libs-'+appVersion+'.zip';
 var libUrl = 'http://zspin.vik.io/libraries/'+libFile;
 var platform, electronPlatform, targetArch = null;
+var electronVersion = pjson.devDependencies['electron-prebuilt'];
 var task = argv._[0];
 var debug = argv.d;
 var watch = (task === 'watch');
@@ -294,7 +295,7 @@ gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'theme
     name: appName,
     platform: electronPlatform,
     arch: targetArch,
-    version: pjson.devDependencies['electron-prebuilt'],
+    version: electronVersion,
     icon: 'assets/256.ico',
     out: 'releases/',
     overwrite: true,
@@ -361,6 +362,18 @@ gulp.task('watch', ['default'], function() {
 gulp.task('run', function() {
   gu_util.log(gu_util.colors.green("Running Zspin..."));
   return cp.spawn(electron, ['build'], {stdio: 'inherit'});
+});
+
+/*********************************** Clean ***********************************/
+
+gulp.task('clean', function() {
+  return gulp.src(['bower_components/**/*', 'node_modules/**/*'], {read: false})
+    .pipe(gu_rm());
+});
+
+gulp.task('fclean', function() {
+  return gulp.src(['build/**/*'], {read: false})
+    .pipe(gu_rm());
 });
 
 /********************************** Default **********************************/
