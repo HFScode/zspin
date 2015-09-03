@@ -6,7 +6,7 @@ ChangeLog
 
 * Replaced nw.js with atom-electron
 * Replaced iframe with webview (many modifications to fileserver)
-* Deactivated ravenjs temporarly
+* Removed ravenjs (fails in electron)
 * Changed interaction between html theme and zspin (added api in fileserver)
 * Replaced hs.exe file selection with a data folder selection
 * Now using flash ppapi
