@@ -54,9 +54,15 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
         // Look for video in $HSROOT/Media/$MENU/Video/$NAME.*
         var vidPath = settings.hsPath('Media', menu, 'Video');
 
-        fs.glob(name+'.*', {cwd: vidPath}).then(function(files) {
+        var videoName = name;
+        // if this is a default theme, change look path for video
+        if (nameDefault !== undefined) {
+          videoName = nameDefault;
+        }
+        fs.glob(videoName+'.*', {cwd: vidPath}).then(function(files) {
           if (files && files.length !== 0) {
             obj.video = fs.join(vidPath, files[0]);
+            fileServer.serveFile['Video.mp4'] = obj.video;
             fileServer.serveFile[files[0]] = obj.video;
           }
           obj.html = htmlPath;
