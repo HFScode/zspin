@@ -41,6 +41,7 @@ app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads
       binds[focus.bind][focus.idx] = {source: 'gamepad', combo: input.combo};
       if (focus.bind === 'home')
         binds[focus.bind][focus.idx].global = true;
+      $scope.cancelInput();
       inputs.loadSettings();
     }});
 
@@ -109,7 +110,9 @@ app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads
     };
 
     $scope.cancelInput = function(event) {
-      event.preventDefault();
+      if (event !== undefined) {
+        event.preventDefault();
+      }
       $scope.bindinfo[focus.bind] = false;
     };
 
