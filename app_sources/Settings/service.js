@@ -57,7 +57,7 @@ app.factory('settings', [
     service.hsPath = function() {
       var hsPath = service.$obj.hsPath;
       var args = [].slice.call(arguments, 0);
-      return $path.join.apply(null, service.$obj.hsPath.concat(args));
+      return $path.join.apply(null, [hsPath].concat(args));
     };
 
 

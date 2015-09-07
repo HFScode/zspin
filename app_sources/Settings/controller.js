@@ -85,7 +85,7 @@ app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads
         properties: ['openDirectory']
       });
       if (folder) {
-        $scope.settings[name] = folder;
+        $scope.settings[name] = folder[0];
       }
     };
 
@@ -94,7 +94,7 @@ app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads
         properties: ['openFile']
       });
       if (file) {
-        $scope.settings[name] = file;
+        $scope.settings[name] = file[0];
       }
     };
 
