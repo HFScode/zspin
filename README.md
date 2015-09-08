@@ -1,23 +1,27 @@
-# zspin
-<a href="README-fr.md">Version francaise</a>    
+![Logo zspin](assets/256.png)
+# Zspin
+### <a href="README-fr.md">Version francaise</a>    
 
 zspin is an arcade frontend, working on windows, linux, and OSX.    
 It's beta software, so expect things to bug !    
 Don't hesitate to open an issue or send me a PR !
 
-// sshot
+![Image zspin](http://zspin.vik.io/static/zspin-small.gif)
 
 ## Current features
 
 * OSX, Linux, Windows compatible
 * Hyperspin basic themes and settings support
 * HTML5 theme support
+* Multilanguage support
 * Automatic theme scaling (1080p and above)
 * Custom launcher support
 * Keyboard / Gamepad / Joystick native support
 * Fully customizable wheel
 * Options screen
 * First run assistant
+* On start / on stop application launch
+* Basic API
 
 ## Install
 <a href="https://github.com/vikbez/zspin-gui/releases">Go to downloads.</a>
@@ -29,24 +33,32 @@ Don't hesitate to open an issue or send me a PR !
 * Over-network configuration ?
 * You have an idea ? Tell me !
 
+## Help the project
+There is a lot of stuff to do and you can help a LOT by doing:    
+
+* Documentation
+* Translations
+* Testing / bug reporting
+* Finding what to add to this list
+
 ## For development
 ### OSX
 
 ```bash
-# if you use macports adapt this line
+# for brew users
 $> brew install nodejs npm
 
 # install & build app
-$> make
+$> make install
 
 # (optional) watch source (livereload) & build
-$> make watch
+$> gulp watch # -d for debug
 
 # run zspin
-$> make run
+$> gulp run
 
 # if you want to make a release
-$> make release
+$> gulp release -p [platform] # -d for debug
 ```
 
 ## License
