@@ -14,7 +14,7 @@ if (__dirname.indexOf('app.asar') > -1) {
   } else if (process.platform == 'darwin') {
     ppapiPath = __dirname.replace('app.asar', 'PepperFlashPlayer.plugin');
   } else if (process.platform == 'linux') {
-    ppapiPath = __dirname.replace('app.asar', 'pepflashplayer.so');
+    ppapiPath = __dirname.replace('app.asar', 'libpepflashplayer.so');
   }
 
 // else we are not in an asar package
@@ -24,7 +24,7 @@ if (__dirname.indexOf('app.asar') > -1) {
   } else if (process.platform == 'darwin') {
     ppapiPath = __dirname+'/plugins/PepperFlashPlayer.plugin';
   } else if (process.platform == 'linux') {
-    ppapiPath = __dirname+'/plugins/pepflashplayer.so';
+    ppapiPath = __dirname+'/plugins/libpepflashplayer.so';
   }
 }
 
