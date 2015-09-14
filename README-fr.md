@@ -1,5 +1,6 @@
 ![Logo zspin](assets/256.png)
 # Zspin
+[![Join the chat at https://gitter.im/HFScode/zspin](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/HFScode/zspin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ### <a href="README.md">English version</a>    
 
 zspin est un frontend pour jeux d'arcade, qui fonctionne sur windows, linux et OSX.    
