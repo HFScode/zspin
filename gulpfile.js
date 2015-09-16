@@ -54,7 +54,15 @@ if (argv.p === undefined) {
   }
 } else {
   platform = argv.p;
-  targetArch = platform.slice(-2) === '32' ? 'ia32' : 'x64';
+  if (platform.slice(-2) === '32') {
+    targetArch = 'ia32';
+  } else if (platform.slice(-2) === '64') {
+    targetArch = 'x64';
+  } else if (platform.slice(-3) === 'arm') {
+    targetArch = 'arm';
+  } else {
+    throw new gu_util.PluginError('platform_detection', 'Unknown platform, aborting.');
+  }
   var tmpP = platform.slice(0, 3);
   if (tmpP === 'win') {
     electronPlatform = 'win32';
