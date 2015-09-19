@@ -29,16 +29,21 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       // index of item which serves as cursor
       selectPosition: 9,
       points: [
-        // X%, Y%, Angle, Scale, z-index
+        // X%, Y%, scale, z-index, transform css
         // first item offscreen but required for animation
-        [146, 45, 0, 1, 1],   [91, -10, 23, 1, 2],  [87, -3, 21, 1, 3],
-        [84, 3, 18, 1, 4],    [81, 10, 15, 1, 5],   [79, 16, 12, 1, 6],
-        [77, 23, 9, 1, 7],    [76, 29, 6, 1, 8],    [75, 36, 3, 1, 9],
-        [75, 45, 0, 2, 10],   [75, 54, -3, 1, 9],   [76, 60, -6, 1, 8],
-        [77, 67, -9, 1, 7],   [79, 73, -12, 1, 6],  [81, 80, -15, 1, 5],
-        [84, 86, -18, 1, 4],  [87, 93, -21, 1, 3],  [91, 99, -23, 1, 2],
+        [146,45, 1, 1, 'rotate(0deg)'],  [91, -10, 1, 2, 'rotate(23deg)'],
+        [87, -3, 1, 3, 'rotate(21deg)'],  [84, 3,  1, 4, 'rotate(18deg)'],
+        [81, 10, 1, 5, 'rotate(15deg)'],  [79, 16, 1, 6, 'rotate(12deg)'],
+        [77, 23, 1, 7, 'rotate(9deg)'],  [ 76, 29, 1, 8, 'rotate(6deg)'],
+        [75, 36, 1, 9, 'rotate(3deg)'],   [75, 45, 2, 10, 'rotate(0)'],
+        [75, 54, 1, 9, 'rotate(-3deg)'],  [76, 60, 1, 8, 'rotate(-6deg)'],
+        [77, 67, 1, 7, 'rotate(-9deg)'],  [79, 73, 1, 6, 'rotate(-12deg)'],
+        [81, 80, 1, 5, 'rotate(-15deg)'], [84, 86, 1, 4, 'rotate(-18deg)'],
+        [87, 93, 1, 3, 'rotate(-21deg)'], [91, 99, 1, 2, 'rotate(-23deg)'],
       ]
     };
+
+    var binds = [];
 
     // Wait before considering an entry menu as selected
     // Cancel any previous running timer
@@ -111,12 +116,12 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       $location.path(newPath);
     };
 
-    $scope.$on('input:up', $scope.prev);
-    $scope.$on('input:down', $scope.next);
-    $scope.$on('input:left', $scope.prevLetter);
-    $scope.$on('input:right', $scope.nextLetter);
-    $scope.$on('input:enter', $scope.enter);
-    $scope.$on('input:back', $scope.back);
+    binds.up = $scope.$on('input:up', $scope.prev);
+    binds.down = $scope.$on('input:down', $scope.next);
+    binds.left = $scope.$on('input:left', $scope.prevLetter);
+    binds.right = $scope.$on('input:right', $scope.nextLetter);
+    binds.enter = $scope.$on('input:enter', $scope.enter);
+    binds.back = $scope.$on('input:back', $scope.back);
 
     /*************************** Database loading ****************************/
 
@@ -146,13 +151,22 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       // Load params for wheel if available
       $scope.menu.getWheel().then(function(data) {
         var tmp = [];
+        if (data.type === 'horizontal') {
+          // rebind events corresponding to horizontal menu
+          binds.up(); binds.down(); binds.left(); binds.right();
+          binds.up = $scope.$on('input:up', $scope.prevLetter);
+          binds.down = $scope.$on('input:down', $scope.nextLetter);
+          binds.left = $scope.$on('input:left', $scope.prev);
+          binds.right = $scope.$on('input:right', $scope.next);
+        }
+
         for (var i in data.points) {
           tmp.push([
             data.points[i].x,
             data.points[i].y,
-            data.points[i].angle,
             data.points[i].scale,
-            data.points[i].index
+            data.points[i].index,
+            data.points[i].transform
           ]);
         }
         data.points = tmp;
@@ -172,5 +186,11 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
                         $scope.curTheme;
     });
 
+    //remove binds on destroy
+    $scope.$on('$destroy', function() {
+      for (var i in binds) {
+        binds[i]();
+      }
+    });
   }
 ]);
