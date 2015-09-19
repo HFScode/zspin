@@ -12,6 +12,9 @@ app.factory('dataServer', ['$q', 'fs', 'settings', 'zip', 'xml',
     service.port = 9666;
     service.url = 'http://localhost:'+service.port;
 
+    // api - holds current element infos from xml
+    service.infos = {};
+
     // try to find a port then call callback
     function listen(cb) {
       serverObj = global.dataServer.listen(service.port).on('error', function(err) {
@@ -50,8 +53,11 @@ app.factory('dataServer', ['$q', 'fs', 'settings', 'zip', 'xml',
       if (q === "") {
         res.sendFile(fs.join(service.serveFolder, 'index.html'));
 
+      } else if (q === "api/zspin") {
+        res.send({focused: remote.getCurrentWindow().isFocused()});
+
       } else if (q === "api/infos") {
-        res.send({focus: remote.getCurrentWindow().isFocused()});
+        res.send(service.infos);
 
       } else if (service.serveFile[q] !== undefined) { // injected scripts
         res.sendFile(service.serveFile[q]);

@@ -2,7 +2,9 @@
 
 window.alreadyLoaded = true;
 
-var videoElem;
+var i;
+var videoElem = [];
+var play = true;
 
 function checkLoadPL() {
   if ($.jPlayer) {
@@ -24,6 +26,7 @@ function checkLoadJQ() {
     var script = document.createElement('script');
     script.src = 'jquery.jplayer.js';
     document.getElementsByTagName('head')[0].appendChild(script);
+    loadApiInfos();
     checkLoadPL();
   } else {
     window.setTimeout(checkLoadJQ, 50);
@@ -31,15 +34,31 @@ function checkLoadJQ() {
 }
 
 function checkPause() {
-  $.get("api/infos", function (api) {
-    if (api.focus === true) {
-      videoElem.jPlayer('play');
-    } else if (api.focus === false) {
-      videoElem.jPlayer('pause');
+  $.get("api/zspin", function (api) {
+    if (play === false && api.focused === true) {
+      for (i = 0; i < videoElem.length; i++) {
+        videoElem[i].jPlayer('play');
+      }
+      play = true;
+
+    } else if (play === true && api.focused === false) {
+      for (i = 0; i < videoElem.length; i++) {
+        videoElem[i].jPlayer('pause');
+      }
+      play = false;
     }
   });
 
   window.setTimeout(checkPause, 500);
+}
+
+function loadApiInfos() {
+  // get infos on current theme then apply it to .zspin-<infoname> div
+  $.get("api/infos", function (api) {
+    for (var i in api) {
+      $('.zspin-'+i).text(api[i]);
+    }
+  });
 }
 
 function loaded() {
@@ -60,7 +79,7 @@ function loaded() {
     var param = {};
     param[type] = this.src;
 
-    videoElem = $("#"+this.id).jPlayer('destroy').jPlayer({
+    videoElem[i] = $("#"+this.id).jPlayer('destroy').jPlayer({
       ready: function () {
         $(this).jPlayer("setMedia", param).jPlayer('play');
       },
@@ -74,6 +93,7 @@ function loaded() {
     });
     i++;
   });
+
   if (i > 0) {
     checkPause();
   }

@@ -17,6 +17,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     var menu = $scope.menu = menus(name);
     $scope.curTheme = undefined;
     $scope.curVideo = undefined;
+    $scope.infos = {};
     $scope.useDefault = false;
 
     //  -  Defining wheel parameters  -
@@ -56,6 +57,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
                           $scope.themes['Default'] ||
                           $scope.themes['default'] ||
                           $scope.curTheme;
+        dataServer.infos = $scope.infos[$scope.curEntry];
       }, 500);
     };
 
@@ -137,6 +139,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       // Databases Game enties to jwheel entries (with image)
       $scope.menu.getMedias('Images/Wheel', '*').then(function(files) {
         $scope.entries = databases.menu.game.map(function(e) {
+          $scope.infos[e.name] = e;
           return {name: e.name, file: files[e.name]};
         });
       });
@@ -184,6 +187,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
                         $scope.themes['Default'] ||
                         $scope.themes['default'] ||
                         $scope.curTheme;
+      dataServer.infos = $scope.infos[$scope.curEntry];
     });
 
     //remove binds on destroy
