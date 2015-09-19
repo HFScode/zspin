@@ -1,7 +1,7 @@
 'use strict'
 
-app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes', 'fileServer',
-  function($q, settings, fs, zip, themes, fileServer) {
+app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes', 'dataServer',
+  function($q, settings, fs, zip, themes, dataServer) {
 
     return {
       restrict: 'E',
@@ -13,7 +13,7 @@ app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes', 'fileServer',
         isDefault: '@',
       },
       link: function(scope, el, attrs) {
-        scope.fileServerUrl = fileServer.url;
+        scope.dataServerUrl = dataServer.url;
         scope.tmpRoot = settings.hsPath(settings.$obj.cachePath, 'Theme');
 
         function updateTheme(src) {
@@ -80,7 +80,7 @@ app.directive('appendThemeScript', ['$q', 'fs',
 
         // dom-ready ?
         webview.addEventListener('did-start-loading', function(e) {
-          webview.executeJavaScript(global.fileServer.themeFrameData);
+          webview.executeJavaScript(global.dataServer.themeFrameData);
           // debug webview
           // webview.openDevTools();
         });

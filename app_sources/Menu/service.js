@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml', 'zspin', 'themes', 'fileServer',
-  function($q, fs, settings, ini, xml, zspin, themes, fileServer) {
+app.factory('menus', ['$q', 'fs', 'settings', 'ini', 'xml', 'zspin', 'themes',
+  function($q, fs, settings, ini, xml, zspin, themes) {
     console.log('menus - init');
 
     // Stop video on lost blur

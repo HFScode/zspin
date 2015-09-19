@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('IntroCtrl', ['$scope', '$location', 'fs', 'settings', 'fileServer', '$timeout',
-  function($scope, $location, fs, settings, fileServer, $timeout) {
+app.controller('IntroCtrl', ['$scope', '$location', 'fs', 'settings', '$timeout',
+  function($scope, $location, fs, settings, $timeout) {
 
     // Prepend video file
     var path = settings.hsPath('Media', 'Frontend', 'Video');

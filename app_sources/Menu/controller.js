@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'menus', 'settings', 'inputs', 'zspin', 'themes', 'fileServer',
-  function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs, zspin, themes, fileServer) {
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'menus', 'settings', 'inputs', 'zspin', 'themes', 'dataServer',
+  function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs, zspin, themes, dataServer) {
 
     //  - requires
     var $fs = require('fs');

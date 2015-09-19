@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
-  function($q, fs, settings, zip, xml, fileServer) {
+app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'dataServer',
+  function($q, fs, settings, zip, xml, dataServer) {
     console.log('themes - init');
     var $fs = require('fs');
 
@@ -33,8 +33,8 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
       // Check if this is a Html theme
       var htmlPath = fs.join(path, 'index.html');
       if ($fs.existsSync(htmlPath, $fs.F_OK)) {
-        fileServer.initServe();
-        fileServer.serveFolder = path;
+        dataServer.initServe();
+        dataServer.serveFolder = path;
 
         // Default theme handling
         if (nameDefault !== undefined) {
@@ -45,7 +45,7 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
             fs.glob(nameDefault+'.*', {cwd: mediaPath+i}).then(function(files) {
               if (files && files.length > 0) {
                 obj.artworks['artwork'+i] = fs.join(mediaPath+i, files[0]);
-                fileServer.serveFile['Artwork'+i+'.'+fs.extname(files[0])] = obj.artworks['artwork'+i];
+                dataServer.serveFile['Artwork'+i+'.'+fs.extname(files[0])] = obj.artworks['artwork'+i];
               }
             });
           })(i);}
@@ -62,8 +62,8 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'fileServer',
         fs.glob(videoName+'.*', {cwd: vidPath}).then(function(files) {
           if (files && files.length !== 0) {
             obj.video = fs.join(vidPath, files[0]);
-            fileServer.serveFile['Video.mp4'] = obj.video;
-            fileServer.serveFile[files[0]] = obj.video;
+            dataServer.serveFile['Video.mp4'] = obj.video;
+            dataServer.serveFile[files[0]] = obj.video;
           }
           obj.html = htmlPath;
         });

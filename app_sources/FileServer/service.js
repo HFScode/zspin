@@ -1,8 +1,8 @@
 'use strict';
 
-app.factory('fileServer', ['$q', 'fs', 'settings', 'zip', 'xml',
+app.factory('dataServer', ['$q', 'fs', 'settings', 'zip', 'xml',
   function($q, fs, settings, zip, xml) {
-    console.log('fileServer - init');
+    console.log('dataServer - init');
     var service = {};
     var serverObj = null;
 
@@ -14,7 +14,7 @@ app.factory('fileServer', ['$q', 'fs', 'settings', 'zip', 'xml',
 
     // try to find a port then call callback
     function listen(cb) {
-      serverObj = global.fileServer.listen(service.port).on('error', function(err) {
+      serverObj = global.dataServer.listen(service.port).on('error', function(err) {
         if (err.errno === 'EADDRINUSE') {
           service.port += 1;
           service.url = 'http://localhost:'+service.port;
@@ -33,9 +33,9 @@ app.factory('fileServer', ['$q', 'fs', 'settings', 'zip', 'xml',
       if (cb_failure === undefined)
         cb_failure = cb_success;
 
-      if (global.fileServer === undefined) {
+      if (global.dataServer === undefined) {
         // console.log('::: Start server');
-        global.fileServer = express();
+        global.dataServer = express();
         listen(cb_success);
       } else {
         cb_failure();
@@ -80,11 +80,11 @@ app.factory('fileServer', ['$q', 'fs', 'settings', 'zip', 'xml',
       startServer(function() {
         // loading themeframe data
         fs.readFile(fs.join(__dirname, 'js', 'themeframe.js'), 'utf8').then(function(data) {
-          global.fileServer.themeFrameData = data;
+          global.dataServer.themeFrameData = data;
         });
 
         // all routes to handler function
-        global.fileServer.get('/*', function(req, res, next) {
+        global.dataServer.get('/*', function(req, res, next) {
           handler(req, res, next);
         });
       }, function() {
@@ -101,7 +101,7 @@ app.factory('fileServer', ['$q', 'fs', 'settings', 'zip', 'xml',
       serverObj.close();
     };
 
-    console.log('fileServer - ready');
+    console.log('dataServer - ready');
     return service;
   }
 ]);

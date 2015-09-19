@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('artworks', ['$q', 'qbind', 'fs', 'fileServer',
-  function($q, qbind, fs, fileServer) {
+app.factory('artworks', ['$q', 'qbind', 'fs',
+  function($q, qbind, fs) {
     console.log('artworks - init');
 
     var SWFReader = require('swf-reader');

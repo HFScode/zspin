@@ -1,7 +1,7 @@
 'use strict';
 
-app.factory('zspin', ['fs', 'settings', '$http', 'fileServer',
-  function (fs, settings, $http, fileServer) {
+app.factory('zspin', ['fs', 'settings', '$http', 'dataServer',
+  function (fs, settings, $http, dataServer) {
     console.log('zspin - init');
 
     var remote = require('remote');
@@ -27,7 +27,7 @@ app.factory('zspin', ['fs', 'settings', '$http', 'fileServer',
     service.appLicense = pjson.license;
 
     // starting local file & api server
-    fileServer.init();
+    dataServer.init();
 
     trustManager.empty();
     trustManager.add(fs.join(__dirname, 'swf', 'jquery.jplayer.swf'));
@@ -65,9 +65,9 @@ app.factory('zspin', ['fs', 'settings', '$http', 'fileServer',
       // Smooth user experience
       // service.guiWindow.hide();
 
-      // stop fileServer
-      if (global.fileServer !== undefined) {
-        fileServer.stopServer();
+      // stop dataServer
+      if (global.dataServer !== undefined) {
+        dataServer.stopServer();
       }
 
       // running execOnExit app if present
