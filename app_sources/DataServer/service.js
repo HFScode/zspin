@@ -8,6 +8,7 @@ app.factory('dataServer', ['$q', 'fs', 'settings', 'zip', 'xml',
 
     var express = require('express');
     var remote = require('remote');
+    var $fs = require('fs');
 
     service.port = 9666;
     service.url = 'http://localhost:'+service.port;
@@ -49,6 +50,7 @@ app.factory('dataServer', ['$q', 'fs', 'settings', 'zip', 'xml',
     function handler(req, res, next) {
       // removing first '/' and decoding url
       var q = decodeURIComponent(req.url.slice(1));
+      var tmp;
 
       if (q === "") {
         res.sendFile(fs.join(service.serveFolder, 'index.html'));
@@ -63,12 +65,26 @@ app.factory('dataServer', ['$q', 'fs', 'settings', 'zip', 'xml',
         res.sendFile(service.serveFile[q]);
 
       } else { // theme files, assets and etc
-        res.sendFile(fs.join(service.serveFolder, q), {}, function(err) {
-          if (err) {
-            console.log(err);
-            res.status(err.status).end();
-          }
-        });
+
+        // try serveFolder path
+        try {
+          tmp = fs.join(service.serveFolder, q).replace(/\.\.\//g, '');
+          $fs.accessSync(tmp, $fs.F_OK);
+          res.sendFile(tmp, {}, function(err) {
+            if (err) {console.log(err); res.status(err.status).end();}
+          });
+          return;
+        } catch (e) {}
+
+        // try Media folder path
+        try {
+          tmp = settings.hsPath('Media', q).replace(/\.\.\//g, '');
+          $fs.accessSync(tmp, $fs.F_OK);
+          res.sendFile(tmp, {}, function(err) {
+            if (err) {console.log(err); res.status(err.status).end();}
+          });
+          return;
+        } catch (e) {}
       }
     }
 

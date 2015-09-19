@@ -53,11 +53,18 @@ function checkPause() {
 }
 
 function loadApiInfos() {
-  // get infos on current theme then apply it to .zspin-<infoname> div
   $.get("api/infos", function (api) {
+    // get infos on current theme then apply it to .zspin-<infoname> div
     for (var i in api) {
       $('.zspin-'+i).text(api[i]);
     }
+
+    // replace src on elements with a zspin-src attribute
+    $('[zspin-src]').each(function() {
+      this.src = $(this).attr('zspin-src').replace(/%[^%]+%/g, function(v) {
+        return api[v.slice(1, -1)];
+      });
+    });
   });
 }
 
