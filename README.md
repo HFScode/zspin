@@ -1,7 +1,7 @@
 ![Logo zspin](assets/256.png)
 # Zspin
 [![Join the chat at https://gitter.im/HFScode/zspin](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/HFScode/zspin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-### <a href="README-fr.md">Version francaise</a>    
+### [Version francaise](README-fr.md)    
 
 zspin is an arcade frontend, working on windows, linux, and OSX.    
 It's beta software, so expect things to bug !    
@@ -25,7 +25,12 @@ Don't hesitate to open an issue or send me a PR !
 * Basic API
 
 ## Install
-<a href="https://github.com/vikbez/zspin-gui/releases">Go to downloads.</a>
+
+* [Telechargez une release](https://github.com/HFSCode/zspin/releases)
+* Extraire et lancer Zspin
+* Selectionnez votre repertoire data & le binare de lancement de jeux
+* Configurez vos touches (ou joystick)
+* Sauvegardez et allez au menu principal
 
 ## Planned features
 
@@ -34,7 +39,7 @@ Don't hesitate to open an issue or send me a PR !
 * Over-network configuration ?
 * You have an idea ? Tell me !
 
-## Help the project
+## Help the project !
 There is a lot of stuff to do and you can help a LOT by doing:    
 
 * Documentation
@@ -42,28 +47,13 @@ There is a lot of stuff to do and you can help a LOT by doing:
 * Testing / bug reporting
 * Finding what to add to this list
 
-## For development
-### OSX
+#### Open [an issue](https://github.com/HFScode/zspin/issues), come talk with us [on our forum](http://forum.hyperfreespin.fr/zspin-f113/), or [on gitter](https://gitter.im/HFScode/zspin).
 
-```bash
-# for brew users
-$> brew install nodejs npm
-
-# install & build app
-$> make install
-
-# (optional) watch source (livereload) & build
-$> gulp watch # -d for debug
-
-# run zspin
-$> gulp run
-
-# if you want to make a release
-$> gulp release -p [platform] # -d for debug
-```
+## For development instructions and more documentation
+#### [Look at the wiki !](https://github.com/HFScode/zspin/wiki)
 
 ## License
 
-zspin is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+zspin is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0).
 
-If you want to sell zspin installed on some hardware (commercial use), <a href="mailto:v@42.am?subject=I+want+a+license+!">contact me</a> ! I will give you a license for that.
+If you want to sell zspin installed on some hardware (commercial use), [contact me](mailto:v@42.am?subject=I+want+a+license+!) ! I will give you a license for that.
