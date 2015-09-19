@@ -26,6 +26,12 @@ watch:
 release:
 		$(GULP) release -p $(PLATFORM)
 
+release-all:
+		$(GULP) release -p win64
+		$(GULP) release -p osx64
+		$(GULP) release -p linux64
+		$(GULP) release -p linuxarm
+
 clean:
 		$(GULP) clean
 
