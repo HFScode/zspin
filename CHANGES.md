@@ -1,10 +1,15 @@
 ChangeLog
 =========
 
-0.2.1 (unreleased)
+0.2.1 (2015-09-19)
 ------------------
 
-* No entry
+* Load data from xml to api (available in html themes)
+* Readme update
+* Support new jswheel (more transformation options)
+* Support building for arm7
+* Fix pepper flash for linux
+* Added/fixed languages
 
 0.2.0 (2015-09-08)
 ------------------
