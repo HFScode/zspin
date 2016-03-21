@@ -42,11 +42,18 @@ app.directive('artwork', ['$q', 'artworks', '$timeout',
 
         // Update styles when config change
         // or once the image size has been found
-        scope.$watch('config', computeBox);
-        scope.$watch('artwork.size', computeBox);
+        scope.$watch('config', function(newv, oldv) {
+          computeBox();
+        });
+
+        scope.$watch('artwork.size', function(newv, oldv) {
+          if (oldv != newv) {computeBox();}
+        });
 
         // Recompute styles when needed
-        scope.$watch('box', updateStyle);
+        scope.$watch('box', function(newv, oldv) {
+          if (oldv != newv) {updateStyle();}
+        });
         scope.$on('resize', updateStyle);
 
       }
