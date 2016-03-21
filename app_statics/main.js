@@ -48,15 +48,16 @@ gui.on('ready', function() {
     title: pjson.window.title,
     width: pjson.window.width,
     height: pjson.window.height,
+    backgroundColor: '#000000',
     fullscreen: pjson.window.fullscreen,
     icon: pjson.window.icon,
     'web-preferences': {
-      'plugins': true
+      'plugins': true,
     }
   });
 
   // and load the index.html of the gui.
-  mainWindow.loadUrl('file://' + __dirname + '/index.html');
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   // Open the devtools if we are in debug.
   if (pjson.debug) {
