@@ -30,17 +30,25 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
       // index of item which serves as cursor
       selectPosition: 9,
       points: [
-        // X%, Y%, scale, z-index, transform css
         // first item offscreen but required for animation
-        [146,45, 1, 1, 'rotate(0deg)'],  [91, -10, 1, 2, 'rotate(23deg)'],
-        [87, -3, 1, 3, 'rotate(21deg)'],  [84, 3,  1, 4, 'rotate(18deg)'],
-        [81, 10, 1, 5, 'rotate(15deg)'],  [79, 16, 1, 6, 'rotate(12deg)'],
-        [77, 23, 1, 7, 'rotate(9deg)'],  [ 76, 29, 1, 8, 'rotate(6deg)'],
-        [75, 36, 1, 9, 'rotate(3deg)'],   [75, 45, 2, 10, 'rotate(0)'],
-        [75, 54, 1, 9, 'rotate(-3deg)'],  [76, 60, 1, 8, 'rotate(-6deg)'],
-        [77, 67, 1, 7, 'rotate(-9deg)'],  [79, 73, 1, 6, 'rotate(-12deg)'],
-        [81, 80, 1, 5, 'rotate(-15deg)'], [84, 86, 1, 4, 'rotate(-18deg)'],
-        [87, 93, 1, 3, 'rotate(-21deg)'], [91, 99, 1, 2, 'rotate(-23deg)'],
+        {x: 146, y: 45, scale: 1, zIndex: 1, rotation:0},
+        {x: 91, y:-10, scale:1, zIndex:2, rotation:23},
+        {x: 87, y:-3, scale:1, zIndex:3, rotation:21},
+        {x: 84, y:3,  scale:1, zIndex:4, rotation:18},
+        {x: 81, y:10, scale:1, zIndex:5, rotation:15},
+        {x: 79, y:16, scale:1, zIndex:6, rotation:12},
+        {x: 77, y:23, scale:1, zIndex:7, rotation:9},
+        {x: 76, y:29, scale:1, zIndex:8, rotation:6},
+        {x: 75, y:35, scale:1, zIndex:9, rotation:3},
+        {x: 65, y:39, scale:1.8, zIndex:10, rotation:0},
+        {x: 75, y:54, scale:1, zIndex:9, rotation:-3},
+        {x: 76, y:60, scale:1, zIndex:8, rotation:-6},
+        {x: 77, y:67, scale:1, zIndex:7, rotation:-9},
+        {x: 79, y:73, scale:1, zIndex:6, rotation:-12},
+        {x: 81, y:80, scale:1, zIndex:5, rotation:-15},
+        {x: 84, y:86, scale:1, zIndex:4, rotation:-18},
+        {x: 87, y:93, scale:1, zIndex:3, rotation:-21},
+        {x: 91, y:99, scale:1, zIndex:2, rotation:-23},
       ]
     };
 
@@ -162,17 +170,6 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
           binds.left = $scope.$on('input:left', $scope.prev);
           binds.right = $scope.$on('input:right', $scope.next);
         }
-
-        for (var i in data.points) {
-          tmp.push([
-            data.points[i].x,
-            data.points[i].y,
-            data.points[i].scale,
-            data.points[i].index,
-            data.points[i].transform
-          ]);
-        }
-        data.points = tmp;
         $scope.wheelOptions = data;
       });
 
