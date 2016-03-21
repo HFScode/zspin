@@ -300,6 +300,9 @@ gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'theme
   gu_util.log(gu_util.colors.yellow("Releasing Zspin ("+releaseBin+") ..."));
   return packager({
     dir: "build/",
+    'app-version': appVersion,
+    'app-copyright': appCc,
+    'build-version': appVersion,
     name: appName,
     platform: electronPlatform,
     arch: targetArch,
@@ -310,11 +313,8 @@ gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'theme
     asar: true,
     'version-string': {
       CompanyName: appName,
-      LegalCopyright: appCc,
       FileDescription: appName,
       OriginalFilename: appName,
-      FileVersion: appVersion,
-      ProductVersion: appVersion,
       ProductName: appName,
       InternalName: appName,
     }
@@ -326,6 +326,7 @@ gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'theme
 gulp.task('release:clean', ['release:package'], function() {
   return gulp.src([
       releaseFolder+'/LICENSE',
+      releaseFolder+'/LICENSES.chromium.html',
       releaseFolder+'/version',
       releaseFolder+'/pdf.dll',
       releaseFolder+'/pdf.so',

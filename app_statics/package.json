@@ -25,7 +25,7 @@
     "mkdirp": "^0.5.0",
     "nw-flash-trust": "0.3.0",
     "rimraf": "^2.2.8",
-    "swf-reader": "0.0.3",
+    "swf-reader": "1.0.0",
     "tmp": "0.0.24",
     "unzip": "^0.1.11",
     "xml2js": "^0.4.4"
