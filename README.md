@@ -26,11 +26,11 @@ Don't hesitate to open an issue or send me a PR !
 
 ## Install
 
-* [Telechargez une release](https://github.com/HFSCode/zspin/releases)
-* Extraire et lancer Zspin
-* Selectionnez votre repertoire data & le binare de lancement de jeux
-* Configurez vos touches (ou joystick)
-* Sauvegardez et allez au menu principal
+* [Download a release](https://github.com/HFSCode/zspin/releases)
+* Extract and launch Zspin
+* Select your data folder and your game-launcher binary
+* Setup your keys (or joysticks)
+* Save and go to main menu
 
 ## Planned features
 
