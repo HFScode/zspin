@@ -101,12 +101,12 @@ var vendors = {
   ],
   'styles': [
     'bower_components/skeleton/css/normalize.css',
-    'bower_components/skeleton/css/skeleton.css',
     'bower_components/json-formatter/dist/json-formatter.css',
     'bower_components/angular-toastr/dist/angular-toastr.css',
   ],
   'fonts': [
-//    'bower_components/bootstrap/dist/fonts/*', // * preserve dir structure
+   // 'bower_components/bootstrap/dist/fonts/*', // * preserve dir structure
+   'app_statics/*.ttf',
   ]
 };
 

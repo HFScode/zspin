@@ -16,7 +16,6 @@
   <!-- SAVE RESET -->
 
   <hr/>
-
   <!-- LANGUAGE -->
 
   <h3 translate>Language</h3>
@@ -36,7 +35,6 @@
   </div>
 
   <hr/>
-
   <!-- PATHS -->
 
   <h3 translate>Paths</h3>
@@ -77,30 +75,32 @@
 
   <h3 translate>Keys</h3>
 
-   <div class="bind row" ng-repeat="(idx, bind) in sortedBinds">
-    <div class="three columns keydesc">
-      {{bind.name | translate}}:
-    </div>
-    <div class="three columns">
-      <div class="input-val button">{{bindinfo[bind.name] || settings.binds[bind.name][0].combo}}</div>
-      <input  type="text"
-              class="button"
-              ng-click="setPress($event, bind.name)"
-              ng-focus="focus(bind.name, 0)"
-              ng-blur="blur()"
-              ng-keydown="cancelInput($event)"
-              >
-      </input>
-    </div>
-    <div class="two columns">
-      <button type="text" class="" ng-click="clear(bind.name)" translate>
-        clear
-      </button>
-    </div>
-    <div class="four columns">
-      <span translate>{{bind.desc}}</span>
-    </div>
-  </div>
+   <table>
+    <tr class="bind" ng-repeat="(idx, bind) in sortedBinds">
+      <td class="keydesc">
+        {{bind.name | translate}}:
+      </td>
+      <td>
+        <div class="input-val button">{{bindinfo[bind.name] || settings.binds[bind.name][0].combo}}</div>
+        <input  type="text"
+                class="button"
+                ng-click="setPress($event, bind.name)"
+                ng-focus="focus(bind.name, 0)"
+                ng-blur="blur()"
+                ng-keydown="cancelInput($event)"
+                >
+        </input>
+      </td>
+      <td>
+        <button type="text" class="" ng-click="clear(bind.name)" translate>
+          clear
+        </button>
+      </td>
+      <td>
+        <span translate>{{bind.desc}}</span>
+      </td>
+    </tr>
+  </table>
 
   <hr/>
   <!-- EXECUTION -->

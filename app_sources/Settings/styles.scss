@@ -1,12 +1,25 @@
 #Settings {
 
   pre {
-    font-size: 12px;
+    font-size: 1rem;
   }
 
-  .seven {
+  table {
+    border-spacing: 5px;
+    border-collapse: separate;
+
+    td {
+      // border: 1px solid black;
+    }
+  }
+
+  h3, h5 {
+    margin: 0.3rem 0;
+  }
+
+  table {
     input {
-      width: 300px;
+      width: 60%;
     }
 
     input[type='file'] {
@@ -15,33 +28,32 @@
   }
 
   .keydesc {
-    margin-top: 7px;
-    font-size: 12px;
+    font-size: 0.8rem;
     font-weight: bold;
     text-transform: uppercase;
     text-align: right;
   }
 
+  .seven input[type='text'] {
+    width: 70%;
+  }
+
   .bind input[type='text'] {
     color: transparent;
-    width: 150px;
+    width: 95%;
     text-shadow: 0 0 0 #000;
-
-    &:focus {
-      border-width: 2px;
-    }
   }
 
   .bind .input-val {
     position: absolute;
     border: none;
-    margin: 2px;
-    padding: 0;
+    padding: 0.2rem;
+    // padding: 0;
     pointer-events: none;
-    width: 146px;
-    height: 34px;
-    line-height: 34px;
-    background-color: white;
+    // width: 14.6rem;
+    // height: 2.6rem;
+    // line-height: 3rem;
+    background-color: transparent;
   }
 
 }

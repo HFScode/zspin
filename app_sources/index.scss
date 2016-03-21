@@ -1,17 +1,30 @@
 // ============================================================================
-// Variables
+// Variables & Fonts
 // ============================================================================
 
 $grey: #e1e1e1;
 $white: #fff;
 $black: #000;
 
+@font-face {
+  font-family: UMono;
+  src: url("../fonts/UbuntuMono-R.ttf");
+}
+
 // ============================================================================
 // Global styles (every page style)
 // ============================================================================
 
+html {
+  font-family: "UMono";
+}
+
 body {
   overflow-x: hidden;
+}
+
+hr {
+  border: 1px dashed #ccc;
 }
 
 #Navbar {
@@ -26,77 +39,116 @@ body {
     padding: 1%;
 
     .button, button {
-        height: 30px;
-        line-height: 30px;
+        line-height: 2rem;
         margin-bottom: 0;
-        color: $white;
     }
 
     .release-info {
-        font-size: 12px;
+        font-size: 1.3rem;
         position: absolute;
         text-align: center;
-        width: 200px;
-        top: 5px;
+        width: 20rem;
+        top: 0.5rem;
         left: 50%;
-        margin-left: -100px;
+        margin-left: -10rem;
     }
 }
 
 .container {
-    margin-top: 70px;
-    margin-bottom: 70px;
+    margin: 7rem 1rem;
 }
 
 .toast-top-right {
-    top: 60px;
+    top: 6rem;
 }
 
-// Buttons inherited from skeleton.css
-.button.button-warning,
-button.button-warning,
-input[type="submit"].button-warning,
-input[type="reset"].button-warning,
-input[type="button"].button-warning {
-  color: $white;
-  background-color: #E7C100;
-  border-color: #E7C100; }
-.button.button-warning:hover,
-button.button-warning:hover,
-input[type="submit"].button-warning:hover,
-input[type="reset"].button-warning:hover,
-input[type="button"].button-warning:hover,
-.button.button-warning:focus,
-button.button-warning:focus,
-input[type="submit"].button-warning:focus,
-input[type="reset"].button-warning:focus,
-input[type="button"].button-warning:focus {
-  color: $white;
-  background-color: #DAB600;
-  border-color: #DAB600; }
+select {
+  border-radius: 0.3rem;
+  border: 1px solid #777;
+  background-color: $white;
+  color: #333;
+}
 
-.button.button-error,
-button.button-error,
-input[type="submit"].button-error,
-input[type="reset"].button-error,
-input[type="button"].button-error {
-  color: $white;
-  background-color: #FF5725;
-  border-color: #FF5725; }
-.button.button-error:hover,
-button.button-error:hover,
-input[type="submit"].button-error:hover,
-input[type="reset"].button-error:hover,
-input[type="button"].button-error:hover,
-.button.button-error:focus,
-button.button-error:focus,
-input[type="submit"].button-error:focus,
-input[type="reset"].button-error:focus,
-input[type="button"].button-error:focus {
-  color: $white;
-  background-color: #EC5022;
-  border-color: #EC5022; }
+input {
+  border: 1px solid #777;
+  padding: 0.18rem;
+  border-radius: 0.3rem;
+}
 
-button.disabled {
-  cursor: not-allowed;
+input:focus, select:focus {
+  border: 1px solid #f0f;
+  outline: 1px;
+}
+
+.button, button {
+  border-radius: 0.3rem;
+  border: 1px solid #777;
+  background-color: $white;
+  color: #333;
+  &:hover {
+    background-color: #eee;
+  }
+}
+
+.button-primary {
+    color: $white;
+    background-color: #33f;
+    &:hover {
+      background-color: #22f;
+    }
+}
+
+.u-pull-right {
+  float: right;
+}
+
+.container {
+  box-sizing: border-box; }
+.column,
+.columns {
+  width: 100%;
+  float: left;
+  box-sizing: border-box; }
+
+.container:after,
+.row:after,
+.u-cf {
+  content: "";
+  display: table;
+  clear: both; }
+
+.one.column,
+.one.columns       { width: 4.66666666667%; }
+.two.columns       { width: 13.3333333333%; }
+.three.columns     { width: 22%;            }
+.four.columns      { width: 30.6666666667%; }
+.five.columns      { width: 39.3333333333%; }
+.six.columns       { width: 48%;            }
+.seven.columns     { width: 56.6666666667%; }
+.eight.columns     { width: 65.3333333333%; }
+.nine.columns      { width: 74.0%;          }
+.ten.columns       { width: 82.6666666667%; }
+.eleven.columns    { width: 91.3333333333%; }
+.twelve.columns    { width: 100%; margin-left: 0; }
+.one-third.column  { width: 30.6666666667%; }
+.two-thirds.column { width: 65.3333333333%; }
+.one-half.column   { width: 48%; }
+
+@media (max-width: 640px) {
+  html {
+    font-size: 2vw;
+  }
+}
+
+@media (max-width: 320px) {
+  html {
+    font-size: 3vw;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    margin: 7rem auto;
+    width: 1000px;
+  }
 }
