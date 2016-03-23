@@ -1,10 +1,19 @@
 ChangeLog
 =========
 
-0.2.2 (unreleased)
+0.3.0 (2016-04-24)
 ------------------
 
-* No entry.
+* Breaking changes in wheel.json: see wiki
+* Black screens between transitions (testing)
+* CSS compatible to small resolutions (15k)
+* Fix double loading of artwork
+* Updated atom electron
+* Updated all packages
+* Added chinese translation
+* Fix readme
+* Removed useless icon
+* Small fixes
 
 0.2.1 (2015-09-19)
 ------------------
