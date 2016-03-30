@@ -37,6 +37,7 @@ app.directive('artwork', ['$q', 'artworks', '$timeout',
 
         // Update artwork on source change
         scope.$watch('src', function(src) {
+          if (!src) return;
           scope.artwork = artworks(src);
         });
 
