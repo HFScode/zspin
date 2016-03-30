@@ -75,7 +75,11 @@ app.directive('appendThemeScript', ['$q', 'fs',
         var webview = el[0];
 
         webview.addEventListener('console-message', function(e) {
-          console.log('themeframe log:', e.message);
+          if (e.message == 'LOADING FINISHED') {
+            angular.element(webview).css('left', 0);
+          } else {
+            console.log('themeframe log:', e.message);
+          }
         });
 
         // dom-ready ?

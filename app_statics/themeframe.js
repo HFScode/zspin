@@ -70,6 +70,10 @@ function loadApiInfos() {
 
 function loaded() {
   var i = 0;
+
+  // this is used to show webview after all loadings are finished
+  console.log('LOADING FINISHED');
+
   $('video').each(function() {
     if (this.id === undefined || this.id === '') {
       this.id = 'video'+i;
