@@ -306,7 +306,7 @@ gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'theme
     name: appName,
     platform: electronPlatform,
     arch: targetArch,
-    version: electronVersion,
+    version: electronVersion.split('#v')[1],
     icon: 'assets/256.ico',
     out: 'releases/',
     overwrite: true,
