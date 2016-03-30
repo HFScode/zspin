@@ -1,7 +1,7 @@
 <div ng-cloak class="Artwork" ng-style="style">
   <img ng-if="artwork.type=='png'" class="Artwork-item" ng-src="{{src}}" />
 
-  <object ng-if="artwork.type=='swf'" class="Artwork-item" data="{{src}}" type="application/x-shockwave-flash" >
+  <object ng-if="artwork.type=='swf'" class="Artwork-item" embed-src="{{src}}" type="application/x-shockwave-flash" >
     <param name="autoplay" value="true">
     <param name="wmode" value="transparent">
     <param name="scale" value="exactfit">

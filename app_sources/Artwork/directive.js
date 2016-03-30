@@ -1,3 +1,5 @@
+'use strict';
+
 app.directive('artwork', ['$q', 'artworks', '$timeout',
   function($q, artworks, $timeout) {
 
@@ -61,3 +63,17 @@ app.directive('artwork', ['$q', 'artworks', '$timeout',
     };
   }
 ]);
+
+app.directive('embedSrc', function () {
+  return {
+    restrict: 'A',
+    link: function (scope, el, attr) {
+      var current = el;
+      scope.$watch(function() { return attr.embedSrc; }, function () {
+        var clone = el.clone().attr('data', attr.embedSrc);
+        current.replaceWith(clone);
+        current = clone;
+      });
+    }
+  };
+});
