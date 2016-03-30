@@ -1,12 +1,13 @@
 ChangeLog
 =========
 
-0.3.1 (unreleased)
+0.3.1 (2016-03-30)
 ------------------
 
-* no entry
+* Updated atom electron
+* Small fix
 
-0.3.0 (2016-04-24)
+0.3.0 (2016-03-24)
 ------------------
 
 * Breaking changes in wheel.json: see wiki
