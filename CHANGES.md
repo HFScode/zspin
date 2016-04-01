@@ -1,10 +1,14 @@
 ChangeLog
 =========
 
-0.3.2 (unreleased)
+0.3.2 (2016-04-02)
 ------------------
 
-* no entry
+* Fix empty background on debug/settings pages
+* Added command line parameters (-help, -debug, -debug-webview, -mute, -reset)
+* Replace yargs with argv in gulpfile
+* Fix last white flash on html webview themes
+* Fix too fast loading of swf artworks
 
 0.3.1 (2016-03-30)
 ------------------
