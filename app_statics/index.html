@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="app" ng-controller="CurrentPage">
   <head>
     <meta charset="utf8">
     <title>Z-Spin</title>
@@ -19,7 +19,7 @@
       module = _module;
     </script>
   </head>
-  <body>
+  <body class="{{currentPath}}">
     <div ng-view></div>
     <script src="http://localhost:35729/livereload.js"></script>
     <div ng-controller='piwikCtrl'>
