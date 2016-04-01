@@ -7,7 +7,9 @@ app.factory('settings', [
 
     var $fs = require('fs');
     var $path = require('path');
-    var gui = require('remote').require('app');
+    var remote = require('remote');
+    var gui = remote.require('app');
+    var deleteSettings = remote.getGlobal('options').reset;
 
     // Path for the app datas
     // for example in osx: ~/Library/Application Support/zspin/
@@ -88,6 +90,11 @@ app.factory('settings', [
     // This has to be blocking because we can't do anything without
     // the settings. Blocking coveniently stops angular from loading
     // before everything is ready.
+
+    // reset settings file if asked
+    if (deleteSettings) {
+      $fs.unlinkSync(settingsPath);
+    }
 
     // Path of the app executable
     var binaryPath = $path.dirname(process.execPath); // FIXME test this in windows/linux

@@ -1,6 +1,7 @@
 var gui = require('app');  // Module to control application life.
 var BrowserWindow = require('browser-window');  // Module to create native browser window.
 var pjson = require('./package.json');
+var argv = require('argv');
 
 var mainWindow = null;
 
@@ -28,6 +29,22 @@ if (__dirname.indexOf('app.asar') > -1) {
   }
 }
 
+// process cli arguments
+// https://github.com/atom/electron/issues/4690#issuecomment-193205675
+if (process.argv[1] && process.argv[1].indexOf('-') === 0) { process.argv.unshift(''); }
+
+global['options'] = argv.option([
+  {name: 'debug', short: 'd', type: 'boolean', description: 'Open developper tools at launch.'},
+  {name: 'debug-webview', short: 'w', type: 'boolean', description: 'Open developper tools for html themes.'},
+  {name: 'mute', short: 'm', type: 'boolean', description: 'Mute sound (usually used with debug).'},
+  {name: 'reset', short: 'r', type: 'boolean', description: 'Reset configuration file to default.'},
+]).run().options;
+
+if (global['options'].help) {
+  process.stdout.write(argv.help());
+  process.exit(0);
+}
+
 gui.commandLine.appendSwitch('ppapi-flash-path', ppapiPath);
 // seems useless
 //gui.commandLine.appendSwitch('ppapi-flash-version', '18.0.0.209');
@@ -38,8 +55,7 @@ gui.on('window-all-closed', function() {
 
 gui.on('ready', function() {
   // Disable fullscreen if we are in debug.
-
-  if (pjson.debug) {
+  if (global['options'].debug) {
     pjson.window.fullscreen = false;
   }
 
@@ -60,7 +76,7 @@ gui.on('ready', function() {
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 
   // Open the devtools if we are in debug.
-  if (pjson.debug) {
+  if (global['options'].debug) {
     mainWindow.openDevTools();
   }
 

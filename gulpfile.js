@@ -354,7 +354,7 @@ gulp.task('watch', ['default'], function() {
 
 gulp.task('run', function() {
   gu_util.log(gu_util.colors.green("Running Zspin..."));
-  return cp.spawn(electron, ['build'], {stdio: 'inherit'});
+  return cp.spawn(electron, ['build', '--debug'], {stdio: 'inherit'});
 });
 
 /*********************************** Clean ***********************************/

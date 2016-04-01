@@ -25,6 +25,7 @@ app.factory('zspin', ['fs', 'settings', '$http', 'dataServer',
     service.menuHistory = {};
     service.appName = pjson.name;
     service.appLicense = pjson.license;
+    service.options = remote.getGlobal('options');
 
     // starting local file & api server
     dataServer.init();

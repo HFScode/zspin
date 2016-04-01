@@ -1,5 +1,5 @@
-app.directive('jplayer', ['fs',
-  function(fs) {
+app.directive('jplayer', ['fs', 'zspin',
+  function(fs, zspin) {
     return {
       restrict: 'E',
       replace: true,
@@ -25,7 +25,7 @@ app.directive('jplayer', ['fs',
 
           $player.jPlayer({
             swfPath: 'swf',
-            volume: 1,
+            volume: zspin.options.mute ? 0 : 1,
             supplied: type,
             // errorAlerts: true,
             // warningAlerts: true,

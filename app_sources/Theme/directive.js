@@ -62,8 +62,8 @@ app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes', 'dataServer',
   }
 ]);
 
-app.directive('appendThemeScript', ['$q', 'fs',
-  function($q, fs) {
+app.directive('appendThemeScript', ['$q', 'fs', 'zspin',
+  function($q, fs, zspin) {
 
     return {
       restrict: 'A',
@@ -85,8 +85,16 @@ app.directive('appendThemeScript', ['$q', 'fs',
         // dom-ready ?
         webview.addEventListener('did-start-loading', function(e) {
           webview.executeJavaScript(global.dataServer.themeFrameData);
-          // debug webview
-          // webview.openDevTools();
+
+          // open devtools
+          if (zspin.options['debug-webview']) {
+            webview.openDevTools();
+          }
+
+          // mute audio
+          if (zspin.options.mute) {
+            webview.setAudioMuted(true);
+          }
         });
       }
     };
