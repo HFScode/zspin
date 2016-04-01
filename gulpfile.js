@@ -1,6 +1,6 @@
 'use strict';
 
-var argv       = require('yargs').argv;
+var argv       = require('argv');
 var cp         = require('child_process');
 var electron   = require('electron-prebuilt');
 var fs         = require('fs');
@@ -23,6 +23,11 @@ var unzip      = require('unzip');
 
 var pjson      = require('./package.json');
 
+var args = argv.option([
+  {name: 'platform', short: 'p', type: 'string', description: 'target platform for build'},
+  {name: 'debug', short: 'd', type: 'boolean'},
+]).run().options;
+
 var appName = pjson.name;
 var appCc = pjson.license;
 var appVersion = pjson.version;
@@ -30,8 +35,8 @@ var libFile = 'libs-'+appVersion+'.zip';
 var libUrl = 'http://zspin.vik.io/libraries/'+libFile;
 var platform, electronPlatform, targetArch = null;
 var electronVersion = pjson.devDependencies['electron-prebuilt'];
-var task = argv._[0];
-var debug = argv.d;
+var task = process.argv[2];
+var debug = args.debug;
 var watch = (task === 'watch');
 
 /*************************** Platform detection ******************************/
@@ -39,7 +44,7 @@ var watch = (task === 'watch');
 // if -p parameter undefined, platform = current platform
 // else platform = -p parameter value
 // same for architecture
-if (argv.p === undefined) {
+if (args.platform === undefined) {
   electronPlatform = process.platform;
   targetArch = process.arch;
   if (process.platform === 'darwin') {
@@ -53,7 +58,7 @@ if (argv.p === undefined) {
     throw new gu_util.PluginError('platform_detection', 'Unknown platform, aborting.');
   }
 } else {
-  platform = argv.p;
+  platform = args.platform;
   if (platform.slice(-2) === '32') {
     targetArch = 'ia32';
   } else if (platform.slice(-2) === '64') {
@@ -250,27 +255,6 @@ gulp.task('libraries:unzip', ['libraries:download'], function() {
   }
 });
 
-// gulp.task('libraries:ffmpeg', ['libraries:unzip', 'release:check-nwjs'], function() {
-//   var dest = 'node_modules/node-webkit-builder/cache/'+nwVersion+'/'+platform;
-//   if (platform.indexOf('osx') === 0) {
-//     dest += '/nwjs.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
-//   }
-
-//   return gulp.src('libraries/'+platform+'/ffmpeg/*')
-//     .pipe(gulp.dest(dest));
-// });
-
-// gulp.task('libraries:ffmpeg-release', ['libraries:unzip', 'release:check-nwjs',
-//   'release:build'], function() {
-//   var dest = 'releases/zspin/'+platform;
-//   if (platform.indexOf('osx') === 0) {
-//     dest += '/zspin.app/Contents/Frameworks/nwjs Framework.framework/Libraries';
-//   }
-
-//   return gulp.src('libraries/'+platform+'/ffmpeg/*')
-//     .pipe(gulp.dest(dest));
-// });
-
 gulp.task('libraries:clean', function() {
   return gulp.src('build/plugins/**/*', {read: false})
     .pipe(gu_rm());
@@ -287,7 +271,7 @@ gulp.task('libraries', ['libraries:flashplayer']);
 /********************************** Releases *********************************/
 
 gulp.task('release:check-platform', function() {
-  if (argv.p === undefined) {
+  if (platform === undefined) {
     throw new gu_util.PluginError(
       'release',
       'Undefined platform !\nUse -p [win32,win64,osx32,osx64,linux32,linux64]\n'
@@ -306,7 +290,7 @@ gulp.task('release:package', ['release:check-platform', 'vendors', 'app', 'theme
     name: appName,
     platform: electronPlatform,
     arch: targetArch,
-    version: electronVersion.split('#v')[1],
+    version: electronVersion,
     icon: 'assets/256.ico',
     out: 'releases/',
     overwrite: true,
