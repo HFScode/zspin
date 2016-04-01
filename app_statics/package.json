@@ -1,6 +1,6 @@
 {
   "name": "zspin",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Multi OS emulator frontend",
   "main": "main.js",
   "author": "Romain Gay <v@42.am>",
