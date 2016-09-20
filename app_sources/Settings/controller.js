@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads', 'settings', 'inputs', 'toastr', 'zspin',
-  function($scope, $tr, DOMKeyboard, gamepads, settings, inputs, toastr, zspin) {
+app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads', 'settings', 'inputs', 'toastr', 'zspin', 'zip',
+  function($scope, $tr, DOMKeyboard, gamepads, settings, inputs, toastr, zspin, zip) {
 
     var dialog = require('remote').require('dialog');
     var shell = require('shell');
@@ -137,6 +137,32 @@ app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads
       settings.deleteSettingsFile();
       zspin.reloadApp();
     };
+
+    $scope.populateDataFolder = function() {
+      if($scope.settings.hsPath) {
+        var unzip = zip.extract('app_statics/blank_datafolder.zip', $scope.settings.hsPath);
+        if(unzip){
+          toastr.success($tr.instant("Folder structure has been created."), {
+            allowHtml: true,
+            timeOut: 5000,
+            extendedTimeOut: 5000,
+          });
+        }else{
+          toastr.success($tr.error("An error occured while creating folders.<br/>Please check your permissions."), {
+            allowHtml: true,
+            timeOut: 5000,
+            extendedTimeOut: 5000,
+          });
+        }
+      }else{
+        toastr.error($tr.instant("Please provide a data folder before populating."), {
+          allowHtml: true,
+          timeOut: 5000,
+          extendedTimeOut: 5000
+        });
+        return false;
+      }
+    }
 
     if ($scope.settings.firstRun) {
       toastr.info($tr.instant("Welcome to Zspin !<br/>Please configure me !"), {
