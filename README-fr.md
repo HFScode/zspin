@@ -1,13 +1,13 @@
 ![Logo zspin](assets/256.png)
 # Zspin
 [![Join the chat at https://gitter.im/HFScode/zspin](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/HFScode/zspin?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-### [English version](README.md)    
+### [Click here to read the English version](README.md)    
 
 zspin est un frontend pour jeux d'arcade, qui fonctionne sur windows, linux et OSX.    
 C'est en beta alors attention aux bugs !    
 N'hesitez pas a ouvrir une issue ou m'envoyer une PR !
 
-![Image zspin](http://zspin.vik.io/static/zspin-small.gif)
+![zspin demo](http://zspin.vik.io/static/zspin-small.gif)
 
 ## Specifications actuelles
 
@@ -18,7 +18,7 @@ N'hesitez pas a ouvrir une issue ou m'envoyer une PR !
 * Auto redimensionnement des themes (1080p et au dela)
 * Lancement par launcher personnalisable
 * Support des claviers / gamepads / joysticks en natif
-* Wheels complètement customizables
+* Wheels complètement customizables, avec possibilité d'utiliser les sub-wheels à l'infini
 * Ecran d'options
 * Assistant de premier démarrage / configuration
 * Application au lancement / a la sortie
@@ -47,7 +47,7 @@ Il y a plein de choses que vous pouvez faire et qui aident BEAUCOUP:
 * Tester / decrire les bugs
 * Trouver quoi ajouter a cette liste
 
-#### Ouvrez [une issue](https://github.com/HFScode/zspin/issues), venez parler avec nous [sur notre forum](http://forum.hyperfreespin.fr/zspin-f113/), ou [sur gitter](https://gitter.im/HFScode/zspin).
+#### Ouvrez [une issue](https://github.com/HFScode/zspin/issues), venez parler avec nous [sur notre forum](http://forum.hfsplay.fr/zspin-f113/), ou [sur gitter](https://gitter.im/HFScode/zspin).
 
 ## Pour developper et/ou pour la documentation
 #### [Faites un tour sur le wiki !](https://github.com/HFScode/zspin/wiki/)
