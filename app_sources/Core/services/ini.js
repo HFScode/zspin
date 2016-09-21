@@ -3,7 +3,7 @@
 app.factory('ini', ['zspin', 'fs',
   function (zspin, fs) {
     console.log('ini - init');
-    var ini = require('ini');
+    const ini = require('ini');
 
     //  -  Services for ini-file parsing  -
     var service = {

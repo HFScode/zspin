@@ -3,8 +3,8 @@
 app.factory('zip', ['$q',
   function ($q) {
     console.log('zip - init');
-    var fs = require('fs');
-    var unzip = require('unzip');
+    const fs = require('fs');
+    const unzip = require('unzip');
 
     //  -  Services for zip file  -
     var service = {

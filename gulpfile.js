@@ -1,27 +1,27 @@
 'use strict';
 
-var argv       = require('argv');
-var cp         = require('child_process');
-var electron   = require('electron-prebuilt');
-var fs         = require('fs');
-var gulp       = require('gulp');
-var gu_concat  = require('gulp-concat');
-var gu_dl      = require('gulp-download');
-var gu_if      = require('gulp-if');
-var gu_install = require('gulp-install');
-var gu_jedit   = require("gulp-json-editor");
-var gu_lr      = require('gulp-livereload');
-var gu_minify  = require('gulp-clean-css');
-var gu_rm      = require('gulp-rm');
-var gu_sass    = require('gulp-sass');
-var gu_tpls    = require('gulp-angular-templatecache');
-var gu_uglify  = require('gulp-uglify');
-var gu_util    = require('gulp-util');
-var gu_zip     = require('gulp-zip');
-var packager   = require('electron-packager');
-var unzip      = require('unzip');
+const argv       = require('argv');
+const cp         = require('child_process');
+const electron   = require('electron-prebuilt');
+const fs         = require('fs');
+const gulp       = require('gulp');
+const gu_concat  = require('gulp-concat');
+const gu_dl      = require('gulp-download');
+const gu_if      = require('gulp-if');
+const gu_install = require('gulp-install');
+const gu_jedit   = require("gulp-json-editor");
+const gu_lr      = require('gulp-livereload');
+const gu_minify  = require('gulp-clean-css');
+const gu_rm      = require('gulp-rm');
+const gu_sass    = require('gulp-sass');
+const gu_tpls    = require('gulp-angular-templatecache');
+const gu_uglify  = require('gulp-uglify');
+const gu_util    = require('gulp-util');
+const gu_zip     = require('gulp-zip');
+const packager   = require('electron-packager');
+const unzip      = require('unzip');
 
-var pjson      = require('./package.json');
+const pjson      = require('./package.json');
 
 var args = argv.option([
   {name: 'platform', short: 'p', type: 'string', description: 'target platform for build'},

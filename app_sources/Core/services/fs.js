@@ -3,12 +3,12 @@
 app.factory('fs', ['$q', 'qbind',
   function ($q, qbind) {
     console.log('fs - init');
-    var fs = require('fs');
-    var path = require('path');
-    var tmp = require('tmp');
-    var glob = require('glob');
-    var mkdirp = require('mkdirp');
-    var rimraf = require('rimraf');
+    const fs = require('fs');
+    const path = require('path');
+    const tmp = require('tmp');
+    const glob = require('glob');
+    const mkdirp = require('mkdirp');
+    const rimraf = require('rimraf');
 
     //  -  Services for file system  -
     var service = {

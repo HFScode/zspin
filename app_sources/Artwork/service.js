@@ -4,7 +4,7 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
   function($q, qbind, fs) {
     console.log('artworks - init');
 
-    var SWFReader = require('swf-reader');
+    const SWFReader = require('swf-reader');
 
     function getFlashNaturalSize(src) {
       return qbind.call(SWFReader, SWFReader.read, src)

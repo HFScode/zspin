@@ -4,8 +4,8 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
   function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs, zspin, themes, dataServer) {
 
     //  - requires
-    var $fs = require('fs');
-    var spawn = require('child_process').spawn;
+    const $fs = require('fs');
+    const spawn = require('child_process').spawn;
 
     //  -  Defining path/current menu
     var baseUrl = '/menus/';

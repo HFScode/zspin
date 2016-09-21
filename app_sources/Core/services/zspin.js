@@ -4,12 +4,12 @@ app.factory('zspin', ['fs', 'settings', '$http', 'dataServer',
   function (fs, settings, $http, dataServer) {
     console.log('zspin - init');
 
-    var remote = require('remote');
-    var gui = remote.require('app');
+    const remote = require('electron').remote;
+    const gui = remote.require('electron').app;
 
-    var flashTrust = require('nw-flash-trust');
-    var spawn = require('child_process').spawn;
-    var pjson = remote.require('./package.json');
+    const flashTrust = require('nw-flash-trust');
+    const spawn = require('child_process').spawn;
+    const pjson = remote.require('./package.json');
 
     var trustManager = flashTrust.initSync(
       pjson.name,
