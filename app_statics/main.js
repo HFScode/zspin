@@ -48,7 +48,7 @@ if (global['options'].help) {
 
 gui.commandLine.appendSwitch('ppapi-flash-path', ppapiPath);
 // seems useless
-//gui.commandLine.appendSwitch('ppapi-flash-version', '18.0.0.209');
+// gui.commandLine.appendSwitch('ppapi-flash-version', '23.0.0.162');
 
 gui.on('window-all-closed', function() {
   gui.quit();
@@ -68,7 +68,7 @@ gui.on('ready', function() {
     backgroundColor: '#000000',
     fullscreen: pjson.window.fullscreen,
     icon: pjson.window.icon,
-    'web-preferences': {
+    'webPreferences': {
       'plugins': true,
     }
   });
