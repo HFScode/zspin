@@ -64,7 +64,7 @@ if (args.platform === undefined) {
   } else if (platform.slice(-2) === '64') {
     targetArch = 'x64';
   } else if (platform.slice(-3) === 'arm') {
-    targetArch = 'arm';
+    targetArch = 'armv7l';
   } else {
     throw new gu_util.PluginError('platform_detection', 'Unknown platform, aborting.');
   }
@@ -274,7 +274,7 @@ gulp.task('release:check-platform', function() {
   if (platform === undefined) {
     throw new gu_util.PluginError(
       'release',
-      'Undefined platform !\nUse -p [win32,win64,osx32,osx64,linux32,linux64]\n'
+      'Undefined platform !\nUse -p [win32,win64,osx32,osx64,linux32,linux64,linuxarm]\n'
     );
   }
 });
