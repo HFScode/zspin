@@ -5,44 +5,48 @@ app.factory('DOMKeyboard', ['$rootScope', '$window',
     console.log('DOMKeyboard - init');
 
     var isOSX = ($window.navigator && $window.navigator.platform.indexOf('Mac') >=0);
-    var PRINTABLE = new RegExp('^[^\x00-\x1F\x7f-\x9F]+$');
+
+    function printable(k) {
+      return (k > 47 && k < 91 ? true : false);
+    }
 
     function comboFromEvent(e) {
       var combo = [];
-      if (e.keyIdentifier.match(/^U\+([0-9A-Z]+)$/)) {
-        var codePoint = parseInt(RegExp.$1, 16);
-        var keyIdentifier = String.fromCodePoint(codePoint);
-        if (keyIdentifier == ' ')
-          combo.push('Space');
-        else if (keyIdentifier.match(PRINTABLE))
-          combo.push(keyIdentifier);
-        else if (codePoint == 127)
-          combo.push('Delete');
-        else if (codePoint == 27)
-          combo.push('Escape');
-        else if (codePoint == 9)
-          combo.push('Tab');
-        else if (codePoint == 8)
-          combo.push('Backspace');
+
+      if (e.code == 'Space') {
+        combo.push('Space');
+      } else if (e.key == 'Control') {
+        combo.push(isOSX ? 'Meta' : 'Ctrl');
+      } else if (e.key == 'Meta') {
+        combo.push(isOSX ? 'Ctrl' : 'Meta');
+      } else if (e.keyCode == 38) {
+        combo.push('Up');
+      } else if (e.keyCode == 40) {
+        combo.push('Down');
+      } else if (e.keyCode == 37) {
+        combo.push('Left');
+      } else if (e.keyCode == 39) {
+        combo.push('Right');
+      } else if (e.keyCode == 18) {
+        combo.push('Alt');
+      } else if (e.keyCode == 16) {
+        combo.push('Shift');
+      } else if (printable(e.keyCode)) {
+        combo.push(String.fromCodePoint(e.keyCode));
       } else {
-        if (e.keyIdentifier == 'Control')
-          combo.push(isOSX?'Meta':'Ctrl');
-        else if (e.keyIdentifier == 'Meta')
-          combo.push(isOSX?'Ctrl':'Meta');
-        else
-          combo.push(e.keyIdentifier);
+        combo.push(e.code);
       }
+
       if (!combo.length) return;
 
-      if (e.ctrlKey && e.keyIdentifier != 'Control')
-        combo.unshift(isOSX?'Meta':'Ctrl');
-        // combo.unshift(isOSX?'Ctrl':'Meta');
-      if (e.shiftKey && e.keyIdentifier != 'Shift')
+      if (e.ctrlKey && e.key != 'Control')
+        combo.unshift(isOSX ? 'Meta' : 'Ctrl');
+      if (e.shiftKey && e.key != 'Shift')
         combo.unshift('Shift');
-      if (e.altKey && e.keyIdentifier != 'Alt')
+      if (e.altKey && e.key != 'Alt')
         combo.unshift('Alt');
-      if (e.metaKey && e.keyIdentifier != 'Meta')
-        combo.unshift(isOSX?'Ctrl':'Meta');
+      if (e.metaKey && e.key != 'Meta')
+        combo.unshift(isOSX ? 'Ctrl' : 'Meta');
 
       return combo.join('+').toLowerCase();
     }
