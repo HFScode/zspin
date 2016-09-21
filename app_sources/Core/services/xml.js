@@ -3,7 +3,7 @@
 app.factory('xml', ['$q', 'fs', 'qbind',
   function ($q, fs, qbind) {
     console.log('xml - init');
-    var xml2js = require('xml2js');
+    const xml2js = require('xml2js');
 
     var parser = new xml2js.Parser({
       mergeAttrs: true,

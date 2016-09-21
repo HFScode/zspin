@@ -1,7 +1,8 @@
-var gui = require('app');  // Module to control application life.
-var BrowserWindow = require('browser-window');  // Module to create native browser window.
-var pjson = require('./package.json');
-var argv = require('argv');
+const electron = require('electron');
+const gui = electron.app;  // Module to control application life.
+const BrowserWindow = electron.BrowserWindow;  // Module to create native browser window.
+const pjson = require('./package.json');
+const argv = require('argv');
 
 var mainWindow = null;
 

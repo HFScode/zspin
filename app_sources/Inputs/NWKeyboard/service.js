@@ -3,7 +3,7 @@
 app.factory('NWKeyboard', ['$rootScope', '$window',
   function ($rootScope, $window) {
     console.log('NWKeyboard - init');
-    var globalShortcut = require('remote').require('global-shortcut');
+    const globalShortcut = require('electron').remote.require('electron').globalShortcut;
 
     var SCOPES = {};
     var BINDS  = {};

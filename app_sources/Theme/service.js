@@ -3,7 +3,7 @@
 app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'dataServer',
   function($q, fs, settings, zip, xml, dataServer) {
     console.log('themes - init');
-    var $fs = require('fs');
+    const $fs = require('fs');
 
     var service = {};
 

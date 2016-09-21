@@ -3,8 +3,8 @@
 app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads', 'settings', 'inputs', 'toastr', 'zspin', 'zip',
   function($scope, $tr, DOMKeyboard, gamepads, settings, inputs, toastr, zspin, zip) {
 
-    var dialog = require('remote').require('dialog');
-    var shell = require('shell');
+    const dialog = require('electron').remote.dialog;
+    const shell = require('electron').shell;
 
     var gpBinder = gamepads.bindTo($scope);
     var kbBinder = DOMKeyboard.bindTo($scope);

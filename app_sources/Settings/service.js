@@ -5,11 +5,11 @@ app.factory('settings', [
     console.log('settings - init');
     var service = {};
 
-    var $fs = require('fs');
-    var $path = require('path');
-    var remote = require('remote');
-    var gui = remote.require('app');
-    var deleteSettings = remote.getGlobal('options').reset;
+    const $fs = require('fs');
+    const $path = require('path');
+    const remote = require('electron').remote;
+    const gui = remote.require('electron').app;
+    const deleteSettings = remote.getGlobal('options').reset;
 
     // Path for the app datas
     // for example in osx: ~/Library/Application Support/zspin/

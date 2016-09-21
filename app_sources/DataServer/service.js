@@ -6,9 +6,9 @@ app.factory('dataServer', ['$q', 'fs', 'settings', 'zip', 'xml',
     var service = {};
     var serverObj = null;
 
-    var express = require('express');
-    var remote = require('remote');
-    var $fs = require('fs');
+    const express = require('express');
+    const remote = require('electron').remote;
+    const $fs = require('fs');
 
     service.port = 9666;
     service.url = 'http://localhost:'+service.port;
