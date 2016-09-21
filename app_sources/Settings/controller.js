@@ -140,7 +140,7 @@ app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads
 
     $scope.populateDataFolder = function() {
       if($scope.settings.hsPath) {
-        var unzip = zip.extract('app_statics/blank_datafolder.zip', $scope.settings.hsPath);
+        var unzip = zip.extract(fs.join(__dirname, 'app_statics','blank_datafolder.zip'), $scope.settings.hsPath);
         unzip.then(
           function(){
             toastr.success($tr.instant("Folder structure has been created."),{timeOut: 3000});

@@ -138,6 +138,8 @@ gulp.task('vendors', ['vendors:scripts', 'vendors:styles' ,'vendors:fonts']);
 
 /************************************ App ************************************/
 
+//TODO: mirror target folder tree in app_statics & /build
+
 var app = {
   'statics': [
     'app_statics/**/*',
@@ -158,6 +160,9 @@ var app = {
     'app_sources/templates/*.html',
     'app_sources/**/*.html',
   ],
+  'assets': [
+    '!app_statics/blank_datafolder.zip'
+  ]
 };
 
 gulp.task('app:statics', function() {
@@ -198,6 +203,12 @@ gulp.task('app:styles', function() {
 });
 
 gulp.task('app:flash', function() {
+  return gulp.src(app.assets)
+    .pipe(gulp.dest('build/assets'))
+    .pipe(gu_if(watch, gu_lr()));
+});
+
+gulp.task('app:assets', function() {
   return gulp.src(app.flash)
     .pipe(gulp.dest('build/swf'))
     .pipe(gu_if(watch, gu_lr()));
