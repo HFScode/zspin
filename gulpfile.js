@@ -103,6 +103,7 @@ var vendors = {
     'bower_components/json-formatter/dist/json-formatter.js',
     'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
     'bower_components/jplayer/dist/jplayer/jquery.jplayer.js',
+    'bower_components/swf2js/swf2js.js',
   ],
   'styles': [
     'bower_components/skeleton/css/normalize.css',
