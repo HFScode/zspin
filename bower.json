@@ -33,7 +33,8 @@
     "angular-piwik": "ThoughtWorksInc/angular-piwik#duplicate-calls",
     "jplayer": "~2.9.2",
     "angular-translate-loader-static-files": "~2.7.2",
-    "angular-translate": "~2.7.2"
+    "angular-translate": "~2.7.2",
+    "swf2js": "https://github.com/ienaga/swf2js.git"
   },
   "resolutions": {
     "angular": "1.3.11"
