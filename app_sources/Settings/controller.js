@@ -141,28 +141,19 @@ app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads
     $scope.populateDataFolder = function() {
       if($scope.settings.hsPath) {
         var unzip = zip.extract('app_statics/blank_datafolder.zip', $scope.settings.hsPath);
-        if(unzip){
-          toastr.success($tr.instant("Folder structure has been created."), {
-            allowHtml: true,
-            timeOut: 5000,
-            extendedTimeOut: 5000,
-          });
-        }else{
-          toastr.success($tr.error("An error occured while creating folders.<br/>Please check your permissions."), {
-            allowHtml: true,
-            timeOut: 5000,
-            extendedTimeOut: 5000,
-          });
-        }
+        unzip.then(
+          function(){
+            toastr.success($tr.instant("Folder structure has been created."),{timeOut: 3000});
+          },
+          function(){
+            toastr.error($tr.instant("An error occured while creating folders. Please check your permissions."),{timeOut: 3000});
+          }
+        );
       }else{
-        toastr.error($tr.instant("Please provide a data folder before populating."), {
-          allowHtml: true,
-          timeOut: 5000,
-          extendedTimeOut: 5000
-        });
+        toastr.error($tr.instant("Please provide a data folder before populating."),{timeOut: 3000});
         return false;
       }
-    }
+    };
 
     if ($scope.settings.firstRun) {
       toastr.info($tr.instant("Welcome to Zspin !<br/>Please configure me !"), {
@@ -171,6 +162,5 @@ app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads
         extendedTimeOut: 5000,
       });
     }
-
   }
 ]);
