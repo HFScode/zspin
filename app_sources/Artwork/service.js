@@ -41,7 +41,7 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
       if (obj.type === 'png' || obj.type === 'jpg') {
         getSize = getImageNaturalSize(obj.src);
       } else if (obj.type === 'swf') {
-        getSize = getFlashNaturalSize(obj.src);
+        swf2js.load(obj.src, { bgcolor: "transparent" });
       } else if (obj.type === 'flv') {
         getSize = $q.when({width: 200, height: 200});
       } else if (obj.type === 'mp4') {

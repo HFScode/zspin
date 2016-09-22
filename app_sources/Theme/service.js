@@ -28,6 +28,7 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'dataServer',
         background: null,
         html: false,
         video: null,
+        script: null
       };
 
       // Check if this is a Html theme
@@ -132,28 +133,6 @@ app.factory('themes', ['$q', 'fs', 'settings', 'zip', 'xml', 'dataServer',
               obj.video = service.defaultVideo;
             }
           });
-        }
-
-        //Look for swf files to play
-        var i = 1, script = [];
-        for(var filename in ownFiles){
-          if(ownFiles[filename].split('.').pop().toLowerCase() === 'swf'){
-
-            console.log(obj);
-            console.log(ownFiles);
-
-            //TODO: use real swf2js code from php converter
-            script.push('var _root' + i + ' = swf2js.createRootMovieClip(1024, 768, 120);' +
-                'var stage' + i + ' = _root' + i + '.getStage();' +
-                'stage' + i + '.backgroundColor = "transparent";' +
-                'var mc' + i + ' = _root' + i + '.createMovieClip("BG' + i + '");' +
-                'mc' + i + '.loadMovie("' + filename + '");');
-          }
-          i++;
-        }
-        if(script.length > 0){
-          obj.script = obj.path + '/theme.js';
-          fs.writeFile(obj.script,script.join());
         }
       });
 
