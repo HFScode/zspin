@@ -47,8 +47,14 @@
       <input type='text' readonly ng-model='settings.hsPath'/>
       <button ng-click="chooseDirectory('hsPath');" translate>browse</button>
     </div>
-    <div class="seven columns">
-      <button ng-click="populateDataFolder();" translate>Create folder structure</button>
+  </div>
+  <div class="row">
+    <div class="five columns">
+      <h5 translate>Create a new empty folder structure</h5>
+    </div>
+    <div class="seven columns" ng-init="showCreateFolder = false">
+      <button ng-click="showCreateFolder = !showCreateFolder">{{'Create in this folder' | translate}}</button>
+      <button class='button-error' ng-click='populateDataFolder()' ng-show='showCreateFolder' translate>I'm sure. Do it.</button>
     </div>
   </div>
 

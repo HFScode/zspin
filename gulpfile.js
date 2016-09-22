@@ -145,6 +145,7 @@ var app = {
     'app_statics/**/*',
     '!app_statics/package.json',
     '!app_statics/themeframe.js',
+    '!app_statics/blank_datafolder.zip',
   ],
   'scripts': [
     'app_sources/**/*.js',
@@ -161,7 +162,7 @@ var app = {
     'app_sources/**/*.html',
   ],
   'assets': [
-    '!app_statics/blank_datafolder.zip'
+    'app_statics/blank_datafolder.zip',
   ]
 };
 
@@ -203,14 +204,14 @@ gulp.task('app:styles', function() {
 });
 
 gulp.task('app:flash', function() {
-  return gulp.src(app.assets)
-    .pipe(gulp.dest('build/assets'))
+  return gulp.src(app.flash)
+    .pipe(gulp.dest('build/swf'))
     .pipe(gu_if(watch, gu_lr()));
 });
 
 gulp.task('app:assets', function() {
-  return gulp.src(app.flash)
-    .pipe(gulp.dest('build/swf'))
+  return gulp.src(app.assets)
+    .pipe(gulp.dest('build/assets'))
     .pipe(gu_if(watch, gu_lr()));
 });
 
@@ -222,8 +223,8 @@ gulp.task('app:templates', function() {
     .pipe(gu_if(watch, gu_lr()));
 });
 
-gulp.task('app', ['app:statics', 'app:scripts', 'app:styles', 'app:flash',
- 'app:templates', 'app:packagefile']);
+gulp.task('app', ['app:statics', 'app:assets', 'app:scripts', 'app:styles',
+  'app:flash', 'app:templates', 'app:packagefile']);
 
 /******************************* Theme Frame *********************************/
 

@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads', 'settings', 'inputs', 'toastr', 'zspin', 'zip',
-  function($scope, $tr, DOMKeyboard, gamepads, settings, inputs, toastr, zspin, zip) {
+app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads', 'settings', 'inputs', 'toastr', 'zspin', 'zip', 'fs',
+  function($scope, $tr, DOMKeyboard, gamepads, settings, inputs, toastr, zspin, zip, fs) {
 
     const dialog = require('electron').remote.dialog;
     const shell = require('electron').shell;
@@ -133,26 +133,23 @@ app.controller('SettingsCtrl', ['$scope', '$translate', 'DOMKeyboard', 'gamepads
       shell.openItem(settings.binaryPath());
     };
 
+    // creates an empty directory structure for no previous install
+    $scope.populateDataFolder = function() {
+      if ($scope.settings.hsPath === '') {
+        toastr.error($tr.instant("Please provide a data folder before populating."), {timeOut: 3000});
+        return;
+      }
+
+      zip.extract(fs.join(__dirname, 'assets', 'blank_datafolder.zip'), $scope.settings.hsPath).then(function() {
+        toastr.success($tr.instant("Folder structure has been created."), {timeOut: 3000});
+      }, function(err) {
+        toastr.error($tr.instant("An error occured while creating folders. Please check your permissions."), {timeOut: 3000});
+      });
+    };
+
     $scope.factoryReset = function() {
       settings.deleteSettingsFile();
       zspin.reloadApp();
-    };
-
-    $scope.populateDataFolder = function() {
-      if($scope.settings.hsPath) {
-        var unzip = zip.extract(fs.join(__dirname, 'app_statics','blank_datafolder.zip'), $scope.settings.hsPath);
-        unzip.then(
-          function(){
-            toastr.success($tr.instant("Folder structure has been created."),{timeOut: 3000});
-          },
-          function(){
-            toastr.error($tr.instant("An error occured while creating folders. Please check your permissions."),{timeOut: 3000});
-          }
-        );
-      }else{
-        toastr.error($tr.instant("Please provide a data folder before populating."),{timeOut: 3000});
-        return false;
-      }
     };
 
     if ($scope.settings.firstRun) {
