@@ -33,15 +33,17 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
         filename: null,
       };
 
-      // Extract type from extname
+      // Extract type from extname & filename
       obj.type = fs.extname(obj.src || '');
+      obj.filename = fs.basename(obj.src);
 
       // Natural size method differ base on the type
       var getSize = $q.when(null);
       if (obj.type === 'png' || obj.type === 'jpg') {
         getSize = getImageNaturalSize(obj.src);
       } else if (obj.type === 'swf') {
-        swf2js.load(obj.src, { bgcolor: "transparent" });
+        swf2js.load( obj.src,{ bgcolor: "transparent", tagId: obj.filename.toLowerCase() });
+        getSize = $q.when({width: 1024, height: 768});
       } else if (obj.type === 'flv') {
         getSize = $q.when({width: 200, height: 200});
       } else if (obj.type === 'mp4') {
