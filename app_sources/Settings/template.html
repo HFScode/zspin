@@ -54,7 +54,7 @@
     </div>
     <div class="seven columns" ng-init="showCreateFolder = false">
       <button ng-click="showCreateFolder = !showCreateFolder">{{'Create in this folder' | translate}}</button>
-      <button class='button-error' ng-click='populateDataFolder()' ng-show='showCreateFolder' translate>I'm sure. Do it.</button>
+      <button class='button-error' ng-click='populateDataFolder(); showCreateFolder = false' ng-show='showCreateFolder' translate>I'm sure. Do it.</button>
     </div>
   </div>
 
@@ -153,7 +153,7 @@
 
   <div ng-init="showReset = false">
     <button ng-click="showReset = !showReset">{{'Reset all settings' | translate}}</button>
-    <button class='button-error' ng-click='factoryReset()' ng-show='showReset' translate>I'm sure. Do it.</button>
+    <button class='button-error' ng-click='factoryReset(); showReset = false' ng-show='showReset' translate>I'm sure. Do it.</button>
   </div>
 
 </div>
