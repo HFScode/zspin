@@ -138,11 +138,14 @@ gulp.task('vendors', ['vendors:scripts', 'vendors:styles' ,'vendors:fonts']);
 
 /************************************ App ************************************/
 
+//TODO: mirror target folder tree in app_statics & /build
+
 var app = {
   'statics': [
     'app_statics/**/*',
     '!app_statics/package.json',
     '!app_statics/themeframe.js',
+    '!app_statics/blank_datafolder.zip',
   ],
   'scripts': [
     'app_sources/**/*.js',
@@ -158,6 +161,9 @@ var app = {
     'app_sources/templates/*.html',
     'app_sources/**/*.html',
   ],
+  'assets': [
+    'app_statics/blank_datafolder.zip',
+  ]
 };
 
 gulp.task('app:statics', function() {
@@ -203,6 +209,12 @@ gulp.task('app:flash', function() {
     .pipe(gu_if(watch, gu_lr()));
 });
 
+gulp.task('app:assets', function() {
+  return gulp.src(app.assets)
+    .pipe(gulp.dest('build/assets'))
+    .pipe(gu_if(watch, gu_lr()));
+});
+
 gulp.task('app:templates', function() {
   return gulp.src(app.templates)
     .pipe(gu_tpls({standalone: true}))
@@ -211,8 +223,8 @@ gulp.task('app:templates', function() {
     .pipe(gu_if(watch, gu_lr()));
 });
 
-gulp.task('app', ['app:statics', 'app:scripts', 'app:styles', 'app:flash',
- 'app:templates', 'app:packagefile']);
+gulp.task('app', ['app:statics', 'app:assets', 'app:scripts', 'app:styles',
+  'app:flash', 'app:templates', 'app:packagefile']);
 
 /******************************* Theme Frame *********************************/
 

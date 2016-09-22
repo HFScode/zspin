@@ -98,6 +98,14 @@ input:focus, select:focus {
     }
 }
 
+.button-error {
+    color: $white;
+    background-color: #c33;
+    &:hover {
+      background-color: #c22;
+    }
+}
+
 .u-pull-right {
   float: right;
 }
