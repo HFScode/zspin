@@ -42,25 +42,35 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
       if (obj.type === 'png' || obj.type === 'jpg') {
         getSize = getImageNaturalSize(obj.src);
       } else if (obj.type === 'swf') {
-        swf2js.load( obj.src,{ bgcolor: "transparent", tagId: obj.filename.toLowerCase() });
-        getSize = $q.when({width: 1024, height: 768});
+        getSize = getFlashNaturalSize(obj.src);
       } else if (obj.type === 'flv') {
         getSize = $q.when({width: 200, height: 200});
       } else if (obj.type === 'mp4') {
         getSize = getVideoNaturalSize(obj.src);
       }
-
       getSize.then(function(size) {
         obj.size = size;
-      });
 
-      obj.computeBox = service.computeBox.bind(null, obj);
+        if(obj.type =='swf'){
+            var swfOptions = {
+            bgcolor: "transparent",
+            tagId: obj.filename.toLowerCase(),
+            optionHeight: obj.size.height,
+            optionWidth:obj.size.width
+        };
+        swf2js.load(
+            obj.src,
+            swfOptions);
+        };
+        obj.computeBox = service.computeBox.bind(null, obj);
+      });
 
       return obj;
     };
 
     // Compute item bounding box base one config
     service.computeBox = function(obj, conf, isOverlay) {
+
       // If we miss both config or size, abort
       if (!conf && !obj.size)
         return {};
@@ -73,11 +83,16 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
       box.width  = (conf.w || obj.size.width || 0);
       box.height = (conf.h || obj.size.height || 0);
 
-      // Position (x,y) is defined as the position of the center
+        // Position (x,y) is defined as the position of the center
       // of the resized artwork relative to window (top,left)
       // posX = x - (width / 2)
       box.left = (conf.x - (box.width / 2)) || 0;
       box.top = (conf.y - (box.height / 2)) || 0;
+
+      //SWF placement... please don't ask
+      if((obj.type == 'swf') && (conf.x <= 0)){
+        box.left = box.top = 0;
+      }
 
       // If the item is an overlay, the previously parsed config
       // is its artorwk's and the actual size and position can be
