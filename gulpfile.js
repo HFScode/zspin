@@ -163,7 +163,7 @@ var app = {
 gulp.task('app:statics', function() {
   return gulp.src(app.statics)
     .pipe(gulp.dest('build'))
-    .pipe(gu_install())
+    // .pipe(gu_install())
     .pipe(gu_if(watch, gu_lr()));
 });
 
