@@ -19,7 +19,7 @@ $yellow: #FBA301;
 html {
   font-family: "UMono";
 }
-#overlay{
+#cursor-overlay{
   cursor:none;
   width:100vw;
   height:100vh;
@@ -167,6 +167,6 @@ input:focus, select:focus {
 // Debug styles override
 // ============================================================================
 
-#overlay.debug{
+#cursor-overlay.debug{
   cursor:auto;
 }
