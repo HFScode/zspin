@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="app" ng-controller="CurrentPage" ng-class="{'debug': zspinOptions.debug}">
+<html ng-app="app" ng-controller="CurrentPage">
   <head>
     <meta charset="utf8">
     <title>Z-Spin</title>
@@ -20,6 +20,7 @@
     </script>
   </head>
   <body class="{{currentPath}}">
+    <div id="overlay" ng-class="{'debug': zspinOptions.debug}"></div>
     <div ng-view></div>
     <script src="http://localhost:35729/livereload.js"></script>
     <div ng-controller='piwikCtrl'>
