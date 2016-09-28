@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('CurrentPage', ['$scope', '$location', 'zspin',
+app.controller('rootControler', ['$scope', '$location', 'zspin',
   function($scope, $location, zspin) {
     $scope.$on('$locationChangeSuccess', function (event, newLoc, oldLoc) {
       // generate some class names for <body> tag, based on first 2 url hashes
