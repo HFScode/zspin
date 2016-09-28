@@ -5,6 +5,7 @@
 $grey: #e1e1e1;
 $white: #fff;
 $black: #000;
+$yellow: #FBA301;
 
 @font-face {
   font-family: UMono;
@@ -17,6 +18,7 @@ $black: #000;
 
 html {
   font-family: "UMono";
+  cursor:none;
 }
 
 body {
@@ -151,4 +153,11 @@ input:focus, select:focus {
     margin: 7rem auto;
     width: 1000px;
   }
+}
+
+// ============================================================================
+// Debug styles override
+// ============================================================================
+html.debug{
+  cursor:auto;
 }
