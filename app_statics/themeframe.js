@@ -118,6 +118,14 @@ function checkForHead() {
     var script = document.createElement('script');
     script.src = 'jquery.js';
     head[0].appendChild(script);
+
+    var swf_script = document.createElement('script');
+    swf_script.src = 'swf2js.js';
+    head[0].appendChild(swf_script);
+
+    var tween_script = document.createElement('script');
+    tween_script.src = 'TweenMax.min.js';
+    head[0].appendChild(tween_script);
     checkLoadJQ();
   }
 }

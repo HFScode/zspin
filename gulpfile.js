@@ -103,7 +103,6 @@ var vendors = {
     'bower_components/json-formatter/dist/json-formatter.js',
     'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
     'bower_components/jplayer/dist/jplayer/jquery.jplayer.js',
-    'bower_components/swf2js/swf2js.js',
   ],
   'styles': [
     'bower_components/skeleton/css/normalize.css',
@@ -233,7 +232,9 @@ var themeframe = {
   'scripts': [
     'bower_components/jquery/dist/jquery.min.js',
     'bower_components/jplayer/dist/jplayer/jquery.jplayer.min.js',
+    'bower_components/swf2js/swf2js.js',
     'app_statics/themeframe.js',
+    'bower_components/gsap/src/minified/TweenMax.min.js'
   ],
 };
 

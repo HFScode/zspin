@@ -93,6 +93,8 @@ app.factory('dataServer', ['$q', 'fs', 'settings', 'zip', 'xml',
         'themeframe.js': fs.join(__dirname, 'js', 'themeframe.js'),
         'jquery.js': fs.join(__dirname, 'js', 'jquery.min.js'),
         'jquery.jplayer.js': fs.join(__dirname, 'js', 'jquery.jplayer.min.js'),
+        'swf2js.js': fs.join(__dirname, 'js', 'swf2js.js'),
+        'TweenMax.min.js': fs.join(__dirname, 'js', 'TweenMax.min.js'),
         'jquery.jplayer.swf': fs.join(__dirname, 'swf', 'jquery.jplayer.swf'),
       };
     };
