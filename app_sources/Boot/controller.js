@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('BootCtrl', ['$scope', 'settings', '$location', 'zspin',
+app.controller('BootCtrl', ['$scope', 'settings', '$location', 'zspin', 'statistics',
   function($scope, settings, $location, zspin) {
     if (settings.$obj.firstRun) {
         $location.path('/settings');
