@@ -1,7 +1,7 @@
 'use strict';
 
-app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'menus', 'settings', 'inputs', 'zspin', 'themes', 'dataServer',
-  function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs, zspin, themes, dataServer) {
+app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', 'fs', 'menus', 'settings', 'inputs', 'zspin', 'themes', 'dataServer', 'statistics',
+  function($scope, $routeParams, $location, $timeout, fs, menus, settings, inputs, zspin, themes, dataServer, statistics) {
 
     //  - requires
     const $fs = require('fs');
@@ -111,8 +111,13 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
                                .replace('{system}', menu.name);
         }
 
+        //Update the runs statistics
+        statistics.incrementRuns(elem);
+
         spawn(settings.$obj.launcherPath, params);
         inputs.isWindowFocused = false;
+
+
       }
     };
 

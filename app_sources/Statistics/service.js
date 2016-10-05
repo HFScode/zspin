@@ -16,7 +16,7 @@ app.factory('statistics', [
 
     //Stats to be stored
     service.$obj = {
-      launches:{},
+      runCount:{},
       top10:[]
     };
 
@@ -41,6 +41,20 @@ app.factory('statistics', [
     service.deleteStatisticsFile = function() {
       $fs.unlinkSync(statisticsPath);
     };
+
+    // deletes the Settings.json file
+    service.incrementRuns = function(elem) {
+      //Increment the launches in stat file
+      console.log(elem+' : +1!');
+      if(elem in service.$obj.runCount) {
+        service.$obj.runCount[elem]++;
+      }else{
+        service.$obj.runCount[elem] = 1;
+      }
+      service.write();
+    };
+
+
 
 
     // Write defaults settings if there is no Settings.json to load
