@@ -1,4 +1,6 @@
+<pre class="debug">{{loaded | json}}&nbsp;</pre>
 <div id="Menu">
-  <theme ng-if="curTheme" menu="{{menuName}}" name="{{curEntry}}" src="{{curTheme}}" is-default="{{isDefault}}" />
+  <theme id="one" ng-class="{'hidefast': currentThemeElement == 'two' && loaded}" ng-if="curTheme" menu="{{menuName}}" name="{{curEntry}}" src="{{curTheme}}" is-default="{{isDefault}}"/>
+  <theme id="two" ng-class="{'hidefast': currentThemeElement == 'one' && loaded}" ng-if="curThemeTwo" menu="{{menuName}}" name="{{curEntryTwo}}" src="{{curThemeTwo}}"/>
   <wheel control="wheelControl" options="wheelOptions" items="entries" />
 </div>

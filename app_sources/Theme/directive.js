@@ -7,18 +7,23 @@ app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes', 'dataServer',
       restrict: 'E',
       templateUrl: 'Theme/template.html',
       scope: {
+        id: '@',
         src: '@',
         name: '@',
         menu: '@',
+        loaded: '@',
         isDefault: '@',
       },
       link: function(scope, el, attrs) {
         scope.dataServerUrl = dataServer.url;
         scope.tmpRoot = settings.hsPath(settings.$obj.cachePath, 'Theme');
+        console.log(scope.loaded)
+        // scope.loaded = false;
 
         function updateTheme(src) {
           if (!src) return;
           var themeName = fs.basename(src);
+          scope.loaded = false;
 
           // Create new tmpPath, extract & load
           scope.tmpPath = fs.join(scope.tmpRoot, themeName);
@@ -26,6 +31,8 @@ app.directive('theme', ['$q', 'settings', 'fs', 'zip', 'themes', 'dataServer',
             return zip.extract(src, scope.tmpPath);
           }).then(function() {
             scope.theme = themes(scope.tmpPath, scope.menu, themeName);
+            scope.loaded = true;
+            console.log('LOADED '+scope.id);
           });
         }
 

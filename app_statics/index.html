@@ -9,14 +9,15 @@
       // atom-electron defines this variable, but we need it too
       // https://github.com/atom/electron/issues/254
       // at least for: jquery, gsap, jsonFormatter, toastr
-      var _module = module;
-      module = {};
+      window['_module'] = module;
+      delete module;
     </script>
     <script type="text/javascript" src="js/vendors.js"></script>
     <script type="text/javascript" src="js/app.tpls.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript">
-      module = _module;
+      window['module'] = window['_module'];
+      delete window._module;
     </script>
   </head>
   <body class="{{currentPath}}">

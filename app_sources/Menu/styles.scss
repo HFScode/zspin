@@ -4,3 +4,21 @@
   left: 0; right: 0;
   background-color: #000;
 }
+
+#one, #two {
+  opacity: 1;
+  transition: opacity 0.3s linear;
+
+  &.hidefast {
+    opacity: 0;
+  }
+}
+
+.debug {
+  z-index: 999;
+  color: #ff00ff;
+  background-color: black;
+  top: 0;
+  left: 0;
+  position: absolute;
+}

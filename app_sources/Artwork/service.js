@@ -77,6 +77,9 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
       box.left = (conf.x - (box.width / 2)) || 0;
       box.top = (conf.y - (box.height / 2)) || 0;
 
+      if((obj.type == 'swf') && (conf.x <= 0)){
+        box.left = box.top = 0;
+      }
       // If the item is an overlay, the previously parsed config
       // is its artorwk's and the actual size and position can be
       // deduced from it.

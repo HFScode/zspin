@@ -16,9 +16,14 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     //  - Retrieve the menu service item
     var menu = $scope.menu = menus(name);
     $scope.curTheme = undefined;
-    $scope.curVideo = undefined;
+    $scope.curThemeTwo = undefined;
     $scope.infos = {};
-    $scope.useDefault = false;
+    $scope.loaded = false;
+
+    // The currentThemeElement is used to know which of the 2 <theme> elements is currently used.
+    // We use this to be able to render the newly to-be-loaded theme to the not displayed element
+    // and then do the transition cleanly. (see template.html of Menu)
+    $scope.currentThemeElement = 'one';
 
     //  -  Defining wheel parameters  -
     $scope.wheelOptions = {
@@ -60,12 +65,26 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
     $scope.updateEntry = function() {
       $timeout.cancel(updatePromise);
       updatePromise = $timeout(function() {
-        $scope.curEntry = $scope.wheelControl.select().name;
-        $scope.curTheme = $scope.themes[$scope.curEntry] ||
-                          $scope.themes['Default'] ||
-                          $scope.themes['default'] ||
-                          $scope.curTheme;
-        dataServer.infos = $scope.infos[$scope.curEntry];
+        if ($scope.currentThemeElement == 'one' || $scope.themes['Default'] || $scope.themes['default']) {
+          console.log('oneing ');
+          $scope.curEntryTwo = $scope.wheelControl.select().name;
+          $scope.curThemeTwo = $scope.themes[$scope.curEntryTwo] ||
+                               $scope.themes['Default'] ||
+                               $scope.themes['default'] ||
+                               $scope.curThemeTwo;
+          if ($scope.themes['Default'] || $scope.themes['default']) {
+            // nope
+          } else {
+            $scope.currentThemeElement = 'two';
+          }
+        } else {
+          console.log('twoing ');
+          $scope.curEntry = $scope.wheelControl.select().name;
+          $scope.curTheme = $scope.themes[$scope.curEntry] ||
+                            $scope.curTheme;
+          $scope.currentThemeElement = 'one';
+        }
+        dataServer.infos = $scope.infos[$scope.wheelControl.select().name];
       }, 500);
     };
 
@@ -185,6 +204,11 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
                         $scope.themes['default'] ||
                         $scope.curTheme;
       dataServer.infos = $scope.infos[$scope.curEntry];
+    });
+
+    $scope.$watch('themes', function(themes) {
+      console.log('THEMES');
+      console.log(themes);
     });
 
     //remove binds on destroy
