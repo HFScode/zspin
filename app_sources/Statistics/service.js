@@ -1,27 +1,25 @@
 'use strict';
 
-app.factory('statistics', [
-  function () {
+app.factory('statistics', [ 'settings',
+  function (settings) {
     console.log('statistics - init');
     var service = {};
 
     const $fs = require('fs');
     const $path = require('path');
-    const remote = require('electron').remote;
-    const gui = remote.require('electron').app;
 
     // Path for the app datas
-    var dataPath = gui.getPath('userData');
+    var dataPath = settings.dataPath();
     var statisticsPath = $path.join(dataPath, 'Statistics.json');
 
     //Stats to be stored
     service.$obj = {
-      runCount:{},
-      top10:[]
+      games:{}
     };
 
     // Blocking settings "write"
     service.write = function() {
+
       var data = JSON.stringify(service.$obj, null, 2);
       return $fs.writeFileSync(statisticsPath, data, 'utf8');
     };
@@ -42,15 +40,15 @@ app.factory('statistics', [
       $fs.unlinkSync(statisticsPath);
     };
 
-    // deletes the Settings.json file
-    service.incrementRuns = function(elem) {
-      //Increment the launches in stat file
-      console.log(elem+' : +1!');
-      if(elem in service.$obj.runCount) {
-        service.$obj.runCount[elem]++;
+    // Update the stats object and save
+    service.incrementRuns = function(elem,elemPath) {
+      if(elem in service.$obj.games) {
+        service.$obj.games[elem].runCount++;
       }else{
-        service.$obj.runCount[elem] = 1;
+        service.$obj.games[elem] = {runCount : 1, path : elemPath};
       }
+
+      //Save file
       service.write();
     };
 
@@ -60,7 +58,6 @@ app.factory('statistics', [
     // Write defaults settings if there is no Settings.json to load
     try {
       $fs.accessSync(statisticsPath, $fs.F_OK);
-      console.log('Statistics file: ' + statisticsPath);
     } catch (e) {
       console.log('No statistics file ! Creating ' + statisticsPath);
       service.write();

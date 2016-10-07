@@ -94,13 +94,13 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
 
     $scope.enter = function() {
       var elem = $scope.wheelControl.select().name;
+      var elemPath = baseUrl + curPath + '/' + elem;
 
       // check if item is a database, if yes, go to submenu
       var databasePath = settings.hsPath('Databases', elem, elem+'.xml');
       if ($fs.existsSync(databasePath, $fs.F_OK)) {
         zspin.menuHistory[menu.name] = elem;
-        var newPath = baseUrl + curPath + '/' + elem;
-        $location.path(newPath);
+        $location.path(elemPath);
 
       // if not, then this is a game, run it
       } else {
@@ -112,7 +112,7 @@ app.controller('MenuCtrl', ['$scope', '$routeParams', '$location', '$timeout', '
         }
 
         //Update the runs statistics
-        statistics.incrementRuns(elem);
+        statistics.incrementRuns(elem,elemPath);
 
         spawn(settings.$obj.launcherPath, params);
         inputs.isWindowFocused = false;
