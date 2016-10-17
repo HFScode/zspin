@@ -1,0 +1,12 @@
+language:
+  - node_js
+node_js:
+  - "6.1"
+notifications:
+  irc:
+    - "chat.freenode.net##hfs"
+
+before_script:
+  - make install
+script:
+  - gulp release -p linux64
