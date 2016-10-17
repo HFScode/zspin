@@ -1,0 +1,23 @@
+language:
+  - node_js
+node_js:
+  - node
+notifications:
+  email:
+    - false
+  irc:
+    - "chat.freenode.net##hfs"
+branches:
+  only:
+    - master
+    - develop
+before_install:
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-get -qq update
+  - sudo apt-get -qq install g++-4.8
+env:
+  - CXX=g++-4.8
+before_script:
+  - make install
+script:
+  - gulp release -p linux64
