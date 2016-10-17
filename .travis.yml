@@ -1,7 +1,7 @@
 language:
   - node_js
 node_js:
-  - "6.1"
+  - "6.8"
 notifications:
   irc:
     - "chat.freenode.net##hfs"
