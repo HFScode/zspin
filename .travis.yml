@@ -5,7 +5,11 @@ node_js:
 notifications:
   irc:
     - "chat.freenode.net##hfs"
-
+branches:
+  only:
+    - master
+    - develop
+    - travis
 before_script:
   - make install
 script:
