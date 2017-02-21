@@ -50,7 +50,7 @@
 "<press a key>": "<pressez>",
 "Settings saved !": "Paramètres sauvegardés !",
 "You must configure data folder path !": "Vous devez selectionner le repertoire de données !",
-"Welcome to Zspin !<br/>Please configure me !": "Bienvenue dans Zspin !<br/>Merci de me configurer !"
+"Welcome to Zspin !<br/>Please configure me !": "Bienvenue dans Zspin !<br/>Merci de me configurer !",
 "Folder structure has been created.": "La structure des répertoires a bien été créée.",
 "An error occured while creating folders. Please check your permissions." : "Une erreur est survenue durant la création.<br/>Veuillez vérifier vos droits d'écriture.",
 "Please provide a data folder before populating.":"Spécifiez un répertoire de données avant de créer la structure."
