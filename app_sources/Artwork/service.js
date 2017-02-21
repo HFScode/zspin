@@ -68,8 +68,8 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
 
       // Original artork size might be overrided in config
       // otherwise, use the native artwork size
-      box.width  = (conf.w || obj.size.width || 0);
-      box.height = (conf.h || obj.size.height || 0);
+      box.width  = parseFloat(conf.w || obj.size.width || 0);
+      box.height = parseFloat(conf.h || obj.size.height || 0);
 
       // Position (x,y) is defined as the position of the center
       // of the resized artwork relative to window (top,left)
@@ -85,12 +85,12 @@ app.factory('artworks', ['$q', 'qbind', 'fs',
         box.left = box.left + ((box.width - obj.size.width) / 2);
         box.top  = box.top + ((box.height - obj.size.height) / 2);
         // Apply overlay offsets if any
-        box.left += parseInt(conf.overlayoffsetx);
-        box.top += parseInt(conf.overlayoffsety);
+        box.left += parseFloat(conf.overlayoffsetx) || 0;
+        box.top += parseFloat(conf.overlayoffsety) || 0;
         // The overlay size is its native one
         box.width = (obj.size.width || 0);
         box.height = (obj.size.height || 0);
-      }
+     }
       return box;
     };
 
